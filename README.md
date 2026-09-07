@@ -1,31 +1,35 @@
-# Zoom \& Drag
+# Zoom & Drag
 
-Zoom, rotate, and drag images or background graphics with right-click and mouse wheel gestures without breaking page layouts.
+Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move images and CSS background graphics directly on any webpage. Control everything via simple mouse gestures or keyboard shortcuts without breaking the page layout.
 
+## ✨ Key Features
+- **Intuitive Controls:** Zoom, rotate, and drag using right-click & mouse wheel gestures or dedicated keyboard shortcuts.
+- **Smart UI:** A sleek floating HUD badge displays the current zoom ratio and rotation angle while interacting.
+- **Custom Zoom:** Set a specific zoom percentage directly via the context menu.
+- **Domain Filtering:** Easily exclude specific websites (like map services or design tools) via the settings page.
+- **Modern & Lightweight:** Built on Manifest V3 with pure Vanilla JS (zero external libraries, legacy jQuery removed).
+- **Privacy First:** Operates entirely locally. No data collection, tracking, or analytics.
 
+## 🖱️ Mouse Controls
+- **Zoom:** Hold `Right Click` + Scroll Mouse Wheel
+- **Rotate:** `Alt` + Hold `Right Click` + Scroll Mouse Wheel
+- **Drag:** Click and hold `Left Click` to move (on zoomed images)
+- **Reset:** `Right Click` + `Left Click`
+- **Fit to window:** `Right Click` + `Middle Click`
 
-## Attribution \& History
+## ⌨️ Keyboard Shortcuts
+- **Zoom:** `+` / `-`
+- **Move:** `Arrow Keys`
+- **Rotate 90°:** `R` (Right) / `L` (Left)
+- **Reset / Close:** `0` or `Esc`
+- **Modifier:** Hold `Shift` with shortcuts for alternative step sizes (e.g., faster zoom/move, 45° rotation).
 
-**Zoom \& Drag** is a fork of the abandoned Firefox add-on *Zoom Image* (originally created by Amu).
-From version 1.0.1 onwards, and specifically rewritten in version 1.1.0, it has been substantially extended and modernized by pscholz.
+## 📜 Attribution & History
+Zoom & Drag is a fundamentally modernized and completely rewritten evolution of the abandoned Firefox add-on *Zoom Image* (originally created by Amu). 
 
-
-Key improvements include:
-
-* Removal of legacy jQuery dependencies
-* Vector-based freehand rotation
-* Modern HUD badge for zoom percentage
-* Keyboard shortcuts
-* Domain filtering
-* Chromium (Manifest V3) support
-
-
+From version 1.0.1 onwards, and specifically through the v1.1.0 native JS rewrite, the project has been substantially extended, modernized, and is now actively maintained
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
 
-
-
-## License
-
-Mozilla Public License 2.0 (MPL-2.0)
-
+## ⚖️ License
+Released under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE).
