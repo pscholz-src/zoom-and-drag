@@ -1,201 +1,137 @@
 {
-	"extensionName": {
-		"message": "Zoom & Drag",
-		"description": "Name of the extension."
-	},
-
-	"extensionDescription": {
-		"message": "Bilder oder Hintergrundgrafiken mit Rechtsklick und Mausrad zoomen, drehen und verschieben, ohne das Seitenlayout zu verändern.",
-		"description": "Description of the extension."
-	},
-
-	"cmTopMenu": {
-		"message": "Zoom && Drag",
-		"description": "Item of the context menu."
-	},
-
-	"cmZoomIn": {
-		"message": "Größe x 2.0",
-		"description": "Item of the context menu."
-	},
-
-	"cmZoomOut": {
-		"message": "Größe x 0.5",
-		"description": "Item of the context menu."
-	},
-
-	"cmRot": {
-		"message": "Rotation",
-		"description": "Item of the context menu."
-	},
-
-	"cmR90": {
-		"message": "90° drehen (Rechts)",
-		"description": "Item of the context menu."
-	},
-
-	"cmL90": {
-		"message": "90° drehen (Links)",
-		"description": "Item of the context menu."
-	},
-
-	"cmRot180": {
-		"message": "180° drehen",
-		"description": "Item of the context menu."
-	},
-
-	"cmFitWin": {
-		"message": "An Fenster anpassen",
-		"description": "Item of the context menu."
-	},
-
-	"cmFit": {
-		"message": "Originalgröße",
-		"description": "Item of the context menu."
-	},
-
-	"cmSetting": {
-		"message": "Einstellungen öffnen",
-		"description": "Item of the context menu."
-	},
-
-	"h2Setting": {
-		"message": "Einstellungen",
-		"description": "Setting HTML text."
-	},
-
-	"thFunc": {
-		"message": "Funktionen",
-		"description": "Setting HTML text."
-	},
-
-	"thCtrl": {
-		"message": "Befehle (auf Bildern)",
-		"description": "Setting HTML text."
-	},
-
-	"td_1": {
-		"message": "Freier Zoom (schwebend)",
-		"description": "Setting HTML text."
-	},
-
-	"td_2": {
-		"message": "Befehle tauschen",
-		"description": "Setting HTML text."
-	},
-
-	"td_3": {
-		"message": "Zoomen",
-		"description": "Setting HTML text."
-	},
-
-	"td_4": {
-		"message": "Rotation",
-		"description": "Setting HTML text."
-	},
-
-	"td_5": {
-		"message": "Alt-Taste + Rechtsklick + Mausrad drehen",
-		"description": "Setting HTML text."
-	},
-
-	"td_6": {
-		"message": "Originalgröße",
-		"description": "Setting HTML text."
-	},
-
-	"td_7": {
-		"message": "Rechtsklick + Linksklick",
-		"description": "Setting HTML text."
-	},
-
-	"td_8": {
-		"message": "Rechtsklick + Mausrad drehen",
-		"description": "Setting HTML text."
-	},
-
-	"td_9": {
-		"message": "Strg-Taste + Rechtsklick + Mausrad drehen",
-		"description": "Setting HTML text."
-	},
-
-	"td_10": {
-		"message": "Zoomfaktor pro Mausrad-Schritt",
-		"description": "Setting HTML text."
-	},
-
-	"td_11": {
-		"message": "Drehwinkel pro Mausrad-Schritt",
-		"description": "Setting HTML text."
-	},
-
-	"td_12": {
-		"message": "Mausrad umkehren",
-		"description": "Setting HTML text."
-	},
-
-	"td_13": {
-		"message": "Hintergrundbilder einbeziehen",
-		"description": "Setting HTML text."
-	},
-
-	"td_14": {
-		"message": "Bilder beim Loslassen des Rechtsklicks zurücksetzen",
-		"description": "Setting HTML text."
-	},
-
-	"td_15": {
-		"message": "Kontextmenü aktivieren",
-		"description": "Setting HTML text."
-	},
-
-	"td_16": {
-		"message": "An Fenster anpassen",
-		"description": "Setting HTML text."
-	},
-
-	"td_17": {
-		"message": "Rechtsklick + Mittelklick",
-		"description": "Setting HTML text."
-	},
-
-	"td_18": {
-		"message": "Ziehen zum Verschieben",
-		"description": "Setting HTML text."
-	},
-
-	"td_19": {
-		"message": "Linksklick zum Ziehen (bei gezoomten Bildern)",
-		"description": "Setting HTML text."
-	},
-
-	"td_20": {
-		"message": "Alt-Taste + Strg-Taste + Rechtsklick + Mausrad drehen",
-		"description": "Setting HTML text."
-	},
-
-	"td_21": {
-		"message": "Alt-Taste + Rechtsklick + Linksklick",
-		"description": "Setting HTML text."
-	},
-
-	"td_23": {
-		"message": "Einstellungen zurücksetzen",
-		"description": "Setting HTML text."
-	},
-
-	"td_24": {
-		"message": "Verschiebbar, wenn auf der Einzelbildansicht gezoomt wird",
-		"description": "Setting HTML text."
-	},
-
-	"td_25": {
-		"message": "Zeit bis zum automatischen Abbruch des Rechtsklicks",
-		"description": "Setting HTML text."
-	},
-
-	"td_26": {
-		"message": "Wenn nach dem Rechtsklick diese Zeit verstreicht ohne das Rad zu drehen, wird der Rechtsklick automatisch freigegeben. (1000ms = 1 Sekunde)",
-		"description": "Setting HTML text."
-	}
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Bilder oder Hintergrundgrafiken mit Rechtsklick und Mausrad zoomen, drehen und verschieben, ohne das Seitenlayout zu ver\u00e4ndern."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Gr\u00f6\u00dfe eingeben..."
+    },
+    "cmZoomIn": {
+        "message": "Gr\u00f6\u00dfe x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Gr\u00f6\u00dfe x 0.5"
+    },
+    "cmR90": {
+        "message": "90\u00b0 drehen (Rechts)"
+    },
+    "cmL90": {
+        "message": "90\u00b0 drehen (Links)"
+    },
+    "cmRot180": {
+        "message": "180\u00b0 drehen"
+    },
+    "cmFitWin": {
+        "message": "An Fenster anpassen"
+    },
+    "cmFit": {
+        "message": "Originalgr\u00f6\u00dfe"
+    },
+    "cmSetting": {
+        "message": "Einstellungen \u00f6ffnen"
+    },
+    "h2Setting": {
+        "message": "Einstellungen"
+    },
+    "thFunc": {
+        "message": "Funktionen"
+    },
+    "thCtrl": {
+        "message": "Befehle (auf Bildern)"
+    },
+    "optFreeZoom": {
+        "message": "Freier Zoom (schwebend)"
+    },
+    "optSwapCommands": {
+        "message": "Befehle tauschen"
+    },
+    "optZoom": {
+        "message": "Zoomen"
+    },
+    "optRotation": {
+        "message": "Rotation"
+    },
+    "lblAltRightWheel": {
+        "message": "Alt-Taste + Rechtsklick + Mausrad drehen"
+    },
+    "optOriginalSize": {
+        "message": "Originalgr\u00f6\u00dfe"
+    },
+    "lblRightLeftClick": {
+        "message": "Rechtsklick + Linksklick"
+    },
+    "lblRightWheel": {
+        "message": "Rechtsklick + Mausrad drehen"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Strg-Taste + Rechtsklick + Mausrad drehen"
+    },
+    "optZoomStep": {
+        "message": "Zoomfaktor pro Mausrad-Schritt"
+    },
+    "optRotationStep": {
+        "message": "Drehwinkel pro Mausrad-Schritt"
+    },
+    "optReverseWheel": {
+        "message": "Mausrad umkehren"
+    },
+    "optIncludeBgImages": {
+        "message": "Hintergrundbilder einbeziehen"
+    },
+    "optAutoResetRelease": {
+        "message": "Bilder beim Loslassen des Rechtsklicks zur\u00fccksetzen"
+    },
+    "optEnableContextMenu": {
+        "message": "Kontextmen\u00fc aktivieren"
+    },
+    "optFitToWindow": {
+        "message": "An Fenster anpassen"
+    },
+    "lblRightMiddleClick": {
+        "message": "Rechtsklick + Mittelklick"
+    },
+    "optDragToMove": {
+        "message": "Ziehen zum Verschieben"
+    },
+    "lblLeftClickDrag": {
+        "message": "Linksklick zum Ziehen (bei gezoomten Bildern)"
+    },
+    "optAltFreeRotation": {
+        "message": "Schnellrotation"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Alt-Taste + Rechtsklick + Linksklick"
+    },
+    "btnResetSettings": {
+        "message": "Einstellungen zur\u00fccksetzen"
+    },
+    "optDraggableSingleImage": {
+        "message": "Verschiebbar, wenn auf der Einzelbildansicht gezoomt wird"
+    },
+    "optRightClickTimeout": {
+        "message": "Zeit bis zum automatischen Abbruch des Rechtsklicks"
+    },
+    "hlpRightClickTimeout": {
+        "message": "Wenn nach dem Rechtsklick diese Zeit verstreicht ohne das Rad zu drehen, wird der Rechtsklick automatisch freigegeben. (1000ms = 1 Sekunde)"
+    },
+    "optShowZoomBadge": {
+        "message": "Zoom-Prozentsatz beim Skalieren anzeigen"
+    },
+    "promptZoom": {
+        "message": "Gew\u00fcnschte Gr\u00f6\u00dfe in Prozent (z.B. 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "Auf diesen Domains deaktivieren (eine pro Zeile):"
+    },
+    "hlpExcludedDomains": {
+        "message": "z. B. maps.google.com oder figma.com (Subdomains werden automatisch mit erfasst)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Tastatur-Shortcuts aktivieren (+/\u2212, Pfeiltasten, Esc, 0, R/L)"
+    }
 }

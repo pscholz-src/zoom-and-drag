@@ -34,6 +34,7 @@ th {
 }
 .func_list td[rowspan="2"] {
 	white-space: nowrap;
+	background-color: #fffde7;
 }
 .options td {
 	border: none;
@@ -62,7 +63,34 @@ td.fc {
 .options {
 	margin: 18px 0 5px 0;
 }
+
+.exclude_section {
+	margin: 14px 0 6px 2px;
+}
+.exclude_section label {
+	display: block;
+	font-weight: 500;
+	margin-bottom: 5px;
+	color: #333;
+}
+.exclude_section textarea {
+	width: 95%;
+	max-width: 460px;
+	box-sizing: border-box;
+	border: 1px solid #bbb;
+	border-radius: 4px;
+	padding: 6px 8px;
+	font-family: monospace, sans-serif;
+	font-size: 12px;
+	resize: vertical;
+	display: block;
+}
+.footer_actions {
+	margin-top: 10px;
+	margin-left: 2px;
+}
 #reset_btn {
-	margin: 12px 0 0 0;
-	padding: 3px 6px;
+	margin: 0;
+	padding: 4px 10px;
+	cursor: pointer;
 }

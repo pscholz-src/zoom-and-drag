@@ -7,7 +7,7 @@
  * Project: Zoom & Drag
  */
 
-var DEFAULT_SETTING = 
+export const DEFAULT_SETTING = 
 {
     "dim":10,
     "rotd": 15,
@@ -18,5 +18,8 @@ var DEFAULT_SETTING =
     "ctrlRvs":false,
     "enableCxt":true,
     "ivpDrag":false,
-    "clickSwap":false
+    "clickSwap":false,
+    "showZoomBadge":true,
+    "enableKeyShortcuts":true,
+    "excludedDomains":""
 };

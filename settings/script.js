@@ -7,24 +7,29 @@
  * Project: Zoom & Drag
  */
 
+import { DEFAULT_SETTING } from '../default_setting.js';
+globalThis.browser = globalThis.browser || globalThis.chrome;
+
+
 async function restore() {
     const data = await browser.storage.local.get('setting');
-    if (data.setting) {
-        const df = DEFAULT_SETTING;
-        const a = data.setting;
-        
-        document.getElementById('dim').value = a.dim != null ? String(a.dim) : df.dim;
-        document.getElementById('rotd').value = a.rotd != null ? String(a.rotd) : df.rotd;
-        document.getElementById('rcCancel').value = a.rcCancel != null ? String(a.rcCancel) : df.rcCancel;
-        
-        document.getElementById('ctrlRvs').checked = a.ctrlRvs != null ? a.ctrlRvs : df.ctrlRvs;
-        document.getElementById('reverse').checked = a.reverse != null ? a.reverse : df.reverse;
-        document.getElementById('bgImg').checked = a.bgImg != null ? a.bgImg : df.bgImg;
-        document.getElementById('autoRtn').checked = a.autoRtn != null ? a.autoRtn : df.autoRtn;
-        document.getElementById('enableCxt').checked = a.enableCxt != null ? a.enableCxt : df.enableCxt;
-        document.getElementById('ivpDrag').checked = a.ivpDrag != null ? a.ivpDrag : df.ivpDrag;
-        document.getElementById('clickSwap').checked = a.clickSwap != null ? a.clickSwap : df.clickSwap;
-    }
+    const df = DEFAULT_SETTING;
+    const a = data.setting || df;
+    
+    document.getElementById('dim').value = a.dim != null ? String(a.dim) : String(df.dim);
+    document.getElementById('rotd').value = a.rotd != null ? String(a.rotd) : String(df.rotd);
+    document.getElementById('rcCancel').value = a.rcCancel != null ? String(a.rcCancel) : String(df.rcCancel);
+    
+    document.getElementById('ctrlRvs').checked = a.ctrlRvs != null ? a.ctrlRvs : df.ctrlRvs;
+    document.getElementById('reverse').checked = a.reverse != null ? a.reverse : df.reverse;
+    document.getElementById('bgImg').checked = a.bgImg != null ? a.bgImg : df.bgImg;
+    document.getElementById('autoRtn').checked = a.autoRtn != null ? a.autoRtn : df.autoRtn;
+    document.getElementById('enableCxt').checked = a.enableCxt != null ? a.enableCxt : df.enableCxt;
+    document.getElementById('ivpDrag').checked = a.ivpDrag != null ? a.ivpDrag : df.ivpDrag;
+    document.getElementById('clickSwap').checked = a.clickSwap != null ? a.clickSwap : df.clickSwap;
+    document.getElementById('showZoomBadge').checked = a.showZoomBadge != null ? a.showZoomBadge : df.showZoomBadge;
+    document.getElementById('enableKeyShortcuts').checked = a.enableKeyShortcuts != null ? a.enableKeyShortcuts : (df.enableKeyShortcuts !== undefined ? df.enableKeyShortcuts : true);
+    document.getElementById('excludedDomains').value = a.excludedDomains != null ? a.excludedDomains : (df.excludedDomains || '');
     
     rvs_ctrl();
     rvs_click();
@@ -41,7 +46,10 @@ async function save() {
         "ctrlRvs": document.getElementById('ctrlRvs').checked,
         "enableCxt": document.getElementById('enableCxt').checked,
         "ivpDrag": document.getElementById('ivpDrag').checked,
-        "clickSwap": document.getElementById('clickSwap').checked
+        "clickSwap": document.getElementById('clickSwap').checked,
+        "showZoomBadge": document.getElementById('showZoomBadge').checked,
+        "enableKeyShortcuts": document.getElementById('enableKeyShortcuts').checked,
+        "excludedDomains": document.getElementById('excludedDomains').value.trim()
     };
     await browser.storage.local.set({ 'setting': a });
 }
@@ -57,39 +65,41 @@ function rvs_ctrl() {
 
 function rvs_click() {
     const isSwapped = document.getElementById('clickSwap').checked;
-    document.getElementById('click_op1').textContent = isSwapped ? gm('td_17') : gm('td_7');
-    document.getElementById('click_op2').textContent = isSwapped ? gm('td_7') : gm('td_17');
+    document.getElementById('click_op1').textContent = isSwapped ? gm('lblRightMiddleClick') : gm('lblRightLeftClick');
+    document.getElementById('click_op2').textContent = isSwapped ? gm('lblRightLeftClick') : gm('lblRightMiddleClick');
 }
 
 async function reset() {
     await browser.storage.local.set({ 'setting': DEFAULT_SETTING });
-    location.reload();
+    await restore();
 }
 
 const gm = n => browser.i18n.getMessage(n);
 
-document.getElementById('h2Setting').textContent = gm('h2Setting');
-document.getElementById('thFunc').textContent = gm('thFunc');
-document.getElementById('thCtrl').textContent = gm('thCtrl');
+document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const translation = gm(key);
+    
+    if (translation) {
+        if (el.tagName.toUpperCase() === 'INPUT') {
+            el.value = translation;
+        } else {
+            el.textContent = translation;
+        }
+    }
+});
+
+document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    const translation = gm(key);
+    if (translation) {
+        el.placeholder = translation;
+    }
+});
 
 document.getElementById('reset_btn').addEventListener('click', () => reset());
 
-for (let i = 1; i < 40; i++) {
-    const elements = document.querySelectorAll('.td_' + i);
-    const me = gm('td_' + i);
-    
-    if (me) {
-        elements.forEach(el => {
-            if (el.tagName.toUpperCase() === 'INPUT') {
-                el.value = me;
-            } else {
-                el.textContent = me;
-            }
-        });
-    }
-}
-
-document.querySelectorAll('select, input[type="checkbox"]').forEach(el => {
+document.querySelectorAll('select, input[type="checkbox"], textarea').forEach(el => {
     el.addEventListener('change', () => save());
 });
 

@@ -1,4 +1,4 @@
-img.zoomImgCls_b6ig4jvwe {
+img.zdImgCls_b6ig4jvwe {
     max-width: none !important;
     max-height: none !important;
     min-width: 0px !important;
@@ -11,27 +11,58 @@ img.zoomImgCls_b6ig4jvwe {
     cursor: grab;
 }
 
-img.zoomImgCls_asntrs58f {
+img.zdImgCls_asntrs58f {
     box-shadow: 1px 1px 4px 0px #666666 !important;
 }
 
-img.zoomImgCls_mhdt687po {
+img.zdImgCls_mhdt687po {
     box-shadow: 1px 1px 4px 0px #666666 !important;
 }
-img.zoomImgCls_mhdt687po:hover {
+img.zdImgCls_mhdt687po:hover {
     box-shadow: 1px 1px 4px 1px #3575dd !important;
 }
 
-img.zoomImgCls_imgSrcView {
+img.zdImgCls_imgSrcView {
     display: none;
     margin: 0px !important;
     position: absolute !important;
 }
 
-img.zoomImgCls_modeFit {
+img.zdImgCls_modeFit {
     cursor: zoom-in;
 }
 
-img.zoomImgCls_draggingCur {
+img.zdImgCls_draggingCur {
     cursor: grabbing;
+}
+
+.zdImgCls_animated {
+    transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.zdImg_zoomBadge {
+    position: fixed !important;
+    transform: translate(-50%, -50%) !important;
+    padding: 6px 14px !important;
+    background: rgba(20, 20, 20, 0.35) !important;
+    color: #ffffff !important;
+    font-family: system-ui, -apple-system, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    border-radius: 20px !important;
+    pointer-events: none !important;
+    z-index: 2147483647 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+    transition: opacity 0.25s ease-out !important;
+    white-space: nowrap !important;
+    opacity: 0;
 }

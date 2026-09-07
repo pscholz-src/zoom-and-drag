@@ -7,29 +7,42 @@
  * Project: Zoom & Drag
  */
 
-function createContextMenus(enable) {
-	const gm = n => browser.i18n.getMessage(n);
-	browser.contextMenus.removeAll();
-	if (enable) {
-		const top_id = 'top-menu';
-		browser.contextMenus.create({ id: top_id, contexts: ['all'], title: gm('cmTopMenu') });
-		browser.contextMenus.create({ id: 'zoom-in', parentId: top_id, contexts: ['all'], title: gm('cmZoomIn') });
-		browser.contextMenus.create({ id: 'zoom-out', parentId: top_id, contexts: ['all'], title: gm('cmZoomOut') });
-		browser.contextMenus.create({ id: 'r90', parentId: top_id, contexts: ['all'], title: gm('cmR90') });
-		browser.contextMenus.create({ id: 'l90', parentId: top_id, contexts: ['all'], title: gm('cmL90') });
-		browser.contextMenus.create({ id: '180', parentId: top_id, contexts: ['all'], title: gm('cmRot180') });
-		browser.contextMenus.create({ id: 'fit-win', parentId: top_id, contexts: ['all'], title: gm('cmFitWin') });
-		browser.contextMenus.create({ id: 'fit', parentId: top_id, contexts: ['all'], title: gm('cmFit') });
-		browser.contextMenus.create({ id: 'separator-1', parentId: top_id, type: 'separator', contexts: ['all'] });
-		browser.contextMenus.create({ id: 'setting', parentId: top_id, contexts: ['all'], title: gm('cmSetting') });
-	}
-}
+import { DEFAULT_SETTING } from './default_setting.js';
+globalThis.browser = globalThis.browser || globalThis.chrome;
 
+
+let currentContextMenuState = null;
+
+function createContextMenus(enable) {
+    if (currentContextMenuState === enable) return;
+    currentContextMenuState = enable;
+
+    const gm = n => browser.i18n.getMessage(n);
+    browser.contextMenus.removeAll();
+    
+    if (enable) {
+	const top_id = 'top-menu';
+	browser.contextMenus.create({ id: top_id, contexts: ['all'], title: gm('cmTopMenu') });
+	browser.contextMenus.create({ id: 'zoom-custom', parentId: top_id, contexts: ['all'], title: gm('cmZoomCustom') });
+	browser.contextMenus.create({ id: 'zoom-in', parentId: top_id, contexts: ['all'], title: gm('cmZoomIn') });
+	browser.contextMenus.create({ id: 'zoom-out', parentId: top_id, contexts: ['all'], title: gm('cmZoomOut') });
+	browser.contextMenus.create({ id: 'r90', parentId: top_id, contexts: ['all'], title: gm('cmR90') });
+	browser.contextMenus.create({ id: 'l90', parentId: top_id, contexts: ['all'], title: gm('cmL90') });
+	browser.contextMenus.create({ id: '180', parentId: top_id, contexts: ['all'], title: gm('cmRot180') });
+	browser.contextMenus.create({ id: 'fit-win', parentId: top_id, contexts: ['all'], title: gm('cmFitWin') });
+	browser.contextMenus.create({ id: 'fit', parentId: top_id, contexts: ['all'], title: gm('cmFit') });
+	browser.contextMenus.create({ id: 'separator-1', parentId: top_id, type: 'separator', contexts: ['all'] });
+	browser.contextMenus.create({ id: 'setting', parentId: top_id, contexts: ['all'], title: gm('cmSetting') });
+    }
+}
 async function checkStorageData() {
 	const d = await browser.storage.local.get('setting');
-	if (!d.setting) {
+	let setting = d.setting;
+	if (!setting) {
+		setting = DEFAULT_SETTING;
 		await browser.storage.local.set({ 'setting': DEFAULT_SETTING });
 	}
+	createContextMenus(setting.enableCxt !== undefined ? setting.enableCxt : true);
 }
 
 browser.contextMenus.onClicked.addListener((info, tab) => {
@@ -42,8 +55,22 @@ browser.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
+browser.action.onClicked.addListener(() => {
+    browser.runtime.openOptionsPage();
+});
+
 browser.runtime.onInstalled.addListener((details) => {
-	// No action currently being taken for updates.
+    checkStorageData();
+
+    if (details.reason === 'install' || details.reason === 'update') {
+        browser.tabs.create({
+            url: 'https://github.com/pscholz-src/zoom-and-drag'
+        });
+    }
+});
+
+browser.runtime.onStartup.addListener(() => {
+    checkStorageData();
 });
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
@@ -60,5 +87,3 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 			break;
 	}
 });
-
-checkStorageData();

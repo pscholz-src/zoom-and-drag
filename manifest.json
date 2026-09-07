@@ -1,8 +1,10 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
+  "author": "pscholz",
   "description": "__MSG_extensionDescription__",
-  "version": "1.0.1",
+  "version": "1.1.0",
+  "homepage_url": "https://github.com/pscholz-src/zoom-and-drag",
   "icons": {
     "16": "icons/icon.svg",
     "32": "icons/icon.svg",
@@ -10,18 +12,29 @@
     "96": "icons/icon.svg",
     "128": "icons/icon.svg"
   },
+  "action": {
+    "default_title": "__MSG_cmSetting__",
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "32": "icons/icon.svg"
+    }
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "{bd0714bb-099c-4c2f-aa85-bbd4b8da3019}",
-      "strict_min_version": "142.0",
+      "strict_min_version": "140.0",
       "data_collection_permissions": {
         "required": ["none"]
       }
     }
   },
-  "permissions": ["contextMenus", "storage"],
+  "permissions": [
+    "contextMenus",
+    "storage"
+  ],
   "background": {
-    "scripts": ["default_setting.js", "background-script.js"]
+    "scripts": ["background-script.js"],
+    "type": "module"
   },
   "content_scripts": [
     {
