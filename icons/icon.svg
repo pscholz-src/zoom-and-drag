@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 84 84" width="100" height="100">
+    <line x1="61.8" y1="61.8" x2="88.5" y2="88.5" stroke="#1E40AF" stroke-width="12" stroke-linecap="butt" />
+
+  <g stroke="#1E40AF" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="42" cy="42" r="28" stroke-width="8" />
+
+    <!-- Horizontale Achse -->
+    <line x1="24" y1="42" x2="60" y2="42" stroke-width="4" />
+    <!-- Pfeilspitze links -->
+    <path d="M 29 37 L 24 42 L 29 47" stroke-width="4" />
+    <!-- Pfeilspitze rechts -->
+    <path d="M 55 37 L 60 42 L 55 47" stroke-width="4" />
+
+    <!-- Vertikale Achse -->
+    <line x1="42" y1="24" x2="42" y2="60" stroke-width="4" />
+    <!-- Pfeilspitze oben -->
+    <path d="M 37 29 L 42 24 L 47 29" stroke-width="4" />
+    <!-- Pfeilspitze unten -->
+    <path d="M 37 55 L 42 60 L 47 55" stroke-width="4" />
+  </g>
+</svg>

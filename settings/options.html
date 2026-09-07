@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Zoom & Drag Settings</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<h2>&lt;<span id="h2Setting"></span>&gt;</h2>
+	<article>
+		<div class="func_list">
+			<table>
+				<tr>
+					<th><span id="thFunc"></span></th>
+					<th><span id="thCtrl"></span></th>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_1"></span></td>
+					<td id="ctrl_op1"></td>
+					<td rowspan="2">
+						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
+	<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2" stroke-linejoin="miter" stroke-linecap="square"/>
+	<polygon points="8,1 0,7 8,13" fill="#666"/>
+	<polygon points="8,27 0,33 8,39" fill="#666"/>
+</svg>
+						<input type="checkbox" id="ctrlRvs" value="">
+						<label for="ctrlRvs"><span class="td_2"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_3"></span></td>
+					<td id="ctrl_op2"></td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_4"></span></td>
+					<td><span class="td_5"></span></td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_6"></span></td>
+					<td id="click_op1"><span class="td_7"></span></td>
+					<td rowspan="2">
+						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
+	<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2" stroke-linejoin="miter" stroke-linecap="square"/>
+	<polygon points="8,1 0,7 8,13" fill="#666"/>
+	<polygon points="8,27 0,33 8,39" fill="#666"/>
+</svg>
+						<input type="checkbox" id="clickSwap" value="">
+						<label for="clickSwap"><span class="td_2"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_16"></span></td>
+					<td id="click_op2"><span class="td_17"></span></td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_18"></span></td>
+					<td><span class="td_19"></span></td>
+				</tr>
+				<tr>
+					<td class="fc"><span class="td_20"></span></td>
+					<td><span class="td_21"></span></td>
+				</tr>
+			</table>
+			<input type="hidden" class="td_8 ctrl_op_d" value="">
+			<input type="hidden" class="td_9 ctrl_op_d" value="">
+		</div>
+		<div class="options">
+            <table>
+                <tr>
+                    <td>
+                        <span class="td_10"></span>
+                    </td>
+                    <td>
+                        <select id="dim">
+                            <option value="1">1%</option>
+                            <option value="5">5%</option>
+                            <option value="10" selected>10%</option>
+                            <option value="20">20%</option>
+                            <option value="30">30%</option>
+                            <option value="40">40%</option>
+                            <option value="50">50%</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="td_11"></span>
+                    </td>
+                    <td>
+                        <select id="rotd">
+                            <option value="5">5°</option>
+                            <option value="15" selected>15°</option>
+                            <option value="45">45°</option>
+                            <option value="90">90°</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="td_25"></span>
+                        <svg class="qt_img" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <div class="help_nt td_26"></div>
+                    </td>
+                    <td>
+                        <select id="rcCancel">
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="2000">2000</option>
+                            <option value="3000" selected>3000</option>
+                            <option value="4000">4000</option>
+                            <option value="5000">5000</option>
+                            <option value="10000">10000</option>
+                            <option value="-1">∞</option>
+                        </select> ms
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="reverse" value="">
+                        <label for="reverse"><span class="td_12"></span></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="bgImg" value="">
+                        <label for="bgImg"><span class="td_13"></span></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="autoRtn" value="">
+                        <label for="autoRtn"><span class="td_14"></span></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="enableCxt" value="">
+                        <label for="enableCxt"><span class="td_15"></span></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="ivpDrag" value="">
+                        <label for="ivpDrag"><span class="td_24"></span></label>
+                    </td>
+                </tr>
+            </table>
+		</div>
+		<button type="button" id="reset_btn"><span class="td_23"></span></button>
+	</article>
+	<script type="text/javascript" src="../default_setting.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

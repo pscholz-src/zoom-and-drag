@@ -1,0 +1,202 @@
+{
+	"extensionName": {
+		"message": "Zoom & Drag - ズームとドラッグ",
+		"description": "拡張機能の名前です。"
+	},
+
+	"extensionDescription": {
+		"message": "画像上で右クリックしながらマウスホイールを回転させて拡大・縮小・回転ができます。\r\nデザインに関係なく拡大することや、背景画像を対象にすることもできます。\r\nまた、拡大した画像はドラッグして移動できます。",
+		"description": "拡張機能の説明です。"
+	},
+
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmZoomIn": {
+		"message": "2倍に拡大",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmZoomOut": {
+		"message": "0.5倍に縮小",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmRot": {
+		"message": "回転",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmR90": {
+		"message": "右に90度回転",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmL90": {
+		"message": "左に90度回転",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmRot180": {
+		"message": "180度回転",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmFitWin": {
+		"message": "ウィンドウに合わせる",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmFit": {
+		"message": "元に戻す / 実際のサイズ",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"cmSetting": {
+		"message": "設定を開く",
+		"description": "コンテキストメニューの項目です。"
+	},
+
+	"h2Setting": {
+		"message": "設定",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"thFunc": {
+		"message": "機能",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"thCtrl": {
+		"message": "操作（画像の上で）",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_1": {
+		"message": "浮かせて拡大・縮小",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_2": {
+		"message": "操作を入れ替え",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_3": {
+		"message": "拡大・縮小",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_4": {
+		"message": "回転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_5": {
+		"message": "Altキーと右クリックを押しながらマウスホイール回転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_6": {
+		"message": "実際のサイズにする / 元に戻す",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_7": {
+		"message": "右クリックを押しながら左クリック",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_8": {
+		"message": "右クリックを押しながらマウスホイール回転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_9": {
+		"message": "Ctrlキーと右クリックを押しながらマウスホイール回転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_10": {
+		"message": "マウスホイール1回分の拡縮率",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_11": {
+		"message": "マウスホイール1回分の回転角度",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_12": {
+		"message": "マウスホイールの方向を逆転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_13": {
+		"message": "背景画像も対象にする",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_14": {
+		"message": "右クリックを離した時に画像を元に戻す",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_15": {
+		"message": "コンテキストメニューを有効",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_16": {
+		"message": "ウィンドウサイズに合わせる",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_17": {
+		"message": "右クリックを押しながら中クリック",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_18": {
+		"message": "ドラッグで移動",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_19": {
+		"message": "拡大した画像を左クリックでドラッグ",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_20": {
+		"message": "AltキーとCtrlキーと右クリックを押しながらマウスホイール回転",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_21": {
+		"message": "Altキーと右クリックを押しながら左クリック",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_23": {
+		"message": "設定リセット",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_24": {
+		"message": "画像ビューページで拡大時にドラッグ可能",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_25": {
+		"message": "右クリックが解除されるまでの時間",
+		"description": "設定HTMLのテキストです。"
+	},
+
+	"td_26": {
+		"message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms = 1秒）",
+		"description": "設定HTMLのテキストです。"
+	}
+
+}

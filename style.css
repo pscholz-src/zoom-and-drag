@@ -1,0 +1,37 @@
+img.zoomImgCls_b6ig4jvwe {
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0px !important;
+    min-height: 0px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    position: absolute !important;
+    z-index: 2147483640 !important;
+    border: none !important;
+    cursor: grab;
+}
+
+img.zoomImgCls_asntrs58f {
+    box-shadow: 1px 1px 4px 0px #666666 !important;
+}
+
+img.zoomImgCls_mhdt687po {
+    box-shadow: 1px 1px 4px 0px #666666 !important;
+}
+img.zoomImgCls_mhdt687po:hover {
+    box-shadow: 1px 1px 4px 1px #3575dd !important;
+}
+
+img.zoomImgCls_imgSrcView {
+    display: none;
+    margin: 0px !important;
+    position: absolute !important;
+}
+
+img.zoomImgCls_modeFit {
+    cursor: zoom-in;
+}
+
+img.zoomImgCls_draggingCur {
+    cursor: grabbing;
+}

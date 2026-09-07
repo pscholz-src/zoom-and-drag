@@ -1,0 +1,202 @@
+{
+	"extensionName": {
+		"message": "Zoom & Drag",
+		"description": "Name of the extension."
+	},
+
+	"extensionDescription": {
+		"message": "Zoom, rotate, and drag images or background graphics with right-click and mouse wheel gestures without breaking page layouts.",
+		"description": "Description of the extension."
+	},
+
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "Item of the context menu."
+	},
+
+	"cmZoomIn": {
+		"message": "Size x 2.0",
+		"description": "Item of the context menu."
+	},
+
+	"cmZoomOut": {
+		"message": "Size x 0.5",
+		"description": "Item of the context menu."
+	},
+
+	"cmRot": {
+		"message": "Rotation",
+		"description": "Item of the context menu."
+	},
+
+	"cmR90": {
+		"message": "Rot 90deg (R)",
+		"description": "Item of the context menu."
+	},
+
+	"cmL90": {
+		"message": "Rot 90deg (L)",
+		"description": "Item of the context menu."
+	},
+
+	"cmRot180": {
+		"message": "Rot 180deg",
+		"description": "Item of the context menu."
+	},
+
+	"cmFitWin": {
+		"message": "Fit to window",
+		"description": "Item of the context menu."
+	},
+
+	"cmFit": {
+		"message": "Original size / Normal size",
+		"description": "Item of the context menu."
+	},
+
+	"cmSetting": {
+		"message": "Open settings",
+		"description": "Item of the context menu."
+	},
+
+	"h2Setting": {
+		"message": "Settings",
+		"description": "Setting HTML text."
+	},
+
+	"thFunc": {
+		"message": "Features",
+		"description": "Setting HTML text."
+	},
+
+	"thCtrl": {
+		"message": "Commands (on images)",
+		"description": "Setting HTML text."
+	},
+
+	"td_1": {
+		"message": "Floating zoom",
+		"description": "Setting HTML text."
+	},
+
+	"td_2": {
+		"message": "Swap commands",
+		"description": "Setting HTML text."
+	},
+
+	"td_3": {
+		"message": "Zoom",
+		"description": "Setting HTML text."
+	},
+
+	"td_4": {
+		"message": "Rotation",
+		"description": "Setting HTML text."
+	},
+
+	"td_5": {
+		"message": "Alt key + Right click + Mouse wheel rotate",
+		"description": "Setting HTML text."
+	},
+
+	"td_6": {
+		"message": "Original size / Normal size",
+		"description": "Setting HTML text."
+	},
+
+	"td_7": {
+		"message": "Right click + Left click",
+		"description": "Setting HTML text."
+	},
+
+	"td_8": {
+		"message": "Right click + Mouse wheel rotate",
+		"description": "Setting HTML text."
+	},
+
+	"td_9": {
+		"message": "Ctrl key + Right click + Mouse wheel rotate",
+		"description": "Setting HTML text."
+	},
+
+	"td_10": {
+		"message": "Zoom ratio of one mouse wheel",
+		"description": "Setting HTML text."
+	},
+
+	"td_11": {
+		"message": "Rotation angle of one mouse wheel",
+		"description": "Setting HTML text."
+	},
+
+	"td_12": {
+		"message": "Reverse mouse wheel",
+		"description": "Setting HTML text."
+	},
+
+	"td_13": {
+		"message": "Target background images",
+		"description": "Setting HTML text."
+	},
+
+	"td_14": {
+		"message": "Revert images when to release the right click",
+		"description": "Setting HTML text."
+	},
+
+	"td_15": {
+		"message": "Enable context menu",
+		"description": "Setting HTML text."
+	},
+
+	"td_16": {
+		"message": "Fit to window",
+		"description": "Setting HTML text."
+	},
+
+	"td_17": {
+		"message": "Right click + Middle click",
+		"description": "Setting HTML text."
+	},
+
+	"td_18": {
+		"message": "Drag to move",
+		"description": "Setting HTML text."
+	},
+
+	"td_19": {
+		"message": "Left click to drag (on zoomed images)",
+		"description": "Setting HTML text."
+	},
+
+	"td_20": {
+		"message": "Alt Key + Ctrl key + Right click + Mouse wheel rotate",
+		"description": "Setting HTML text."
+	},
+
+	"td_21": {
+		"message": "Alt Key + Right click + Left click",
+		"description": "Setting HTML text."
+	},
+
+	"td_23": {
+		"message": "Reset setting",
+		"description": "Setting HTML text."
+	},
+
+	"td_24": {
+		"message": "Draggable when zoomed in image view page",
+		"description": "Setting HTML text."
+	},
+
+	"td_25": {
+		"message": "Time until right click is canceled",
+		"description": "Setting HTML text."
+	},
+
+	"td_26": {
+		"message": "After right click, if this time passes without rotating the wheel, right click is released after this time. (1000ms = 1 second)",
+		"description": "Setting HTML text."
+	}
+
+}
