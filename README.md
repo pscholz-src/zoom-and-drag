@@ -21,7 +21,7 @@ Key improvements include:
 
 
 
-See \[CHANGELOG.md](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
+See [CHANGELOG.md](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
 
 
 
