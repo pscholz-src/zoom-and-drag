@@ -8,7 +8,7 @@ Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move ima
 - **Custom Zoom:** Set a specific zoom percentage directly via the context menu.
 - **Domain Filtering:** Easily exclude specific websites (like map services or design tools) via the settings page.
 - **Modern & Lightweight:** Built on Manifest V3 with pure Vanilla JS (zero external libraries, legacy jQuery removed).
-- **Privacy First:** Operates entirely locally. No data collection, tracking, or analytics.
+- **Privacy First:** Operates entirely locally. No data collection, tracking, or analytics. See our [Privacy Policy](https://github.com/pscholz-src/zoom-and-drag/blob/main/PRIVACY.md) for more details.
 
 ## 🖱️ Mouse Controls
 - **Zoom:** Hold `Right Click` + Scroll Mouse Wheel
