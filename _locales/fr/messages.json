@@ -1,0 +1,140 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Zoomez, faites pivoter et faites glisser des images ou des arrière-plans avec le clic droit et la molette de la souris sans casser la mise en page."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Entrer la taille..."
+    },
+    "cmZoomIn": {
+        "message": "Taille x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Taille x 0.5"
+    },
+    "cmR90": {
+        "message": "Rotation 90° (D)"
+    },
+    "cmL90": {
+        "message": "Rotation 90° (G)"
+    },
+    "cmRot180": {
+        "message": "Rotation 180°"
+    },
+    "cmFitWin": {
+        "message": "Ajuster à la fenêtre"
+    },
+    "cmFit": {
+        "message": "Taille originale"
+    },
+    "cmSetting": {
+        "message": "Ouvrir les paramètres"
+    },
+    "h2Setting": {
+        "message": "Paramètres"
+    },
+    "thFunc": {
+        "message": "Fonctionnalités"
+    },
+    "thCtrl": {
+        "message": "Commandes (sur les images)"
+    },
+    "optFreeZoom": {
+        "message": "Zoom flottant"
+    },
+    "optSwapCommands": {
+        "message": "Inverser les commandes"
+    },
+    "optZoom": {
+        "message": "Zoom"
+    },
+    "optRotation": {
+        "message": "Rotation"
+    },
+    "lblAltRightWheel": {
+        "message": "Touche Alt + Clic droit + Molette de la souris"
+    },
+    "optOriginalSize": {
+        "message": "Taille originale"
+    },
+    "lblRightLeftClick": {
+        "message": "Clic droit + Clic gauche"
+    },
+    "lblRightWheel": {
+        "message": "Clic droit + Molette de la souris"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Touche Ctrl + Clic droit + Molette de la souris"
+    },
+    "optZoomStep": {
+        "message": "Facteur de zoom par cran de molette"
+    },
+    "optRotationStep": {
+        "message": "Angle de rotation par cran de molette"
+    },
+    "optReverseWheel": {
+        "message": "Inverser la molette de la souris"
+    },
+    "optIncludeBgImages": {
+        "message": "Inclure les images d'arrière-plan"
+    },
+    "optAutoResetRelease": {
+        "message": "Réinitialiser les images en relâchant le clic droit"
+    },
+    "optEnableContextMenu": {
+        "message": "Activer le menu contextuel"
+    },
+    "optFitToWindow": {
+        "message": "Ajuster à la fenêtre"
+    },
+    "lblRightMiddleClick": {
+        "message": "Clic droit + Clic molette"
+    },
+    "optDragToMove": {
+        "message": "Faire glisser pour déplacer"
+    },
+    "lblLeftClickDrag": {
+        "message": "Clic gauche pour faire glisser (images zoomées)"
+    },
+    "optAltFreeRotation": {
+        "message": "Rotation rapide"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Touche Alt + Clic droit + Clic gauche"
+    },
+    "btnResetSettings": {
+        "message": "Réinitialiser les paramètres"
+    },
+    "optDraggableSingleImage": {
+        "message": "Déplaçable dans la vue image seule"
+    },
+    "optRightClickTimeout": {
+        "message": "Délai avant annulation du clic droit"
+    },
+    "hlpRightClickTimeout": {
+        "message": "Si ce délai s'écoule après un clic droit sans utiliser la molette, le clic est libéré. (1000ms = 1 seconde)"
+    },
+    "optShowZoomBadge": {
+        "message": "Afficher le pourcentage de zoom"
+    },
+    "promptZoom": {
+        "message": "Taille souhaitée en pourcentage (ex. 150) :"
+    },
+    "lblExcludedDomains": {
+        "message": "Désactiver sur ces domaines (un par ligne) :"
+    },
+    "hlpExcludedDomains": {
+        "message": "ex. maps.google.com ou figma.com (les sous-domaines sont inclus automatiquement)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Activer les raccourcis clavier (+/−, flèches, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+        "message": "Soutenir le projet"
+    }
+}

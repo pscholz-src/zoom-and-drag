@@ -133,5 +133,8 @@
     },
     "optEnableKeyShortcuts": {
         "message": "Tastatur-Shortcuts aktivieren (+/\u2212, Pfeiltasten, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+    "message": "Projekt unterstützen"
     }
 }

@@ -1,0 +1,140 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Zooma, ruota e trascina immagini o sfondi con il tasto destro e la rotellina del mouse senza alterare il layout della pagina."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Inserisci dimensione..."
+    },
+    "cmZoomIn": {
+        "message": "Dimensione x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Dimensione x 0.5"
+    },
+    "cmR90": {
+        "message": "Ruota 90° (D)"
+    },
+    "cmL90": {
+        "message": "Ruota 90° (S)"
+    },
+    "cmRot180": {
+        "message": "Ruota 180°"
+    },
+    "cmFitWin": {
+        "message": "Adatta alla finestra"
+    },
+    "cmFit": {
+        "message": "Dimensione originale"
+    },
+    "cmSetting": {
+        "message": "Apri impostazioni"
+    },
+    "h2Setting": {
+        "message": "Impostazioni"
+    },
+    "thFunc": {
+        "message": "Funzioni"
+    },
+    "thCtrl": {
+        "message": "Comandi (sulle immagini)"
+    },
+    "optFreeZoom": {
+        "message": "Zoom fluttuante"
+    },
+    "optSwapCommands": {
+        "message": "Scambia comandi"
+    },
+    "optZoom": {
+        "message": "Zoom"
+    },
+    "optRotation": {
+        "message": "Rotazione"
+    },
+    "lblAltRightWheel": {
+        "message": "Tasto Alt + Clic destro + Rotellina del mouse"
+    },
+    "optOriginalSize": {
+        "message": "Dimensione originale"
+    },
+    "lblRightLeftClick": {
+        "message": "Clic destro + Clic sinistro"
+    },
+    "lblRightWheel": {
+        "message": "Clic destro + Rotellina del mouse"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Tasto Ctrl + Clic destro + Rotellina del mouse"
+    },
+    "optZoomStep": {
+        "message": "Fattore di zoom per scatto della rotellina"
+    },
+    "optRotationStep": {
+        "message": "Angolo di rotazione per scatto della rotellina"
+    },
+    "optReverseWheel": {
+        "message": "Inverti la rotellina del mouse"
+    },
+    "optIncludeBgImages": {
+        "message": "Includi immagini di sfondo"
+    },
+    "optAutoResetRelease": {
+        "message": "Ripristina le immagini al rilascio del clic destro"
+    },
+    "optEnableContextMenu": {
+        "message": "Abilita menu contestuale"
+    },
+    "optFitToWindow": {
+        "message": "Adatta alla finestra"
+    },
+    "lblRightMiddleClick": {
+        "message": "Clic destro + Clic centrale"
+    },
+    "optDragToMove": {
+        "message": "Trascina per spostare"
+    },
+    "lblLeftClickDrag": {
+        "message": "Clic sinistro per trascinare (su immagini zoomate)"
+    },
+    "optAltFreeRotation": {
+        "message": "Rotazione rapida"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Tasto Alt + Clic destro + Clic sinistro"
+    },
+    "btnResetSettings": {
+        "message": "Ripristina impostazioni"
+    },
+    "optDraggableSingleImage": {
+        "message": "Trascinabile nella pagina di visualizzazione immagine"
+    },
+    "optRightClickTimeout": {
+        "message": "Tempo prima dell'annullamento del clic destro"
+    },
+    "hlpRightClickTimeout": {
+        "message": "Dopo il clic destro, se trascorre questo tempo senza ruotare la rotellina, il clic viene rilasciato. (1000ms = 1 secondo)"
+    },
+    "optShowZoomBadge": {
+        "message": "Mostra la percentuale di zoom"
+    },
+    "promptZoom": {
+        "message": "Dimensione desiderata in percentuale (es. 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "Disabilita su questi domini (uno per riga):"
+    },
+    "hlpExcludedDomains": {
+        "message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Abilita scorciatoie da tastiera (+/−, frecce, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+        "message": "Supporta il progetto"
+    }
+}

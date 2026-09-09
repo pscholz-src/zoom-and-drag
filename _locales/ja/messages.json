@@ -178,5 +178,9 @@
     "optEnableKeyShortcuts": {
         "message": "キーボードショートカットを有効化 (+/−, 矢印キー, Esc, 0, R/L)",
         "description": "Setting HTML text."
+    },
+    "btnSupport": {
+    "message": "プロジェクトを支援",
+    "description": "Donation link text"
     }
 }

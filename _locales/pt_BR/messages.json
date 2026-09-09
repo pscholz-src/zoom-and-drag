@@ -1,0 +1,140 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Aplique zoom, gire e arraste imagens ou gráficos de fundo com o botão direito e a roda do mouse sem quebrar o layout da página."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Inserir tamanho..."
+    },
+    "cmZoomIn": {
+        "message": "Tamanho x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Tamanho x 0.5"
+    },
+    "cmR90": {
+        "message": "Girar 90° (D)"
+    },
+    "cmL90": {
+        "message": "Girar 90° (E)"
+    },
+    "cmRot180": {
+        "message": "Girar 180°"
+    },
+    "cmFitWin": {
+        "message": "Ajustar à janela"
+    },
+    "cmFit": {
+        "message": "Tamanho original"
+    },
+    "cmSetting": {
+        "message": "Abrir configurações"
+    },
+    "h2Setting": {
+        "message": "Configurações"
+    },
+    "thFunc": {
+        "message": "Recursos"
+    },
+    "thCtrl": {
+        "message": "Comandos (em imagens)"
+    },
+    "optFreeZoom": {
+        "message": "Zoom flutuante"
+    },
+    "optSwapCommands": {
+        "message": "Trocar comandos"
+    },
+    "optZoom": {
+        "message": "Zoom"
+    },
+    "optRotation": {
+        "message": "Rotação"
+    },
+    "lblAltRightWheel": {
+        "message": "Tecla Alt + Clique direito + Roda do mouse"
+    },
+    "optOriginalSize": {
+        "message": "Tamanho original"
+    },
+    "lblRightLeftClick": {
+        "message": "Clique direito + Clique esquerdo"
+    },
+    "lblRightWheel": {
+        "message": "Clique direito + Roda do mouse"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Tecla Ctrl + Clique direito + Roda do mouse"
+    },
+    "optZoomStep": {
+        "message": "Taxa de zoom por passo da roda do mouse"
+    },
+    "optRotationStep": {
+        "message": "Ângulo de rotação por passo da roda do mouse"
+    },
+    "optReverseWheel": {
+        "message": "Inverter a roda do mouse"
+    },
+    "optIncludeBgImages": {
+        "message": "Incluir imagens de fundo"
+    },
+    "optAutoResetRelease": {
+        "message": "Restaurar imagens ao soltar o clique direito"
+    },
+    "optEnableContextMenu": {
+        "message": "Ativar menu de contexto"
+    },
+    "optFitToWindow": {
+        "message": "Ajustar à janela"
+    },
+    "lblRightMiddleClick": {
+        "message": "Clique direito + Clique do meio"
+    },
+    "optDragToMove": {
+        "message": "Arrastar para mover"
+    },
+    "lblLeftClickDrag": {
+        "message": "Clique esquerdo para arrastar (em imagens com zoom)"
+    },
+    "optAltFreeRotation": {
+        "message": "Rotação rápida"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Tecla Alt + Clique direito + Clique esquerdo"
+    },
+    "btnResetSettings": {
+        "message": "Redefinir configurações"
+    },
+    "optDraggableSingleImage": {
+        "message": "Arrastável na página de visualização de imagem"
+    },
+    "optRightClickTimeout": {
+        "message": "Tempo até o clique direito ser cancelado"
+    },
+    "hlpRightClickTimeout": {
+        "message": "Após o clique direito, se esse tempo passar sem girar a roda, o clique é liberado. (1000ms = 1 segundo)"
+    },
+    "optShowZoomBadge": {
+        "message": "Mostrar porcentagem de zoom ao redimensionar"
+    },
+    "promptZoom": {
+        "message": "Tamanho desejado em porcentagem (ex: 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "Desativar nestes domínios (um por linha):"
+    },
+    "hlpExcludedDomains": {
+        "message": "ex. maps.google.com ou figma.com (subdomínios são incluídos automaticamente)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Ativar atalhos de teclado (+/−, setas, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+        "message": "Apoiar o projeto"
+    }
+}

@@ -1,0 +1,140 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Масштабируйте, вращайте и перетаскивайте изображения или фоны с помощью правой кнопки и колесика мыши, не нарушая макет страницы."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Ввести размер..."
+    },
+    "cmZoomIn": {
+        "message": "Размер x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Размер x 0.5"
+    },
+    "cmR90": {
+        "message": "Повернуть на 90° (Вправо)"
+    },
+    "cmL90": {
+        "message": "Повернуть на 90° (Влево)"
+    },
+    "cmRot180": {
+        "message": "Повернуть на 180°"
+    },
+    "cmFitWin": {
+        "message": "По размеру окна"
+    },
+    "cmFit": {
+        "message": "Оригинальный размер"
+    },
+    "cmSetting": {
+        "message": "Открыть настройки"
+    },
+    "h2Setting": {
+        "message": "Настройки"
+    },
+    "thFunc": {
+        "message": "Функции"
+    },
+    "thCtrl": {
+        "message": "Команды (на изображениях)"
+    },
+    "optFreeZoom": {
+        "message": "Плавающее масштабирование"
+    },
+    "optSwapCommands": {
+        "message": "Поменять команды местами"
+    },
+    "optZoom": {
+        "message": "Масштабирование"
+    },
+    "optRotation": {
+        "message": "Вращение"
+    },
+    "lblAltRightWheel": {
+        "message": "Клавиша Alt + Правый клик + Прокрутка колесика мыши"
+    },
+    "optOriginalSize": {
+        "message": "Оригинальный размер / Обычный размер"
+    },
+    "lblRightLeftClick": {
+        "message": "Правый клик + Левый клик"
+    },
+    "lblRightWheel": {
+        "message": "Правый клик + Прокрутка колесика мыши"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Клавиша Ctrl + Правый клик + Прокрутка колесика мыши"
+    },
+    "optZoomStep": {
+        "message": "Шаг масштабирования при прокрутке"
+    },
+    "optRotationStep": {
+        "message": "Угол поворота при прокрутке"
+    },
+    "optReverseWheel": {
+        "message": "Инвертировать колесико мыши"
+    },
+    "optIncludeBgImages": {
+        "message": "Включать фоновые изображения"
+    },
+    "optAutoResetRelease": {
+        "message": "Сбрасывать изображения при отпускании правой кнопки"
+    },
+    "optEnableContextMenu": {
+        "message": "Включить контекстное меню"
+    },
+    "optFitToWindow": {
+        "message": "По размеру окна"
+    },
+    "lblRightMiddleClick": {
+        "message": "Правый клик + Клик колесиком"
+    },
+    "optDragToMove": {
+        "message": "Перетаскивание для перемещения"
+    },
+    "lblLeftClickDrag": {
+        "message": "Левый клик для перетаскивания (на увеличенных изображениях)"
+    },
+    "optAltFreeRotation": {
+        "message": "Быстрое вращение"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Клавиша Alt + Правый клик + Левый клик"
+    },
+    "btnResetSettings": {
+        "message": "Сбросить настройки"
+    },
+    "optDraggableSingleImage": {
+        "message": "Перетаскивание при масштабировании на странице просмотра изображения"
+    },
+    "optRightClickTimeout": {
+        "message": "Время до отмены правого клика"
+    },
+    "hlpRightClickTimeout": {
+        "message": "После нажатия правой кнопки, если в течение этого времени колесико не прокручивается, правый клик отпускается. (1000ms = 1 секунда)"
+    },
+    "optShowZoomBadge": {
+        "message": "Показывать процент при масштабировании"
+    },
+    "promptZoom": {
+        "message": "Желаемый размер в процентах (напр. 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "Отключить на этих доменах (по одному на строку):"
+    },
+    "hlpExcludedDomains": {
+        "message": "напр. maps.google.com или figma.com (поддомены включены автоматически)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Включить горячие клавиши (+/−, стрелки, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+        "message": "Поддержать проект"
+    }
+}

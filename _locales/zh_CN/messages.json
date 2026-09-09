@@ -1,0 +1,140 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "使用右键和鼠标滚轮对图片或背景图进行缩放、旋转和拖拽，而不会破坏网页排版。"
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "输入尺寸..."
+    },
+    "cmZoomIn": {
+        "message": "尺寸 x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "尺寸 x 0.5"
+    },
+    "cmR90": {
+        "message": "向右旋转 90°"
+    },
+    "cmL90": {
+        "message": "向左旋转 90°"
+    },
+    "cmRot180": {
+        "message": "旋转 180°"
+    },
+    "cmFitWin": {
+        "message": "适应窗口"
+    },
+    "cmFit": {
+        "message": "原始尺寸"
+    },
+    "cmSetting": {
+        "message": "打开设置"
+    },
+    "h2Setting": {
+        "message": "设置"
+    },
+    "thFunc": {
+        "message": "功能"
+    },
+    "thCtrl": {
+        "message": "操作 (在图片上)"
+    },
+    "optFreeZoom": {
+        "message": "浮动缩放"
+    },
+    "optSwapCommands": {
+        "message": "交换操作"
+    },
+    "optZoom": {
+        "message": "缩放"
+    },
+    "optRotation": {
+        "message": "旋转"
+    },
+    "lblAltRightWheel": {
+        "message": "Alt 键 + 右键 + 滚动鼠标滚轮"
+    },
+    "optOriginalSize": {
+        "message": "原始尺寸 / 还原"
+    },
+    "lblRightLeftClick": {
+        "message": "右键 + 左键"
+    },
+    "lblRightWheel": {
+        "message": "右键 + 滚动鼠标滚轮"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Ctrl 键 + 右键 + 滚动鼠标滚轮"
+    },
+    "optZoomStep": {
+        "message": "鼠标滚轮一格的缩放比例"
+    },
+    "optRotationStep": {
+        "message": "鼠标滚轮一格的旋转角度"
+    },
+    "optReverseWheel": {
+        "message": "反转鼠标滚轮"
+    },
+    "optIncludeBgImages": {
+        "message": "包含背景图片"
+    },
+    "optAutoResetRelease": {
+        "message": "松开右键时还原图片"
+    },
+    "optEnableContextMenu": {
+        "message": "启用右键菜单"
+    },
+    "optFitToWindow": {
+        "message": "适应窗口"
+    },
+    "lblRightMiddleClick": {
+        "message": "右键 + 中键"
+    },
+    "optDragToMove": {
+        "message": "拖拽移动"
+    },
+    "lblLeftClickDrag": {
+        "message": "左键拖拽 (放大后的图片)"
+    },
+    "optAltFreeRotation": {
+        "message": "快速旋转"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Alt 键 + 右键 + 左键"
+    },
+    "btnResetSettings": {
+        "message": "重置设置"
+    },
+    "optDraggableSingleImage": {
+        "message": "在单图页面缩放时可拖拽"
+    },
+    "optRightClickTimeout": {
+        "message": "右键自动取消的等待时间"
+    },
+    "hlpRightClickTimeout": {
+        "message": "右键单击后，如果在此时间内未滚动滚轮，则自动释放右键。（1000ms = 1秒）"
+    },
+    "optShowZoomBadge": {
+        "message": "缩放时显示百分比"
+    },
+    "promptZoom": {
+        "message": "期望尺寸百分比 (例如 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "在以下域名上禁用 (每行一个):"
+    },
+    "hlpExcludedDomains": {
+        "message": "例如 maps.google.com 或 figma.com (子域名会自动包含)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "启用键盘快捷键 (+/−, 方向键, Esc, 0, R/L)"
+    },
+    "btnSupport": {
+        "message": "支持该项目"
+    }
+}
