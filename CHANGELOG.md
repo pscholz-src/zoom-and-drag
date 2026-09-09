@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2026-09-09
+### Fixed
+- **Options page:** Minor adjustment relevant only to the Edge/Chrome version.
+
 ## [1.1.1] - 2026-09-09
 ### Added
 - **Support Link:** Added a Ko-fi button to the settings page, including a new icon asset.
