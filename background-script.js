@@ -62,10 +62,28 @@ browser.action.onClicked.addListener(() => {
 browser.runtime.onInstalled.addListener((details) => {
     checkStorageData();
 
-    if (details.reason === 'install' || details.reason === 'update') {
-        browser.tabs.create({
-            url: 'https://github.com/pscholz-src/zoom-and-drag'
-        });
+    const changelogUrl = 'https://github.com/pscholz-src/zoom-and-drag/blob/main/CHANGELOG.md';
+
+    if (details.reason === 'install') {
+
+        browser.tabs.create({ url: changelogUrl });
+    } else if (details.reason === 'update') {
+        const currentVersion = browser.runtime.getManifest().version;
+        const previousVersion = details.previousVersion;
+
+        if (previousVersion && currentVersion) {
+            const prevParts = previousVersion.split('.');
+            const currParts = currentVersion.split('.');
+
+            const prevMajor = prevParts[0] || '0';
+            const prevMinor = prevParts[1] || '0';
+            const currMajor = currParts[0] || '0';
+            const currMinor = currParts[1] || '0';
+
+            if (prevMajor !== currMajor || prevMinor !== currMinor) {
+                browser.tabs.create({ url: changelogUrl });
+            }
+        }
     }
 });
 
