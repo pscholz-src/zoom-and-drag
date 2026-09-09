@@ -5,6 +5,9 @@
   <a href="https://addons.mozilla.org/de/firefox/addon/zoom-drag/">
     <img src="https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white" alt="Get it on Firefox">
   </a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/zoom-drag/kimnociommgmkchjaedhkceemdlgimnl">
+    <img src="https://img.shields.io/badge/Edge-0078D7?style=for-the-badge&logo=Microsoft-edge&logoColor=white" alt="Get it on Edge">
+  </a>
 </div>
 
 Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move images and CSS background graphics directly on any webpage. Control everything via simple mouse gestures or keyboard shortcuts without breaking the page layout.
