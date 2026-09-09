@@ -1,4 +1,7 @@
-# Zoom & Drag
+<div align="center">
+  <img src="icons/icon.svg" width="96" height="96" alt="Zoom & Drag Logo">
+  <h1>Zoom & Drag</h1>
+</div>
 
 Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move images and CSS background graphics directly on any webpage. Control everything via simple mouse gestures or keyboard shortcuts without breaking the page layout.
 
