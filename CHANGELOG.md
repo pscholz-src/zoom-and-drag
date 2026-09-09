@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-09-09
+### Added
+- **Support Link:** Added a Ko-fi button to the settings page, including a new icon asset.
+- **New Localizations:** Added Spanish (es), French (fr), Italian (it), Brazilian Portuguese (pt_BR), Simplified Chinese (zh_CN), and Russian (ru). The extension is now fully translated into 9 languages.
+
+### Changed
+- **Update Notice:** The auto-opened changelog tab now links directly to `CHANGELOG.md` instead of the repository homepage, and only opens on fresh installs or minor/major version updates (not on patch releases).
+
 ## [1.1.0] - 2026-09-07
 ### Added
 - **Keyboard Shortcuts:** Support for zooming (`+`/`-`), moving (Arrow keys), resetting (`0` / `Esc`), and rotating (`R`/`L`).
@@ -25,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - Initial fork of the abandoned Firefox add-on *Zoom Image* (v2.7.1) originally created by crossblade.
 - Re-released under the Mozilla Public License 2.0 (MPL-2.0).
 - Replaced outdated PNG raster icons with scalable SVG graphics.
+- **Localization:** Added German (de) locale.
 
 ### Changed
 - **Manifest V3:** Migrated the extension structure to Manifest V3 (for Firefox).
