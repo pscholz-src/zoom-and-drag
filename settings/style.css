@@ -9,6 +9,7 @@ article {
 	font-size: 14px; color: #444;
 	padding: 0px; margin: 0px;
 	user-select: none; -moz-user-select: none; -webkit-user-select: none;
+	width: fit-content;
 }
 ul {
 	margin: 0px; padding: 0px;
