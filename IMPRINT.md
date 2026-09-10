@@ -11,8 +11,12 @@ Deutschland
 
 **Kontakt:**  
 E-Mail: pscholz@mail.online-impressum.de  
+Zweiter Kontaktweg: https://mein.online-impressum.de/pscholz/#zweiterkontaktweg  
 Webseite: https://github.com/pscholz-src/zoom-and-drag  
 Online-Impressum: https://mein.online-impressum.de/pscholz/  
+
+**Zuständige Aufsichtsbehörde:**  
+Landesanstalt für Kommunikation Baden-Württemberg | Sitz: Deutschland  
 
 ---
 
