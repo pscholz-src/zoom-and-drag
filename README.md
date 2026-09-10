@@ -11,7 +11,6 @@
 </div>
 
 Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move images and CSS background graphics directly on any webpage. Control everything via simple mouse gestures or keyboard shortcuts without breaking the page layout.
-Zoom & Drag allows you to quickly and flexibly zoom, rotate, and freely move images and CSS background graphics directly on any webpage. Control everything via simple mouse gestures or keyboard shortcuts without breaking the page layout.
 
 ## ✨ Key Features
 - **Intuitive Controls:** Zoom, rotate, and drag using right-click & mouse wheel gestures or dedicated keyboard shortcuts.
