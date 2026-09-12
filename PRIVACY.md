@@ -1,10 +1,35 @@
-# Privacy Policy / Datenschutzerklärung
+# Datenschutzerklärung / Privacy Policy
 
-*Last updated: 2026*
+*Zuletzt aktualisiert / Last updated: 2026*
+
+[English version below](#privacy-policy)
 
 ---
 
-## English
+## Datenschutzerklärung
+
+**1. Datenerfassung und -nutzung**
+Die Browser-Erweiterung **Zoom & Drag** arbeitet vollständig lokal auf Ihrem Gerät. Die Erweiterung sammelt, speichert, überträgt oder verarbeitet keinerlei personenbezogene Daten, Telemetriedaten, Tracking-Informationen oder Analysen. Alle in der Erweiterung vorgenommenen Einstellungen werden ausschließlich im lokalen Speicher Ihres Browsers abgelegt.
+
+**2. Berechtigungen**
+Die Erweiterung benötigt minimale Berechtigungen, um ordnungsgemäß zu funktionieren:
+* `storage`: Wird ausschließlich verwendet, um Nutzereinstellungen (wie Zoom-Stufen, Rotationsschritte, Tastatur-Shortcuts und Domain-Ausschlüsse) lokal auf Ihrem Gerät zu speichern.
+* `contextMenus`: Wird verwendet, um Schnellzugriffe und Aktionen im Rechtsklick-Kontextmenü des Browsers bereitzustellen.
+* Webseitenzugriff: Wird ausschließlich benötigt, um Skripte und Styles bereitzustellen, damit Sie Bilder und Hintergrundgrafiken auf besuchten Webseiten vergrößern, drehen und verschieben können. Die Erweiterung überwacht, liest, speichert oder überträgt zu keinem Zeitpunkt Seiteninhalte, Webtexte, Eingaben oder Ihren Browserverlauf.
+
+**3. Remote-Code & Drittanbieter-Dienste**
+Die Erweiterung verwendet keinen Remote-Code, keine externen Bibliotheken (z. B. CDNs) und keine Analyse- oder Tracking-Dienste von Drittanbietern. Alle Skripte und Ressourcen werden vollständig lokal aus dem Erweiterungspaket ausgeführt.
+
+**4. Externe Links & Unterstützung (Ko-fi)**
+Die Erweiterung enthält im Einstellungsmenü eine Schaltfläche "Projekt unterstützen". Wenn Sie auf diese Schaltfläche klicken, werden Sie auf eine externe Website (Ko-fi) weitergeleitet. Dort gelten die Datenschutzbestimmungen und Nutzungsbedingungen des jeweiligen Anbieters. **Zoom & Drag selbst erfasst, verarbeitet oder hat zu keinem Zeitpunkt Zugriff auf Zahlungs-, Kreditkarten- oder Bankdaten.**
+
+**5. Kontakt**
+Wenn Sie Fragen zum Datenschutz haben, eröffnen Sie bitte ein Issue im GitHub-Repository:  
+https://github.com/pscholz-src/zoom-and-drag/issues
+
+---
+
+## Privacy Policy
 
 **1. Data Collection and Usage**
 The browser extension **Zoom & Drag** operates entirely locally on your device. The extension does not collect, store, transmit, or process any personal data, telemetry data, tracking information, or analytics. All settings configured within the extension are saved exclusively in your browser's local storage.
@@ -25,25 +50,4 @@ The extension contains a "Support the project" button in the options menu. If yo
 If you have any questions regarding privacy, please open an issue in the GitHub repository:  
 https://github.com/pscholz-src/zoom-and-drag/issues
 
----
-
-## Deutsch
-
-**1. Datenerfassung und -nutzung**
-Die Browser-Erweiterung **Zoom & Drag** arbeitet vollständig lokal auf Ihrem Gerät. Die Erweiterung sammelt, speichert, überträgt oder verarbeitet keinerlei personenbezogene Daten, Telemetriedaten, Tracking-Informationen oder Analysen. Alle in der Erweiterung vorgenommenen Einstellungen werden ausschließlich im lokalen Speicher Ihres Browsers abgelegt.
-
-**2. Berechtigungen**
-Die Erweiterung benötigt minimale Berechtigungen, um ordnungsgemäß zu funktionieren:
-* `storage`: Wird ausschließlich verwendet, um Nutzereinstellungen (wie Zoom-Stufen, Rotationsschritte, Tastatur-Shortcuts und Domain-Ausschlüsse) lokal auf Ihrem Gerät zu speichern.
-* `contextMenus`: Wird verwendet, um Schnellzugriffe und Aktionen im Rechtsklick-Kontextmenü des Browsers bereitzustellen.
-* Webseitenzugriff: Wird ausschließlich benötigt, um Skripte und Styles bereitzustellen, damit Sie Bilder und Hintergrundgrafiken auf besuchten Webseiten vergrößern, drehen und verschieben können. Die Erweiterung überwacht, liest, speichert oder überträgt zu keinem Zeitpunkt Seiteninhalte, Webtexte, Eingaben oder Ihren Browserverlauf.
-
-**3. Remote-Code & Drittanbieter-Dienste**
-Die Erweiterung verwendet keinen Remote-Code, keine externen Bibliotheken (z. B. CDNs) und keine Analyse- oder Tracking-Dienste von Drittanbietern. Alle Skripte und Ressourcen werden vollständig lokal aus dem Erweiterungspaket ausgeführt.
-
-**4. Externe Links & Unterstützung (Ko-fi)**
-Die Erweiterung enthält im Einstellungsmenü eine Schaltfläche "Projekt unterstützen". Wenn Sie auf diese Schaltfläche klicken, werden Sie auf eine externe Website (Ko-fi) weitergeleitet. Dort gelten die Datenschutzbestimmungen und Nutzungsbedingungen des jeweiligen Anbieters. **Zoom & Drag selbst erfasst, verarbeitet oder hat zu keinem Zeitpunkt Zugriff auf Zahlungs-, Kreditkarten- oder Bankdaten.**
-
-**5. Kontakt**
-Wenn Sie Fragen zum Datenschutz haben, eröffnen Sie bitte ein Issue im GitHub-Repository:  
-https://github.com/pscholz-src/zoom-and-drag/issues
+*> In case of any discrepancies or doubts, the German version of this document shall prevail.*
