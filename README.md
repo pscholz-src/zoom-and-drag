@@ -2,6 +2,9 @@
   <img src="icons/icon.svg" width="96" height="96" alt="Zoom & Drag Logo">
   <h1>Zoom & Drag</h1>
   
+  <a href="https://chromewebstore.google.com/detail/zoom-drag/nhkdmakncmidecakecdgccejngjmbcak">
+    <img src="https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=Google-Chrome&logoColor=white" alt="Get it on Chrome">
+  </a>
   <a href="https://addons.mozilla.org/de/firefox/addon/zoom-drag/">
     <img src="https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white" alt="Get it on Firefox">
   </a>
