@@ -4,7 +4,7 @@
         "description": "拡張機能の名前です。"
     },
     "extensionDescription": {
-        "message": "画像上で右クリックしながらマウスホイールを回転させて拡大・縮小・回転ができます。\r\nデザインに関係なく拡大することや、背景画像を対象にすることもできます。\r\nまた、拡大した画像はドラッグして移動できます。",
+        "message": "画像上で右クリックしながらマウスホイールを回転させて拡大・縮小・回転ができます。デザインに関係なく拡大することや、背景画像を対象にすることもできます。また、拡大した画像のドラッグ移動、画像の調整や保存も可能です。",
         "description": "拡張機能の説明です。"
     },
     "cmTopMenu": {
@@ -12,7 +12,7 @@
         "description": "コンテキストメニューの項目です。"
     },
     "cmZoomCustom": {
-        "message": "サイズを入力...",
+        "message": "調整 / 保存...",
         "description": "Item of the context menu."
     },
     "cmZoomIn": {
@@ -143,12 +143,20 @@
         "message": "Altキーと右クリックを押しながら左クリック",
         "description": "設定HTMLのテキストです。"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "クイックズーム",
+        "description": "Setting HTML text."
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "CtrlキーとAltキーと右クリックを押しながら左クリック",
+        "description": "設定HTMLのテキストです。"
+    },
     "btnResetSettings": {
         "message": "設定リセット",
         "description": "設定HTMLのテキストです。"
     },
     "optDraggableSingleImage": {
-        "message": "画像ビューページで拡大時にドラッグ可能",
+        "message": "単一画像ビュー: マウスホイールで直接ズーム。拡大後は自由にドラッグ可能",
         "description": "設定HTMLのテキストです。"
     },
     "optRightClickTimeout": {
@@ -156,7 +164,7 @@
         "description": "設定HTMLのテキストです。"
     },
     "hlpRightClickTimeout": {
-        "message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms = 1秒）",
+        "message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms = 1秒)",
         "description": "設定HTMLのテキストです。"
     },
     "optShowZoomBadge": {
@@ -176,11 +184,72 @@
         "description": "Placeholder for excluded domains textarea."
     },
     "optEnableKeyShortcuts": {
-        "message": "キーボードショートカットを有効化 (+/−, 矢印キー, Esc, 0, R/L)",
+        "message": "キーボードショートカットを有効化 [(Shift+), +/−, 矢印キー, Esc, 0, R/L, P]",
         "description": "Setting HTML text."
     },
     "btnSupport": {
-    "message": "プロジェクトを支援",
-    "description": "Donation link text"
+        "message": "プロジェクトを支援",
+        "description": "Donation link text"
+    },
+    "optZoomToCursor": {
+        "message": "カーソル位置へズーム（フローティングモード）",
+        "description": "Setting HTML text."
+    },
+    "panel_title": {
+        "message": "画像の設定を変更..."
+    },
+    "panel_tooltip_close": {
+        "message": "閉じる"
+    },
+    "panel_label_zoom": {
+        "message": "ズーム (%)"
+    },
+    "panel_label_width": {
+        "message": "幅 (px)"
+    },
+    "panel_label_rot": {
+        "message": "回転 (°)"
+    },
+    "panel_label_opacity": {
+        "message": "不透明度 (%)"
+    },
+    "panel_label_brightness": {
+        "message": "明るさ (%)"
+    },
+    "panel_btn_reset": {
+        "message": "リセット"
+    },
+    "panel_btn_save": {
+        "message": "保存"
+    },
+    "panel_btn_close": {
+        "message": "閉じる"
+    },
+    "panel_cors_error": {
+        "message": "画像を保存できませんでした。\n\n理由: セキュリティポリシー (CORS) により、ソースサーバーがエクスポートをブロックしています。"
+    },
+    "panel_label_flip": {
+        "message": "反転"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ 水平"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ 垂直"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "ズームをリセット"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "幅をリセット"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "回転をリセット"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "不透明度をリセット"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "明るさをリセット"
     }
 }

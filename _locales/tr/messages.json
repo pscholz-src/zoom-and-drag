@@ -1,0 +1,206 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "Sayfa düzenini bozmadan sağ tık ve fare tekerleği ile resimleri veya arka plan grafiklerini yakınlaştırın, döndürün, sürükleyin, ayarlayın ve kaydedin."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "Ayarla / kaydet..."
+    },
+    "cmZoomIn": {
+        "message": "Boyut x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "Boyut x 0.5"
+    },
+    "cmR90": {
+        "message": "90° Döndür (Sağ)"
+    },
+    "cmL90": {
+        "message": "90° Döndür (Sol)"
+    },
+    "cmRot180": {
+        "message": "180° Döndür"
+    },
+    "cmFitWin": {
+        "message": "Pencereye sığdır"
+    },
+    "cmFit": {
+        "message": "Orijinal boyut / Normal boyut"
+    },
+    "cmSetting": {
+        "message": "Ayarları aç"
+    },
+    "h2Setting": {
+        "message": "Ayarlar"
+    },
+    "thFunc": {
+        "message": "Özellikler"
+    },
+    "thCtrl": {
+        "message": "Komutlar (resimler üzerinde)"
+    },
+    "optFreeZoom": {
+        "message": "Serbest Yakınlaştırma (Yüzen)"
+    },
+    "optSwapCommands": {
+        "message": "Komutları değiştir"
+    },
+    "optZoom": {
+        "message": "Yakınlaştırma"
+    },
+    "optRotation": {
+        "message": "Döndürme"
+    },
+    "lblAltRightWheel": {
+        "message": "Alt + Sağ tık + Fare tekerleği"
+    },
+    "optOriginalSize": {
+        "message": "Orijinal boyut / Normal boyut"
+    },
+    "lblRightLeftClick": {
+        "message": "Sağ tık + Sol tık"
+    },
+    "lblRightWheel": {
+        "message": "Sağ tık + Fare tekerleği"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Ctrl + Sağ tık + Fare tekerleği"
+    },
+    "optZoomStep": {
+        "message": "Fare tekerleği adımı başına yakınlaştırma oranı"
+    },
+    "optRotationStep": {
+        "message": "Fare tekerleği adımı başına dönüş açısı"
+    },
+    "optReverseWheel": {
+        "message": "Fare tekerleğini tersine çevir"
+    },
+    "optIncludeBgImages": {
+        "message": "Arka plan resimlerini dahil et"
+    },
+    "optAutoResetRelease": {
+        "message": "Sağ tık bırakıldığında resimleri sıfırla"
+    },
+    "optEnableContextMenu": {
+        "message": "Bağlam menüsünü etkinleştir"
+    },
+    "optFitToWindow": {
+        "message": "Pencereye sığdır"
+    },
+    "lblRightMiddleClick": {
+        "message": "Sağ tık + Orta tık"
+    },
+    "optDragToMove": {
+        "message": "Taşımak için sürükle"
+    },
+    "lblLeftClickDrag": {
+        "message": "Sürüklemek için sol tık (yakınlaştırılmış resimlerde)"
+    },
+    "optAltFreeRotation": {
+        "message": "Hızlı döndürme"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Alt + Sağ tık + Sol tık"
+    },
+    "optCtrlAltQuickZoom": {
+        "message": "Hızlı yakınlaştırma"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Ctrl + Alt + Sağ tık + Sol tık"
+    },
+    "btnResetSettings": {
+        "message": "Ayarları sıfırla"
+    },
+    "optDraggableSingleImage": {
+        "message": "Tek resim görünümü: Doğrudan fare tekerleğiyle yakınlaştırma. Büyütüldükten sonra serbestçe sürüklenebilir"
+    },
+    "optRightClickTimeout": {
+        "message": "Sağ tıklamanın otomatik iptal süresi"
+    },
+    "hlpRightClickTimeout": {
+        "message": "Sağ tıkladıktan sonra tekerleği çevirmeden bu süre geçerse sağ tık serbest bırakılır. (1000ms = 1 saniye)"
+    },
+    "optShowZoomBadge": {
+        "message": "Ölçeklendirirken yakınlaştırma yüzdesini göster"
+    },
+    "promptZoom": {
+        "message": "Yüzde olarak istenen boyut (örn. 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "Bu alan adlarında devre dışı bırak (her satıra bir tane):"
+    },
+    "hlpExcludedDomains": {
+        "message": "örn. maps.google.com veya figma.com (alt alan adları otomatik olarak dahil edilir)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "Klavye kısayollarını etkinleştir [(Shift+), +/−, Yön tuşları, Esc, 0, R/L, P]"
+    },
+    "btnSupport": {
+        "message": "Projeyi destekle"
+    },
+    "optZoomToCursor": {
+        "message": "İmlece yakınlaştır (Yüzen mod)"
+    },
+    "panel_title": {
+        "message": "Görüntü değerlerini ayarla..."
+    },
+    "panel_tooltip_close": {
+        "message": "Kapat"
+    },
+    "panel_label_zoom": {
+        "message": "Yakınlaştırma (%)"
+    },
+    "panel_label_width": {
+        "message": "Genişlik (px)"
+    },
+    "panel_label_rot": {
+        "message": "Döndürme (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Opaklık (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Parlaklık (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Sıfırla"
+    },
+    "panel_btn_save": {
+        "message": "Kaydet"
+    },
+    "panel_btn_close": {
+        "message": "Kapat"
+    },
+    "panel_cors_error": {
+        "message": "Resim kaydedilemedi.\n\nNeden: Kaynak sunucu güvenlik ilkeleri (CORS) nedeniyle dışa aktarmayı engelliyor."
+    },
+    "panel_label_flip": {
+        "message": "Çevir"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Yatay"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Dikey"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Yakınlaştırmayı sıfırla"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Genişliği sıfırla"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Döndürmeyi sıfırla"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Opaklığı sıfırla"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Parlaklığı sıfırla"
+    }
+}

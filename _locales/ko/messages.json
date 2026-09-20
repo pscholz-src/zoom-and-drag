@@ -1,0 +1,206 @@
+{
+    "extensionName": {
+        "message": "Zoom & Drag"
+    },
+    "extensionDescription": {
+        "message": "페이지 레이아웃을 깨지 않고 마우스 우클릭과 휠로 이미지나 배경 그래픽을 확대/축소, 회전, 드래그, 조정 및 저장하세요."
+    },
+    "cmTopMenu": {
+        "message": "Zoom && Drag"
+    },
+    "cmZoomCustom": {
+        "message": "조정 / 저장..."
+    },
+    "cmZoomIn": {
+        "message": "크기 x 2.0"
+    },
+    "cmZoomOut": {
+        "message": "크기 x 0.5"
+    },
+    "cmR90": {
+        "message": "90° 회전 (오른쪽)"
+    },
+    "cmL90": {
+        "message": "90° 회전 (왼쪽)"
+    },
+    "cmRot180": {
+        "message": "180° 회전"
+    },
+    "cmFitWin": {
+        "message": "창에 맞추기"
+    },
+    "cmFit": {
+        "message": "원래 크기"
+    },
+    "cmSetting": {
+        "message": "설정 열기"
+    },
+    "h2Setting": {
+        "message": "설정"
+    },
+    "thFunc": {
+        "message": "기능"
+    },
+    "thCtrl": {
+        "message": "명령 (이미지 위에서)"
+    },
+    "optFreeZoom": {
+        "message": "플로팅 확대/축소"
+    },
+    "optSwapCommands": {
+        "message": "명령 교환"
+    },
+    "optZoom": {
+        "message": "확대/축소"
+    },
+    "optRotation": {
+        "message": "회전"
+    },
+    "lblAltRightWheel": {
+        "message": "Alt + 우클릭 + 마우스 휠 회전"
+    },
+    "optOriginalSize": {
+        "message": "원래 크기 / 기본 크기"
+    },
+    "lblRightLeftClick": {
+        "message": "우클릭 + 좌클릭"
+    },
+    "lblRightWheel": {
+        "message": "우클릭 + 마우스 휠 회전"
+    },
+    "lblCtrlRightWheel": {
+        "message": "Ctrl + 우클릭 + 마우스 휠 회전"
+    },
+    "optZoomStep": {
+        "message": "마우스 휠 1칸당 확대/축소 비율"
+    },
+    "optRotationStep": {
+        "message": "마우스 휠 1칸당 회전 각도"
+    },
+    "optReverseWheel": {
+        "message": "마우스 휠 반전"
+    },
+    "optIncludeBgImages": {
+        "message": "배경 이미지 포함"
+    },
+    "optAutoResetRelease": {
+        "message": "우클릭을 놓을 때 이미지 복원"
+    },
+    "optEnableContextMenu": {
+        "message": "컨텍스트 메뉴 사용"
+    },
+    "optFitToWindow": {
+        "message": "창에 맞추기"
+    },
+    "lblRightMiddleClick": {
+        "message": "우클릭 + 휠 클릭"
+    },
+    "optDragToMove": {
+        "message": "드래그하여 이동"
+    },
+    "lblLeftClickDrag": {
+        "message": "좌클릭으로 드래그 (확대된 이미지)"
+    },
+    "optAltFreeRotation": {
+        "message": "빠른 회전"
+    },
+    "lblAltRightLeftClick": {
+        "message": "Alt + 우클릭 + 좌클릭"
+    },
+    "optCtrlAltQuickZoom": {
+        "message": "빠른 확대/축소"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Ctrl + Alt + 우클릭 + 좌클릭"
+    },
+    "btnResetSettings": {
+        "message": "설정 초기화"
+    },
+    "optDraggableSingleImage": {
+        "message": "단일 이미지 뷰: 마우스 휠로 직접 확대/축소. 확대 후 자유롭게 드래그 가능"
+    },
+    "optRightClickTimeout": {
+        "message": "우클릭 자동 취소 대기 시간"
+    },
+    "hlpRightClickTimeout": {
+        "message": "우클릭 후 휠을 돌리지 않고 이 시간이 경과하면 우클릭이 자동으로 해제됩니다.（1000ms = 1초)"
+    },
+    "optShowZoomBadge": {
+        "message": "크기 조정 시 확대/축소 비율 표시"
+    },
+    "promptZoom": {
+        "message": "원하는 크기(백분율, 예: 150):"
+    },
+    "lblExcludedDomains": {
+        "message": "다음 도메인에서 사용 안 함 (한 줄에 하나씩):"
+    },
+    "hlpExcludedDomains": {
+        "message": "예: maps.google.com 또는 figma.com (하위 도메인은 자동으로 포함됨)"
+    },
+    "optEnableKeyShortcuts": {
+        "message": "키보드 단축키 사용 [(Shift+), +/−, 방향키, Esc, 0, R/L, P]"
+    },
+    "btnSupport": {
+        "message": "프로젝트 후원"
+    },
+    "optZoomToCursor": {
+        "message": "마우스 커서 기준으로 확대 (플로팅 모드)"
+    },
+    "panel_title": {
+        "message": "이미지 값 조정..."
+    },
+    "panel_tooltip_close": {
+        "message": "닫기"
+    },
+    "panel_label_zoom": {
+        "message": "확대/축소 (%)"
+    },
+    "panel_label_width": {
+        "message": "너비 (px)"
+    },
+    "panel_label_rot": {
+        "message": "회전 (°)"
+    },
+    "panel_label_opacity": {
+        "message": "불투명도 (%)"
+    },
+    "panel_label_brightness": {
+        "message": "밝기 (%)"
+    },
+    "panel_btn_reset": {
+        "message": "초기화"
+    },
+    "panel_btn_save": {
+        "message": "저장"
+    },
+    "panel_btn_close": {
+        "message": "닫기"
+    },
+    "panel_cors_error": {
+        "message": "이미지를 저장할 수 없습니다.\n\n이유: 보안 정책(CORS)으로 인해 소스 서버에서 내보내기를 차단했습니다."
+    },
+    "panel_label_flip": {
+        "message": "뒤집기"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ 수평"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ 수직"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "확대/축소 초기화"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "너비 초기화"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "회전 초기화"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "불투명도 초기화"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "밝기 초기화"
+    }
+}

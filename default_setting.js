@@ -4,22 +4,24 @@
  *
  * Original work Copyright (c) Amu (http://crossblade.her.jp/)
  * Modified work Copyright (c) 2026 pscholz
- * Project: Zoom & Drag
+ *
+ * Project:    Zoom & Drag
+ * Repository: https://github.com/pscholz-src/zoom-and-drag
  */
 
-export const DEFAULT_SETTING = 
-{
-    "dim":10,
-    "rotd": 15,
-    "rcCancel": 3000,
-    "reverse":false,
-    "bgImg":false,
-    "autoRtn":false,
-    "ctrlRvs":false,
-    "enableCxt":true,
-    "ivpDrag":false,
-    "clickSwap":false,
-    "showZoomBadge":true,
-    "enableKeyShortcuts":true,
-    "excludedDomains":""
+export const DEFAULT_SETTING = {
+    dim: 10,
+    rotd: 15,
+    rcCancel: 3000,
+    reverse: false,
+    trackCursor: true,
+    bgImg: false,
+    autoRtn: false,
+    ctrlRvs: false,
+    enableCxt: true,
+    ivpDrag: false,
+    clickSwap: false,
+    showZoomBadge: true,
+    enableKeyShortcuts: true,
+    excludedDomains: ""
 };

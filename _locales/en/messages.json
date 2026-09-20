@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Zoom, rotate, and drag images or background graphics with right-click and mouse wheel gestures without breaking page layouts."
+    "message": "Zoom, rotate, drag, adjust, and save images or background graphics with right-click and mouse wheel gestures without breaking page layouts."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Enter size..."
+        "message": "Adjust / save..."
     },
     "cmZoomIn": {
         "message": "Size x 2.0"
@@ -57,7 +57,7 @@
         "message": "Rotation"
     },
     "lblAltRightWheel": {
-        "message": "Alt key + Right click + Mouse wheel rotate"
+        "message": "Alt + Right click + Mouse wheel rotate"
     },
     "optOriginalSize": {
         "message": "Original size / Normal size"
@@ -69,7 +69,7 @@
         "message": "Right click + Mouse wheel rotate"
     },
     "lblCtrlRightWheel": {
-        "message": "Ctrl key + Right click + Mouse wheel rotate"
+        "message": "Ctrl + Right click + Mouse wheel rotate"
     },
     "optZoomStep": {
         "message": "Zoom ratio of one mouse wheel"
@@ -105,13 +105,19 @@
         "message": "Quick rotation"
     },
     "lblAltRightLeftClick": {
-        "message": "Alt Key + Right click + Left click"
+        "message": "Alt + Right click + Left click"
+    },
+    "optCtrlAltQuickZoom": {
+        "message": "Quick zoom"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Ctrl + Alt + Right click + Left click"
     },
     "btnResetSettings": {
         "message": "Reset setting"
     },
     "optDraggableSingleImage": {
-        "message": "Draggable when zoomed in image view page"
+        "message": "Single image view: Direct mouse wheel zoom. Freely draggable after enlarging"
     },
     "optRightClickTimeout": {
         "message": "Time until right click is canceled"
@@ -132,9 +138,71 @@
         "message": "e.g. maps.google.com or figma.com (subdomains are automatically included)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Enable keyboard shortcuts (+/\u2212, arrow keys, Esc, 0, R/L)"
+        "message": "Enable keyboard shortcuts [(Shift+), +/−, arrow keys, Esc, 0, R/L, P]"
     },
     "btnSupport": {
-    "message": "Support the project"
+        "message": "Support the project"
+    },
+    "optZoomToCursor": {
+        "message": "Zoom to cursor (Floating mode)"
+    },
+    "panel_title": {
+        "message": "Adjust image values...",
+        "description": "Header title of the adjustment panel"
+    },
+    "panel_tooltip_close": {
+        "message": "Close",
+        "description": "Tooltip for the close button (X)"
+    },
+    "panel_label_zoom": {
+        "message": "Zoom (%)"
+    },
+    "panel_label_width": {
+        "message": "Width (px)"
+    },
+    "panel_label_rot": {
+        "message": "Rotation (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Opacity (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Brightness (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Reset"
+    },
+    "panel_btn_save": {
+        "message": "Save"
+    },
+    "panel_btn_close": {
+        "message": "Close"
+    },
+    "panel_cors_error": {
+        "message": "Could not save image.\n\nReason: The source server blocks exporting due to security policies (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Flip"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Horizontal"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Vertical"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Reset zoom"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Reset width"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Reset rotation"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Reset opacity"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Reset brightness"
     }
 }

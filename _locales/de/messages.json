@@ -3,37 +3,37 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Bilder oder Hintergrundgrafiken mit Rechtsklick und Mausrad zoomen, drehen und verschieben, ohne das Seitenlayout zu ver\u00e4ndern."
+    "message": "Bilder oder Hintergrundgrafiken mit Rechtsklick und Mausrad zoomen, drehen, verschieben, anpassen und speichern, ohne das Seitenlayout zu verändern."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Gr\u00f6\u00dfe eingeben..."
+        "message": "Anpassen / speichern..."
     },
     "cmZoomIn": {
-        "message": "Gr\u00f6\u00dfe x 2.0"
+        "message": "Größe x 2.0"
     },
     "cmZoomOut": {
-        "message": "Gr\u00f6\u00dfe x 0.5"
+        "message": "Größe x 0.5"
     },
     "cmR90": {
-        "message": "90\u00b0 drehen (Rechts)"
+        "message": "90° drehen (Rechts)"
     },
     "cmL90": {
-        "message": "90\u00b0 drehen (Links)"
+        "message": "90° drehen (Links)"
     },
     "cmRot180": {
-        "message": "180\u00b0 drehen"
+        "message": "180° drehen"
     },
     "cmFitWin": {
         "message": "An Fenster anpassen"
     },
     "cmFit": {
-        "message": "Originalgr\u00f6\u00dfe"
+        "message": "Originalgröße"
     },
     "cmSetting": {
-        "message": "Einstellungen \u00f6ffnen"
+        "message": "Einstellungen öffnen"
     },
     "h2Setting": {
         "message": "Einstellungen"
@@ -57,10 +57,10 @@
         "message": "Rotation"
     },
     "lblAltRightWheel": {
-        "message": "Alt-Taste + Rechtsklick + Mausrad drehen"
+        "message": "Alt + Rechtsklick + Mausrad drehen"
     },
     "optOriginalSize": {
-        "message": "Originalgr\u00f6\u00dfe"
+        "message": "Originalgröße"
     },
     "lblRightLeftClick": {
         "message": "Rechtsklick + Linksklick"
@@ -69,7 +69,7 @@
         "message": "Rechtsklick + Mausrad drehen"
     },
     "lblCtrlRightWheel": {
-        "message": "Strg-Taste + Rechtsklick + Mausrad drehen"
+        "message": "Strg + Rechtsklick + Mausrad drehen"
     },
     "optZoomStep": {
         "message": "Zoomfaktor pro Mausrad-Schritt"
@@ -84,10 +84,10 @@
         "message": "Hintergrundbilder einbeziehen"
     },
     "optAutoResetRelease": {
-        "message": "Bilder beim Loslassen des Rechtsklicks zur\u00fccksetzen"
+        "message": "Bilder beim Loslassen des Rechtsklicks zurücksetzen"
     },
     "optEnableContextMenu": {
-        "message": "Kontextmen\u00fc aktivieren"
+        "message": "Kontextmenü aktivieren"
     },
     "optFitToWindow": {
         "message": "An Fenster anpassen"
@@ -105,13 +105,19 @@
         "message": "Schnellrotation"
     },
     "lblAltRightLeftClick": {
-        "message": "Alt-Taste + Rechtsklick + Linksklick"
+        "message": "Alt + Rechtsklick + Linksklick"
+    },
+    "optCtrlAltQuickZoom": {
+        "message": "Schnellzoom"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Strg + Alt + Rechtsklick + Linksklick"
     },
     "btnResetSettings": {
-        "message": "Einstellungen zur\u00fccksetzen"
+        "message": "Einstellungen zurücksetzen"
     },
     "optDraggableSingleImage": {
-        "message": "Verschiebbar, wenn auf der Einzelbildansicht gezoomt wird"
+        "message": "Einzelbildansicht: Direkter Mausrad-Zoom. Nach Vergrößerung frei verschiebbar"
     },
     "optRightClickTimeout": {
         "message": "Zeit bis zum automatischen Abbruch des Rechtsklicks"
@@ -123,7 +129,7 @@
         "message": "Zoom-Prozentsatz beim Skalieren anzeigen"
     },
     "promptZoom": {
-        "message": "Gew\u00fcnschte Gr\u00f6\u00dfe in Prozent (z.B. 150):"
+        "message": "Gewünschte Größe in Prozent (z.B. 150):"
     },
     "lblExcludedDomains": {
         "message": "Auf diesen Domains deaktivieren (eine pro Zeile):"
@@ -132,9 +138,71 @@
         "message": "z. B. maps.google.com oder figma.com (Subdomains werden automatisch mit erfasst)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Tastatur-Shortcuts aktivieren (+/\u2212, Pfeiltasten, Esc, 0, R/L)"
+        "message": "Tastatur-Shortcuts aktivieren [(Shift+), +/−, Pfeiltasten, Esc, 0, R/L, P]"
     },
     "btnSupport": {
-    "message": "Projekt unterstützen"
+        "message": "Projekt unterstützen"
+    },
+    "optZoomToCursor": {
+        "message": "Zum Mauszeiger zoomen (Schwebender Modus)"
+    },
+    "panel_title": {
+        "message": "Bildwerte ändern...",
+        "description": "Titelzeile des Panels"
+    },
+    "panel_tooltip_close": {
+        "message": "Schließen",
+        "description": "Tooltip für den Schließen-Button (X)"
+    },
+    "panel_label_zoom": {
+        "message": "Zoom (%)"
+    },
+    "panel_label_width": {
+        "message": "Breite (px)"
+    },
+    "panel_label_rot": {
+        "message": "Rotation (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Deckkraft (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Helligkeit (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Reset"
+    },
+    "panel_btn_save": {
+        "message": "Speichern"
+    },
+    "panel_btn_close": {
+        "message": "Schließen"
+    },
+    "panel_cors_error": {
+        "message": "Das Bild konnte nicht gespeichert werden.\n\nGrund: Der Quell-Server des Bildes blockiert den Export aus Sicherheitsgründen (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Spiegeln"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Horizontal"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Vertikal"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Zoom zurücksetzen"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Breite zurücksetzen"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Rotation zurücksetzen"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Deckkraft zurücksetzen"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Helligkeit zurücksetzen"
     }
 }

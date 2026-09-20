@@ -6,7 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h2>&lt;<span id="h2Setting" data-i18n="h2Setting"></span>&gt;</h2>
+	<h2><span id="h2Setting" data-i18n="h2Setting"></span></h2>
 	<article>
 		<div class="func_list">
 			<table>
@@ -59,6 +59,10 @@
 				<tr>
 					<td class="fc"><span data-i18n="optAltFreeRotation"></span></td>
 					<td><span data-i18n="lblAltRightLeftClick"></span></td>
+				</tr>
+				<tr>
+					<td class="fc"><span data-i18n="optCtrlAltQuickZoom"></span></td>
+					<td><span data-i18n="lblCtrlAltRightLeftClick"></span></td>
 				</tr>
 			</table>
 			<input type="hidden" data-i18n="lblRightWheel" class="ctrl_op_d" value="">
@@ -122,6 +126,12 @@
                     <td colspan="2">
                         <input type="checkbox" id="reverse" value="">
                         <label for="reverse"><span data-i18n="optReverseWheel"></span></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="zoom_trackCursor" value="">
+                        <label for="zoom_trackCursor"><span data-i18n="optZoomToCursor"></span></label>
                     </td>
                 </tr>
                 <tr>

@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Haz zoom, rota y arrastra imágenes o gráficos de fondo con el botón derecho y la rueda del ratón sin alterar el diseño de la página."
+    "message": "Haz zoom, rota, arrastra, ajusta y guarda imágenes o gráficos de fondo con el botón derecho y la rueda del ratón sin alterar el diseño de la página."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Introducir tamaño..."
+        "message": "Ajustar / guardar..."
     },
     "cmZoomIn": {
         "message": "Tamaño x 2.0"
@@ -107,11 +107,17 @@
     "lblAltRightLeftClick": {
         "message": "Tecla Alt + Clic derecho + Clic izquierdo"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "Zoom rápido"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Tecla Ctrl + Tecla Alt + Clic derecho + Clic izquierdo"
+    },
     "btnResetSettings": {
         "message": "Restablecer configuración"
     },
     "optDraggableSingleImage": {
-        "message": "Arrastrable en la página de visualización de imagen"
+        "message": "Vista de imagen individual: Zoom directo con rueda del ratón. Arrastrable tras ampliar"
     },
     "optRightClickTimeout": {
         "message": "Tiempo hasta cancelar el clic derecho"
@@ -132,9 +138,69 @@
         "message": "ej. maps.google.com o figma.com (los subdominios se incluyen automáticamente)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Habilitar atajos de teclado (+/−, flechas, Esc, 0, R/L)"
+        "message": "Habilitar atajos de teclado [(Shift+), +/−, flechas, Esc, 0, R/L, P]"
     },
     "btnSupport": {
         "message": "Apoyar el proyecto"
+    },
+    "optZoomToCursor": {
+        "message": "Hacer zoom al cursor (Modo flotante)"
+    },
+    "panel_title": {
+        "message": "Ajustar valores de imagen..."
+    },
+    "panel_tooltip_close": {
+        "message": "Cerrar"
+    },
+    "panel_label_zoom": {
+        "message": "Zoom (%)"
+    },
+    "panel_label_width": {
+        "message": "Ancho (px)"
+    },
+    "panel_label_rot": {
+        "message": "Rotación (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Opacidad (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Brillo (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Restablecer"
+    },
+    "panel_btn_save": {
+        "message": "Guardar"
+    },
+    "panel_btn_close": {
+        "message": "Cerrar"
+    },
+    "panel_cors_error": {
+        "message": "No se pudo guardar la imagen.\n\nMotivo: El servidor de origen bloquea la exportación por políticas de seguridad (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Voltear"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Horizontal"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Vertical"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Restablecer zoom"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Restablecer ancho"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Restablecer rotación"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Restablecer opacidad"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Restablecer brillo"
     }
 }

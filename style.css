@@ -15,9 +15,14 @@ img.zdImgCls_asntrs58f {
     box-shadow: 1px 1px 4px 0px #666666 !important;
 }
 
+img.zdImgCls_asntrs58f:hover {
+    box-shadow: 1px 1px 4px 1px #3575dd !important;
+}
+
 img.zdImgCls_mhdt687po {
     box-shadow: 1px 1px 4px 0px #666666 !important;
 }
+
 img.zdImgCls_mhdt687po:hover {
     box-shadow: 1px 1px 4px 1px #3575dd !important;
 }
@@ -39,6 +44,10 @@ img.zdImgCls_draggingCur {
 .zdImgCls_animated {
     transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                min-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                min-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                max-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                max-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
                 transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;

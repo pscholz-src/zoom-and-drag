@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Zooma, ruota e trascina immagini o sfondi con il tasto destro e la rotellina del mouse senza alterare il layout della pagina."
+        "message": "Zooma, ruota, trascina, regola e salva immagini o sfondi con il tasto destro e la rotellina del mouse senza alterare il layout della pagina."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Inserisci dimensione..."
+        "message": "Regola / salva..."
     },
     "cmZoomIn": {
         "message": "Dimensione x 2.0"
@@ -107,11 +107,17 @@
     "lblAltRightLeftClick": {
         "message": "Tasto Alt + Clic destro + Clic sinistro"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "Zoom rapido"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Tasto Ctrl + Tasto Alt + Clic destro + Clic sinistro"
+    },
     "btnResetSettings": {
         "message": "Ripristina impostazioni"
     },
     "optDraggableSingleImage": {
-        "message": "Trascinabile nella pagina di visualizzazione immagine"
+        "message": "Vista immagine singola: Zoom diretto con rotellina. Trascinabile dopo l'ingrandimento"
     },
     "optRightClickTimeout": {
         "message": "Tempo prima dell'annullamento del clic destro"
@@ -132,9 +138,69 @@
         "message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Abilita scorciatoie da tastiera (+/−, frecce, Esc, 0, R/L)"
+        "message": "Abilita scorciatoie da tastiera [(Shift+), +/−, frecce, Esc, 0, R/L, P]"
     },
     "btnSupport": {
         "message": "Supporta il progetto"
+    },
+    "optZoomToCursor": {
+        "message": "Zooma sul cursore (Modalità fluttuante)"
+    },
+    "panel_title": {
+        "message": "Regola i valori dell'immagine..."
+    },
+    "panel_tooltip_close": {
+        "message": "Chiudi"
+    },
+    "panel_label_zoom": {
+        "message": "Zoom (%)"
+    },
+    "panel_label_width": {
+        "message": "Larghezza (px)"
+    },
+    "panel_label_rot": {
+        "message": "Rotazione (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Opacità (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Luminosità (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Reset"
+    },
+    "panel_btn_save": {
+        "message": "Salva"
+    },
+    "panel_btn_close": {
+        "message": "Chiudi"
+    },
+    "panel_cors_error": {
+        "message": "Impossibile salvare l'immagine.\n\nMotivo: il server di origine blocca l'esportazione per motivi di sicurezza (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Rifletti"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Orizzontale"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Verticale"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Ripristina zoom"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Ripristina larghezza"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Ripristina rotazione"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Ripristina opacità"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Ripristina luminosità"
     }
 }

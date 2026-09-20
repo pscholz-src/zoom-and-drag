@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Aplique zoom, gire e arraste imagens ou gráficos de fundo com o botão direito e a roda do mouse sem quebrar o layout da página."
+        "message": "Aplique zoom, gire, arraste, ajuste e salve imagens ou gráficos de fundo com o botão direito e a roda do mouse sem quebrar o layout da página."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Inserir tamanho..."
+        "message": "Ajustar / salvar..."
     },
     "cmZoomIn": {
         "message": "Tamanho x 2.0"
@@ -107,11 +107,17 @@
     "lblAltRightLeftClick": {
         "message": "Tecla Alt + Clique direito + Clique esquerdo"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "Zoom rápido"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Tecla Ctrl + Tecla Alt + Clique direito + Clique esquerdo"
+    },
     "btnResetSettings": {
         "message": "Redefinir configurações"
     },
     "optDraggableSingleImage": {
-        "message": "Arrastável na página de visualização de imagem"
+        "message": "Visualização de imagem única: Zoom direto com a roda do mouse. Arrastável após ampliação"
     },
     "optRightClickTimeout": {
         "message": "Tempo até o clique direito ser cancelado"
@@ -132,9 +138,69 @@
         "message": "ex. maps.google.com ou figma.com (subdomínios são incluídos automaticamente)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Ativar atalhos de teclado (+/−, setas, Esc, 0, R/L)"
+        "message": "Ativar atalhos de teclado [(Shift+), +/−, setas, Esc, 0, R/L, P]"
     },
     "btnSupport": {
         "message": "Apoiar o projeto"
+    },
+    "optZoomToCursor": {
+        "message": "Zoom no cursor (Modo flutuante)"
+    },
+    "panel_title": {
+        "message": "Ajustar valores da imagem..."
+    },
+    "panel_tooltip_close": {
+        "message": "Fechar"
+    },
+    "panel_label_zoom": {
+        "message": "Zoom (%)"
+    },
+    "panel_label_width": {
+        "message": "Largura (px)"
+    },
+    "panel_label_rot": {
+        "message": "Rotação (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Opacidade (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Brilho (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Redefinir"
+    },
+    "panel_btn_save": {
+        "message": "Salvar"
+    },
+    "panel_btn_close": {
+        "message": "Fechar"
+    },
+    "panel_cors_error": {
+        "message": "Não foi possível salvar a imagem.\n\nMotivo: O servidor de origem bloqueia a exportação devido a políticas de segurança (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Inverter"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ Horizontal"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ Vertical"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Redefinir zoom"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Redefinir largura"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Redefinir rotação"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Redefinir opacidade"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Redefinir brilho"
     }
 }

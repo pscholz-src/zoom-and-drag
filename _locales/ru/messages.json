@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "Масштабируйте, вращайте и перетаскивайте изображения или фоны с помощью правой кнопки и колесика мыши, не нарушая макет страницы."
+        "message": "Масштабируйте, вращайте, перетаскивайте, настраивайте и сохраняйте изображения или фоны с помощью правой кнопки и колесика мыши, не нарушая макет страницы."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "Ввести размер..."
+        "message": "Настроить / сохранить..."
     },
     "cmZoomIn": {
         "message": "Размер x 2.0"
@@ -107,11 +107,17 @@
     "lblAltRightLeftClick": {
         "message": "Клавиша Alt + Правый клик + Левый клик"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "Быстрое масштабирование"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Клавиша Ctrl + Клавиша Alt + Правый клик + Левый клик"
+    },
     "btnResetSettings": {
         "message": "Сбросить настройки"
     },
     "optDraggableSingleImage": {
-        "message": "Перетаскивание при масштабировании на странице просмотра изображения"
+        "message": "Одиночное изображение: Прямое масштабирование колесиком мыши. Перетаскивание после увеличения"
     },
     "optRightClickTimeout": {
         "message": "Время до отмены правого клика"
@@ -126,15 +132,75 @@
         "message": "Желаемый размер в процентах (напр. 150):"
     },
     "lblExcludedDomains": {
-        "message": "Отключить на этих доменах (по одному на строку):"
+        "message": "Отключить на этих доменов (по одному на строку):"
     },
     "hlpExcludedDomains": {
         "message": "напр. maps.google.com или figma.com (поддомены включены автоматически)"
     },
     "optEnableKeyShortcuts": {
-        "message": "Включить горячие клавиши (+/−, стрелки, Esc, 0, R/L)"
+        "message": "Включить горячие клавиши [(Shift+), +/−, стрелки, Esc, 0, R/L, P]"
     },
     "btnSupport": {
         "message": "Поддержать проект"
+    },
+    "optZoomToCursor": {
+        "message": "Масштабировать к курсору (Плавающий режим)"
+    },
+    "panel_title": {
+        "message": "Изменить значения изображения..."
+    },
+    "panel_tooltip_close": {
+        "message": "Закрыть"
+    },
+    "panel_label_zoom": {
+        "message": "Масштаб (%)"
+    },
+    "panel_label_width": {
+        "message": "Ширина (px)"
+    },
+    "panel_label_rot": {
+        "message": "Вращение (°)"
+    },
+    "panel_label_opacity": {
+        "message": "Непрозрачность (%)"
+    },
+    "panel_label_brightness": {
+        "message": "Яркость (%)"
+    },
+    "panel_btn_reset": {
+        "message": "Сброс"
+    },
+    "panel_btn_save": {
+        "message": "Сохранить"
+    },
+    "panel_btn_close": {
+        "message": "Закрыть"
+    },
+    "panel_cors_error": {
+        "message": "Не удалось сохранить изображение.\n\nПричина: Исходный сервер блокирует экспорт из соображений безопасности (CORS)."
+    },
+    "panel_label_flip": {
+        "message": "Отразить"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ По горизонтали"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ По вертикали"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "Сбросить масштаб"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "Сбросить ширину"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "Сбросить вращение"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "Сбросить непрозрачность"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "Сбросить яркость"
     }
 }

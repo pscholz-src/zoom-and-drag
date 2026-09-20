@@ -3,13 +3,13 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "使用右键和鼠标滚轮对图片或背景图进行缩放、旋转和拖拽，而不会破坏网页排版。"
+        "message": "使用右键和鼠标滚轮对图片或背景图进行缩放、旋转、拖拽、调整和保存，而不会破坏网页排版。"
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
     },
     "cmZoomCustom": {
-        "message": "输入尺寸..."
+        "message": "调整 / 保存..."
     },
     "cmZoomIn": {
         "message": "尺寸 x 2.0"
@@ -107,11 +107,17 @@
     "lblAltRightLeftClick": {
         "message": "Alt 键 + 右键 + 左键"
     },
+    "optCtrlAltQuickZoom": {
+        "message": "快速缩放"
+    },
+    "lblCtrlAltRightLeftClick": {
+        "message": "Ctrl 键 + Alt 键 + 右键 + 左键"
+    },
     "btnResetSettings": {
         "message": "重置设置"
     },
     "optDraggableSingleImage": {
-        "message": "在单图页面缩放时可拖拽"
+        "message": "单图视图：直接使用鼠标滚轮缩放。放大后可自由拖拽"
     },
     "optRightClickTimeout": {
         "message": "右键自动取消的等待时间"
@@ -132,9 +138,69 @@
         "message": "例如 maps.google.com 或 figma.com (子域名会自动包含)"
     },
     "optEnableKeyShortcuts": {
-        "message": "启用键盘快捷键 (+/−, 方向键, Esc, 0, R/L)"
+        "message": "启用键盘快捷键 [(Shift+), +/−, 方向键, Esc, 0, R/L, P]"
     },
     "btnSupport": {
         "message": "支持该项目"
+    },
+    "optZoomToCursor": {
+        "message": "缩放至鼠标光标 (浮动模式)"
+    },
+    "panel_title": {
+        "message": "调整图片参数..."
+    },
+    "panel_tooltip_close": {
+        "message": "关闭"
+    },
+    "panel_label_zoom": {
+        "message": "缩放 (%)"
+    },
+    "panel_label_width": {
+        "message": "宽度 (px)"
+    },
+    "panel_label_rot": {
+        "message": "旋转 (°)"
+    },
+    "panel_label_opacity": {
+        "message": "不透明度 (%)"
+    },
+    "panel_label_brightness": {
+        "message": "亮度 (%)"
+    },
+    "panel_btn_reset": {
+        "message": "重置"
+    },
+    "panel_btn_save": {
+        "message": "保存"
+    },
+    "panel_btn_close": {
+        "message": "关闭"
+    },
+    "panel_cors_error": {
+        "message": "无法保存图片。\n\n原因：由于安全策略 (CORS)，源服务器阻止了导出操作。"
+    },
+    "panel_label_flip": {
+        "message": "翻转"
+    },
+    "panel_btn_flip_h": {
+        "message": "↔ 水平"
+    },
+    "panel_btn_flip_v": {
+        "message": "↕ 垂直"
+    },
+    "panel_tooltip_reset_zoom": {
+        "message": "重置缩放"
+    },
+    "panel_tooltip_reset_width": {
+        "message": "重置宽度"
+    },
+    "panel_tooltip_reset_rot": {
+        "message": "重置旋转"
+    },
+    "panel_tooltip_reset_opac": {
+        "message": "重置不透明度"
+    },
+    "panel_tooltip_reset_bright": {
+        "message": "重置亮度"
     }
 }

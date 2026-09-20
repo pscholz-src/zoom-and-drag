@@ -4,12 +4,13 @@
  *
  * Original work Copyright (c) Amu (http://crossblade.her.jp/)
  * Modified work Copyright (c) 2026 pscholz
- * Project: Zoom & Drag
+ *
+ * Project:    Zoom & Drag
+ * Repository: https://github.com/pscholz-src/zoom-and-drag
  */
 
 import { DEFAULT_SETTING } from '../default_setting.js';
 globalThis.browser = globalThis.browser || globalThis.chrome;
-
 
 async function restore() {
     const data = await browser.storage.local.get('setting');
@@ -22,6 +23,7 @@ async function restore() {
     
     document.getElementById('ctrlRvs').checked = a.ctrlRvs != null ? a.ctrlRvs : df.ctrlRvs;
     document.getElementById('reverse').checked = a.reverse != null ? a.reverse : df.reverse;
+    document.getElementById('zoom_trackCursor').checked = a.trackCursor != null ? a.trackCursor : (df.trackCursor || false);
     document.getElementById('bgImg').checked = a.bgImg != null ? a.bgImg : df.bgImg;
     document.getElementById('autoRtn').checked = a.autoRtn != null ? a.autoRtn : df.autoRtn;
     document.getElementById('enableCxt').checked = a.enableCxt != null ? a.enableCxt : df.enableCxt;
@@ -37,19 +39,20 @@ async function restore() {
 
 async function save() {
     const a = {
-        "dim": Number(document.getElementById('dim').value),
-        "rotd": Number(document.getElementById('rotd').value),
-        "rcCancel": Number(document.getElementById('rcCancel').value),
-        "reverse": document.getElementById('reverse').checked,
-        "bgImg": document.getElementById('bgImg').checked,
-        "autoRtn": document.getElementById('autoRtn').checked,
-        "ctrlRvs": document.getElementById('ctrlRvs').checked,
-        "enableCxt": document.getElementById('enableCxt').checked,
-        "ivpDrag": document.getElementById('ivpDrag').checked,
-        "clickSwap": document.getElementById('clickSwap').checked,
-        "showZoomBadge": document.getElementById('showZoomBadge').checked,
-        "enableKeyShortcuts": document.getElementById('enableKeyShortcuts').checked,
-        "excludedDomains": document.getElementById('excludedDomains').value.trim()
+        dim: Number(document.getElementById('dim').value),
+        rotd: Number(document.getElementById('rotd').value),
+        rcCancel: Number(document.getElementById('rcCancel').value),
+        reverse: document.getElementById('reverse').checked,
+        trackCursor: document.getElementById('zoom_trackCursor').checked,
+        bgImg: document.getElementById('bgImg').checked,
+        autoRtn: document.getElementById('autoRtn').checked,
+        ctrlRvs: document.getElementById('ctrlRvs').checked,
+        enableCxt: document.getElementById('enableCxt').checked,
+        ivpDrag: document.getElementById('ivpDrag').checked,
+        clickSwap: document.getElementById('clickSwap').checked,
+        showZoomBadge: document.getElementById('showZoomBadge').checked,
+        enableKeyShortcuts: document.getElementById('enableKeyShortcuts').checked,
+        excludedDomains: document.getElementById('excludedDomains').value.trim()
     };
     await browser.storage.local.set({ 'setting': a });
 }
@@ -75,6 +78,8 @@ async function reset() {
 }
 
 const gm = n => browser.i18n.getMessage(n);
+
+document.title = gm('extensionName') + ' - ' + gm('h2Setting');
 
 document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
