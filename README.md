@@ -47,7 +47,7 @@ Zoom & Drag enables you to seamlessly zoom, rotate, freely move, adjust filters,
 
 **General & Panel:**
 - **Close Panel / Reset Image:** `Esc`
-- **Advanced Reset:** `Shift` + `Esc` (resets image, keeps panel open)
+- **Advanced Reset:** `Shift` + `Esc` (resets images, keeps panel open)
 - **Modifier:** Hold `Shift` for alternate steps (faster zoom/move, 45° rotation)
 
 ## 📜 Attribution & History
