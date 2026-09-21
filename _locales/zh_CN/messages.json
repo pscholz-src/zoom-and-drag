@@ -3,7 +3,7 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "使用右键和鼠标滚轮对图片或背景图进行缩放、旋转、拖拽、调整和保存，而不会破坏网页排版。"
+        "message": "通过右键和鼠标滚轮缩放、旋转、移动、调整和保存图片或背景，且不破坏网页排版。"
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"

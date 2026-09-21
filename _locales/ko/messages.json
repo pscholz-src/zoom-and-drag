@@ -3,7 +3,7 @@
         "message": "Zoom & Drag"
     },
     "extensionDescription": {
-        "message": "페이지 레이아웃을 깨지 않고 마우스 우클릭과 휠로 이미지나 배경 그래픽을 확대/축소, 회전, 드래그, 조정 및 저장하세요."
+        "message": "우클릭과 마우스 휠로 이미지나 배경을 확대/축소, 회전, 이동, 조정 및 저장하세요. 페이지 레이아웃은 유지됩니다."
     },
     "cmTopMenu": {
         "message": "Zoom && Drag"
