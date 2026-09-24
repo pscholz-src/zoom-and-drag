@@ -123,7 +123,7 @@
         "message": "Tiempo hasta cancelar el clic derecho"
     },
     "hlpRightClickTimeout": {
-        "message": "Después del clic derecho, si transcurre este tiempo sin girar la rueda, el clic se cancela. (1000ms = 1 segundo)"
+        "message": "Después del clic derecho, si transcurre este tiempo sin girar la rueda, el clic se cancela. (1000ms\u00A0=\u00A01\u00A0segundo)"
     },
     "optShowZoomBadge": {
         "message": "Mostrar porcentaje de zoom al escalar"

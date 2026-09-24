@@ -1,6 +1,6 @@
 {
     "extensionName": {
-        "message": "Zoom & Drag"
+        "message": "Zoom & Drag - 확대 및 드래그"
     },
     "extensionDescription": {
         "message": "우클릭과 마우스 휠로 이미지나 배경을 확대/축소, 회전, 이동, 조정 및 저장하세요. 페이지 레이아웃은 유지됩니다."
@@ -123,7 +123,7 @@
         "message": "우클릭 자동 취소 대기 시간"
     },
     "hlpRightClickTimeout": {
-        "message": "우클릭 후 휠을 돌리지 않고 이 시간이 경과하면 우클릭이 자동으로 해제됩니다.（1000ms = 1초)"
+        "message": "우클릭 후 휠을 돌리지 않고 이 시간이 경과하면 우클릭이 자동으로 해제됩니다.（1000ms\u00A0=\u00A01\u2060초）"
     },
     "optShowZoomBadge": {
         "message": "크기 조정 시 확대/축소 비율 표시"

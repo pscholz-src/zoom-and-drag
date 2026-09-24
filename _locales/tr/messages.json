@@ -123,7 +123,7 @@
         "message": "Sağ tıklamanın otomatik iptal süresi"
     },
     "hlpRightClickTimeout": {
-        "message": "Sağ tıkladıktan sonra tekerleği çevirmeden bu süre geçerse sağ tık serbest bırakılır. (1000ms = 1 saniye)"
+        "message": "Sağ tıkladıktan sonra tekerleği çevirmeden bu süre geçerse sağ tık serbest bırakılır. (1000ms\u00A0=\u00A01\u00A0saniye)"
     },
     "optShowZoomBadge": {
         "message": "Ölçeklendirirken yakınlaştırma yüzdesini göster"

@@ -164,7 +164,7 @@
         "description": "設定HTMLのテキストです。"
     },
     "hlpRightClickTimeout": {
-        "message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms = 1秒)",
+        "message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms\u00A0=\u00A01\u2060秒）",
         "description": "設定HTMLのテキストです。"
     },
     "optShowZoomBadge": {

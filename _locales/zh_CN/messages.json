@@ -1,6 +1,6 @@
 {
     "extensionName": {
-        "message": "Zoom & Drag"
+        "message": "Zoom & Drag - 缩放与拖动"
     },
     "extensionDescription": {
         "message": "通过右键和鼠标滚轮缩放、旋转、移动、调整和保存图片或背景，且不破坏网页排版。"
@@ -123,7 +123,7 @@
         "message": "右键自动取消的等待时间"
     },
     "hlpRightClickTimeout": {
-        "message": "右键单击后，如果在此时间内未滚动滚轮，则自动释放右键。（1000ms = 1秒）"
+        "message": "右键单击后，如果在此时间内未滚动滚轮，则自动释放右键。（1000ms\u00A0=\u00A01\u2060秒）"
     },
     "optShowZoomBadge": {
         "message": "缩放时显示百分比"
