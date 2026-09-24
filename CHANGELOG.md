@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-09-24
+### Fixed
+- **Revert images when to release the right click:** Improved functionality with automatically reverting and releasing images when the right mouse button is released.
+- **Single image view:** Fixed edge cases in the single image view (controlling mouse wheel zoom behavior and ensuring stable resets via the custom panel).
+- **Dragging:** Optimized image dragging mechanics to prevent unwanted layout jumps.
+- **Image frame:** The blue selection and quick zoom frames now align precisely with the actual image bounds (accounting for `object-fit: contain`).
+- **Language adjustments:** Minor corrections and additions to localizations.
+
 ## [2.0.0] - 2026-09-21
 ### Added
 - **Interactive Custom Panel:** Replaced the basic zoom prompt with a sleek, draggable floating UI offering precise sliders and inputs for Zoom, Width, Rotation, Opacity, and Brightness. Launch it instantly on images using the new `P` keyboard shortcut.
