@@ -1,206 +1,286 @@
 {
-    "extensionName": {
-        "message": "Zoom & Drag - 缩放与拖动"
-    },
-    "extensionDescription": {
-        "message": "通过右键和鼠标滚轮缩放、旋转、移动、调整和保存图片或背景，且不破坏网页排版。"
-    },
-    "cmTopMenu": {
-        "message": "Zoom && Drag"
-    },
-    "cmZoomCustom": {
-        "message": "调整 / 保存..."
-    },
-    "cmZoomIn": {
-        "message": "尺寸 x 2.0"
-    },
-    "cmZoomOut": {
-        "message": "尺寸 x 0.5"
-    },
-    "cmR90": {
-        "message": "向右旋转 90°"
-    },
-    "cmL90": {
-        "message": "向左旋转 90°"
-    },
-    "cmRot180": {
-        "message": "旋转 180°"
-    },
-    "cmFitWin": {
-        "message": "适应窗口"
-    },
-    "cmFit": {
-        "message": "原始尺寸"
-    },
-    "cmSetting": {
-        "message": "打开设置"
-    },
-    "h2Setting": {
-        "message": "设置"
-    },
-    "thFunc": {
-        "message": "功能"
-    },
-    "thCtrl": {
-        "message": "操作 (在图片上)"
-    },
-    "optFreeZoom": {
-        "message": "浮动缩放"
-    },
-    "optSwapCommands": {
-        "message": "交换操作"
-    },
-    "optZoom": {
-        "message": "缩放"
-    },
-    "optRotation": {
-        "message": "旋转"
-    },
-    "lblAltRightWheel": {
-        "message": "Alt 键 + 右键 + 滚动鼠标滚轮"
-    },
-    "optOriginalSize": {
-        "message": "原始尺寸 / 还原"
-    },
-    "lblRightLeftClick": {
-        "message": "右键 + 左键"
-    },
-    "lblRightWheel": {
-        "message": "右键 + 滚动鼠标滚轮"
-    },
-    "lblCtrlRightWheel": {
-        "message": "Ctrl 键 + 右键 + 滚动鼠标滚轮"
-    },
-    "optZoomStep": {
-        "message": "鼠标滚轮一格的缩放比例"
-    },
-    "optRotationStep": {
-        "message": "鼠标滚轮一格的旋转角度"
-    },
-    "optReverseWheel": {
-        "message": "反转鼠标滚轮"
-    },
-    "optIncludeBgImages": {
-        "message": "包含背景图片"
-    },
-    "optAutoResetRelease": {
-        "message": "松开右键时还原图片"
-    },
-    "optEnableContextMenu": {
-        "message": "启用右键菜单"
-    },
-    "optFitToWindow": {
-        "message": "适应窗口"
-    },
-    "lblRightMiddleClick": {
-        "message": "右键 + 中键"
-    },
-    "optDragToMove": {
-        "message": "拖拽移动"
-    },
-    "lblLeftClickDrag": {
-        "message": "左键拖拽 (放大后的图片)"
-    },
-    "optAltFreeRotation": {
-        "message": "快速旋转"
-    },
-    "lblAltRightLeftClick": {
-        "message": "Alt 键 + 右键 + 左键"
-    },
-    "optCtrlAltQuickZoom": {
-        "message": "快速缩放"
-    },
-    "lblCtrlAltRightLeftClick": {
-        "message": "Ctrl 键 + Alt 键 + 右键 + 左键"
-    },
-    "btnResetSettings": {
-        "message": "重置设置"
-    },
-    "optDraggableSingleImage": {
-        "message": "单图视图：直接使用鼠标滚轮缩放。放大后可自由拖拽"
-    },
-    "optRightClickTimeout": {
-        "message": "右键自动取消的等待时间"
-    },
-    "hlpRightClickTimeout": {
-        "message": "右键单击后，如果在此时间内未滚动滚轮，则自动释放右键。（1000ms\u00A0=\u00A01\u2060秒）"
-    },
-    "optShowZoomBadge": {
-        "message": "缩放时显示百分比"
-    },
-    "promptZoom": {
-        "message": "期望尺寸百分比 (例如 150):"
-    },
-    "lblExcludedDomains": {
-        "message": "在以下域名上禁用 (每行一个):"
-    },
-    "hlpExcludedDomains": {
-        "message": "例如 maps.google.com 或 figma.com (子域名会自动包含)"
-    },
-    "optEnableKeyShortcuts": {
-        "message": "启用键盘快捷键 [(Shift+), +/−, 方向键, Esc, 0, R/L, P]"
-    },
-    "btnSupport": {
-        "message": "支持该项目"
-    },
-    "optZoomToCursor": {
-        "message": "缩放至鼠标光标 (浮动模式)"
-    },
-    "panel_title": {
-        "message": "调整图片参数..."
-    },
-    "panel_tooltip_close": {
-        "message": "关闭"
-    },
-    "panel_label_zoom": {
-        "message": "缩放 (%)"
-    },
-    "panel_label_width": {
-        "message": "宽度 (px)"
-    },
-    "panel_label_rot": {
-        "message": "旋转 (°)"
-    },
-    "panel_label_opacity": {
-        "message": "不透明度 (%)"
-    },
-    "panel_label_brightness": {
-        "message": "亮度 (%)"
-    },
-    "panel_btn_reset": {
-        "message": "重置"
-    },
-    "panel_btn_save": {
-        "message": "保存"
-    },
-    "panel_btn_close": {
-        "message": "关闭"
-    },
-    "panel_cors_error": {
-        "message": "无法保存图片。\n\n原因：由于安全策略 (CORS)，源服务器阻止了导出操作。"
-    },
-    "panel_label_flip": {
-        "message": "翻转"
-    },
-    "panel_btn_flip_h": {
-        "message": "↔ 水平"
-    },
-    "panel_btn_flip_v": {
-        "message": "↕ 垂直"
-    },
-    "panel_tooltip_reset_zoom": {
-        "message": "重置缩放"
-    },
-    "panel_tooltip_reset_width": {
-        "message": "重置宽度"
-    },
-    "panel_tooltip_reset_rot": {
-        "message": "重置旋转"
-    },
-    "panel_tooltip_reset_opac": {
-        "message": "重置不透明度"
-    },
-    "panel_tooltip_reset_bright": {
-        "message": "重置亮度"
-    }
+	"extensionName": {
+		"message": "Zoom & Drag - 缩放与拖动",
+		"description": "Name of the extension."
+	},
+	"extensionDescription": {
+		"message": "通过右键和鼠标滚轮缩放、旋转、移动、调整和保存图片或背景，且不破坏网页排版。",
+		"description": "Description of the extension."
+	},
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "Title of the top-level context menu entry."
+	},
+	"cmZoomCustom": {
+		"message": "调整 / 保存...",
+		"description": "Context menu item to open the adjustment and export panel."
+	},
+	"cmZoomIn": {
+		"message": "尺寸 x 2.0",
+		"description": "Context menu item to double image size."
+	},
+	"cmZoomOut": {
+		"message": "尺寸 x 0.5",
+		"description": "Context menu item to halve image size."
+	},
+	"cmR90": {
+		"message": "向右旋转 90°",
+		"description": "Context menu item to rotate 90 degrees clockwise."
+	},
+	"cmL90": {
+		"message": "向左旋转 90°",
+		"description": "Context menu item to rotate 90 degrees counterclockwise."
+	},
+	"cmRot180": {
+		"message": "旋转 180°",
+		"description": "Context menu item to rotate 180 degrees."
+	},
+	"cmFitWin": {
+		"message": "适应窗口",
+		"description": "Context menu item to fit image to window boundaries."
+	},
+	"cmFit": {
+		"message": "默认 / 原始尺寸",
+		"description": "Context menu item to toggle between layout and natural image size."
+	},
+	"cmSetting": {
+		"message": "打开设置",
+		"description": "Context menu item to open settings page."
+	},
+	"h2Setting": {
+		"message": "设置",
+		"description": "Heading of the settings page."
+	},
+	"thFunc": {
+		"message": "功能",
+		"description": "Table header for features column in settings."
+	},
+	"thCtrl": {
+		"message": "操作 (在图片上)",
+		"description": "Table header for commands/triggers column in settings."
+	},
+	"optFreeZoom": {
+		"message": "浮动缩放",
+		"description": "Option label for floating zoom mode."
+	},
+	"optSwapCommands": {
+		"message": "交换操作",
+		"description": "Option label to swap command assignments."
+	},
+	"optZoom": {
+		"message": "缩放",
+		"description": "Option label for standard zoom function."
+	},
+	"optRotation": {
+		"message": "旋转",
+		"description": "Option label for rotation function."
+	},
+	"lblAltRightWheel": {
+		"message": "Alt 键 + 右键 + 滚动鼠标滚轮",
+		"description": "Shortcut label for Alt + Right click + Mouse wheel."
+	},
+	"optOriginalSize": {
+		"message": "默认 / 原始尺寸",
+		"description": "Option label to toggle between layout and natural image size."
+	},
+	"lblRightLeftClick": {
+		"message": "右键 + 左键",
+		"description": "Shortcut label for Right click + Left click."
+	},
+	"lblRightWheel": {
+		"message": "右键 + 滚动鼠标滚轮",
+		"description": "Shortcut label for Right click + Mouse wheel."
+	},
+	"lblCtrlRightWheel": {
+		"message": "Ctrl 键 + 右键 + 滚动鼠标滚轮",
+		"description": "Shortcut label for Ctrl + Right click + Mouse wheel."
+	},
+	"optZoomStep": {
+		"message": "鼠标滚轮一格的缩放比例",
+		"description": "Option label for zoom step percentage per wheel notch."
+	},
+	"optRotationStep": {
+		"message": "鼠标滚轮一格的旋转角度",
+		"description": "Option label for rotation angle per wheel notch."
+	},
+	"optReverseWheel": {
+		"message": "反转鼠标滚轮",
+		"description": "Option label to reverse wheel direction."
+	},
+	"optIncludeBgImages": {
+		"message": "包含背景图片",
+		"description": "Option label to include CSS background images."
+	},
+	"optAutoResetRelease": {
+		"message": "松开右键时还原图片",
+		"description": "Option label to auto-reset images upon releasing right-click."
+	},
+	"optEnableContextMenu": {
+		"message": "启用右键菜单",
+		"description": "Option label to enable or disable context menus."
+	},
+	"optFitToWindow": {
+		"message": "适应窗口",
+		"description": "Option label for fitting image to window."
+	},
+	"lblRightMiddleClick": {
+		"message": "右键 + 中键",
+		"description": "Shortcut label for Right click + Middle click."
+	},
+	"optDragToMove": {
+		"message": "拖拽移动",
+		"description": "Option label for dragging to move images."
+	},
+	"lblLeftClickDrag": {
+		"message": "左键拖拽 (放大后的图片)",
+		"description": "Shortcut label for left-click dragging on zoomed images."
+	},
+	"optAltFreeRotation": {
+		"message": "快速旋转",
+		"description": "Option label for quick mouse-guided rotation."
+	},
+	"lblAltRightLeftClick": {
+		"message": "Alt 键 + 右键 + 左键",
+		"description": "Shortcut label for Alt + Right click + Left click."
+	},
+	"optCtrlAltQuickZoom": {
+		"message": "快速缩放",
+		"description": "Option label for quick drag-based zoom."
+	},
+	"lblCtrlAltRightLeftClick": {
+		"message": "Ctrl 键 + Alt 键 + 右键 + 左键",
+		"description": "Shortcut label for Ctrl + Alt + Right click + Left click."
+	},
+	"btnResetSettings": {
+		"message": "重置设置",
+		"description": "Button text to restore default extension settings."
+	},
+	"optDraggableSingleImage": {
+		"message": "单图视图：直接使用鼠标滚轮缩放。放大后可自由拖拽",
+		"description": "Option label for standalone image viewer enhancements."
+	},
+	"optRightClickTimeout": {
+		"message": "右键自动取消的等待时间",
+		"description": "Option label for right-click cancellation timeout."
+	},
+	"hlpRightClickTimeout": {
+		"message": "右键单击后，如果在此时间内未滚动滚轮，则自动释放右键。（1000ms\u00A0=\u00A01\u2060秒）",
+		"description": "Help tooltip for right-click timeout setting."
+	},
+	"optShowZoomBadge": {
+		"message": "缩放时显示百分比",
+		"description": "Option label to show zoom percentage badge overlay."
+	},
+	"lblExcludedDomains": {
+		"message": "在以下域名上禁用 (每行一个):",
+		"description": "Label for excluded domains configuration."
+	},
+	"hlpExcludedDomains": {
+		"message": "例如 maps.google.com 或 figma.com (子域名会自动包含)",
+		"description": "Placeholder and hint text for domain exclusions."
+	},
+	"optEnableKeyShortcuts": {
+		"message": "启用键盘快捷键 [(Shift+), +/−, 方向键, Esc, 0, R/L, P]",
+		"description": "Option label to toggle keyboard shortcut support."
+	},
+	"btnSupport": {
+		"message": "支持该项目",
+		"description": "Label for donation and support button."
+	},
+	"optZoomToCursor": {
+		"message": "缩放至鼠标光标 (浮动模式)",
+		"description": "Option label to zoom centered towards cursor position."
+	},
+	"panel_title": {
+		"message": "调整图片参数...",
+		"description": "Header title of the adjustment panel."
+	},
+	"panel_tooltip_close": {
+		"message": "关闭",
+		"description": "Tooltip for closing panel."
+	},
+	"panel_label_zoom": {
+		"message": "缩放 (%)",
+		"description": "Panel label for zoom percentage slider."
+	},
+	"panel_label_width": {
+		"message": "宽度 (px)",
+		"description": "Panel label for width in pixels slider."
+	},
+	"panel_label_rot": {
+		"message": "旋转 (°)",
+		"description": "Panel label for rotation slider."
+	},
+	"panel_label_opacity": {
+		"message": "不透明度 (%)",
+		"description": "Panel label for opacity slider."
+	},
+	"panel_label_brightness": {
+		"message": "亮度 (%)",
+		"description": "Panel label for brightness slider."
+	},
+	"panel_btn_reset": {
+		"message": "重置",
+		"description": "Panel button to reset all image adjustments."
+	},
+	"panel_btn_save": {
+		"message": "保存",
+		"description": "Panel button to save modified image to disk."
+	},
+	"panel_btn_close": {
+		"message": "关闭",
+		"description": "Panel button to close the adjustment dialog."
+	},
+	"panel_cors_error": {
+		"message": "无法保存图片。\n\n原因：由于安全策略 (CORS)，源服务器阻止了导出操作。",
+		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_label_flip": {
+		"message": "翻转",
+		"description": "Panel section label for flipping image."
+	},
+	"panel_btn_flip_h": {
+		"message": "↔ 水平",
+		"description": "Panel button to flip image horizontally."
+	},
+	"panel_btn_flip_v": {
+		"message": "↕ 垂直",
+		"description": "Panel button to flip image vertically."
+	},
+	"panel_tooltip_reset_zoom": {
+		"message": "重置缩放",
+		"description": "Tooltip for resetting zoom value."
+	},
+	"panel_tooltip_reset_width": {
+		"message": "重置宽度",
+		"description": "Tooltip for resetting width value."
+	},
+	"panel_tooltip_reset_rot": {
+		"message": "重置旋转",
+		"description": "Tooltip for resetting rotation value."
+	},
+	"panel_tooltip_reset_opac": {
+		"message": "重置不透明度",
+		"description": "Tooltip for resetting opacity value."
+	},
+	"panel_tooltip_reset_bright": {
+		"message": "重置亮度",
+		"description": "Tooltip for resetting brightness value."
+	},
+	"msgResetConfirm": {
+		"message": "确定要将所有设置恢复为默认值吗？",
+		"description": "Confirmation shown before resetting all settings to their defaults."
+	},
+	"msgUpdateNotice": {
+		"message": "Zoom & Drag 已更新。",
+		"description": "Notice shown on the settings page after the extension was updated (version number is appended)."
+	},
+	"lnkChangelog": {
+		"message": "查看更新内容",
+		"description": "Link text pointing to the changelog."
+	},
+	"btnDismissNotice": {
+		"message": "关闭提示",
+		"description": "Tooltip for the button that dismisses the update notice."
+	}
 }

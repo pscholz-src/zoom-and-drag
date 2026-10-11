@@ -3,13 +3,13 @@
   <h1>Zoom & Drag</h1>
   
   <a href="https://chromewebstore.google.com/detail/zoom-drag/nhkdmakncmidecakecdgccejngjmbcak">
-    <img src="https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=Google-Chrome&logoColor=white" alt="Get it on Chrome">
+  <img src="https://img.shields.io/badge/Chrome-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Get it on Chrome">
   </a>
   <a href="https://addons.mozilla.org/de/firefox/addon/zoom-drag/">
     <img src="https://img.shields.io/badge/Firefox-FF7139?style=for-the-badge&logo=Firefox-Browser&logoColor=white" alt="Get it on Firefox">
   </a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/zoom-drag/kimnociommgmkchjaedhkceemdlgimnl">
-    <img src="https://img.shields.io/badge/Edge-0078D7?style=for-the-badge&logo=Microsoft-edge&logoColor=white" alt="Get it on Edge">
+  <img src="https://img.shields.io/badge/Edge-0078D7?style=for-the-badge&logo=microsoftedge&logoColor=white" alt="Get it on Edge">
   </a>
 </div>
 
@@ -33,7 +33,7 @@ Zoom & Drag enables you to seamlessly zoom, rotate, freely move, adjust filters,
 - **Rotate:** `Alt` + Hold `Right Click` + Scroll Mouse Wheel
 - **Quick Rotation:** `Alt` + `Right Click` + `Left Click` and drag
 - **Drag:** Click and hold `Left Click` to move (on zoomed images)
-- **Reset:** `Right Click` + `Left Click`
+- **Default / Actual size:** `Right Click` + `Left Click`
 - **Fit to window:** `Right Click` + `Middle Click`
 
 ## ⌨️ Keyboard Shortcuts

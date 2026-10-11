@@ -1,79 +1,146 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Original work Copyright (c) Amu (http://crossblade.her.jp/)
+ * Modified work Copyright (c) 2026 pscholz
+ *
+ * Project:    Zoom & Drag
+ * Repository: https://github.com/pscholz-src/zoom-and-drag
+ */
+
 img.zdImgCls_b6ig4jvwe {
-    max-width: none !important;
-    max-height: none !important;
-    min-width: 0px !important;
-    min-height: 0px !important;
-    margin: 0px !important;
-    padding: 0px !important;
-    position: absolute !important;
-    z-index: 2147483640 !important;
-    border: none !important;
-    cursor: grab;
+	max-width: none !important;
+	max-height: none !important;
+	min-width: 0px !important;
+	min-height: 0px !important;
+	margin: 0px !important;
+	padding: 0px !important;
+	position: absolute !important;
+	z-index: 2147483640 !important;
+	border: none !important;
+	cursor: grab;
 }
 
 img.zdImgCls_asntrs58f {
-    box-shadow: 0px 0px 4px 0px #666666 !important;
+	box-shadow: 0px 0px 4px 0px #666666 !important;
 }
 
 img.zdImgCls_asntrs58f:hover,
 img.zdImgCls_asntrs58f.zdImgCls_actionActive {
-    box-shadow: 0px 0px 4px 1px #3575dd !important;
+	box-shadow: 0px 0px 4px 1px #3575dd !important;
 }
 
 img.zdImgCls_mhdt687po {
-    box-shadow: 0px 0px 4px 0px #666666 !important;
+	box-shadow: 0px 0px 4px 0px #666666 !important;
 }
 
 img.zdImgCls_mhdt687po:hover,
 img.zdImgCls_mhdt687po.zdImgCls_actionActive {
-    box-shadow: 0px 0px 4px 1px #3575dd !important;
+	box-shadow: 0px 0px 4px 1px #3575dd !important;
 }
 
 img.zdImgCls_imgSrcView {
-    display: none;
-    margin: 0px !important;
-    position: absolute !important;
+	display: none;
+	margin: 0px !important;
+	position: absolute !important;
 }
 
 img.zdImgCls_modeFit {
-    cursor: zoom-in;
+	cursor: zoom-in;
 }
 
 img.zdImgCls_draggingCur {
-    cursor: grabbing;
+	cursor: grabbing;
 }
 
 .zdImgCls_animated {
-    transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                min-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                min-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                max-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                max-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-                transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+	transition: width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		min-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		min-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		max-width 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		max-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
 .zdImg_zoomBadge {
-    position: fixed !important;
-    transform: translate(-50%, -50%) !important;
-    padding: 6px 14px !important;
-    background: rgba(20, 20, 20, 0.35) !important;
-    color: #ffffff !important;
-    font-family: system-ui, -apple-system, sans-serif !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.5px !important;
-    border-radius: 20px !important;
-    pointer-events: none !important;
-    z-index: 2147483647 !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
-    transition: opacity 0.25s ease-out !important;
-    white-space: nowrap !important;
-    opacity: 0;
+	position: fixed !important;
+	transform: translate(-50%, -50%) !important;
+	padding: 6px 14px !important;
+	background: rgba(20, 20, 20, 0.35) !important;
+	color: #ffffff !important;
+	font-family: system-ui, -apple-system, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: 600 !important;
+	letter-spacing: 0.5px !important;
+	border-radius: 20px !important;
+	pointer-events: none !important;
+	z-index: 2147483647 !important;
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+	backdrop-filter: blur(12px) !important;
+	-webkit-backdrop-filter: blur(12px) !important;
+	border: 1px solid rgba(255, 255, 255, 0.18) !important;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+	transition: opacity 0.25s ease-out !important;
+	white-space: nowrap !important;
+	opacity: 0;
+	user-select: none !important;
+	-moz-user-select: none !important;
+	-webkit-user-select: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zdImgCls_animated,
+    .zdImg_zoomBadge {
+        transition-duration: 0.01ms !important;
+    }
+}
+
+[data-zd-sw-lock] img:not([data-zd-sw-active]) {
+	display: none !important;
+}
+
+[data-zd-sw-lock] {
+	min-height: var(--zd-sw-h, 0) !important;
+}
+
+[data-zd-sw-frame],
+[data-zd-sw-frame]:hover,
+[data-zd-sw-frame]:focus,
+[data-zd-sw-frame]:focus-visible,
+[data-zd-sw-frame]:focus-within,
+[data-zd-sw-frame]::before,
+[data-zd-sw-frame]::after {
+	outline: none !important;
+	box-shadow: none !important;
+	border-color: transparent !important;
+}
+
+img[data-zd-sw-active] {
+	opacity: 1 !important;
+	visibility: visible !important;
+}
+
+img[data-zd-sw-active="block"] {
+	display: block !important;
+}
+
+img[data-zd-sw-active="inline"] {
+	display: inline !important;
+}
+
+img[data-zd-sw-active="inline-block"] {
+	display: inline-block !important;
+}
+
+img[data-zd-sw-active="flex"] {
+	display: flex !important;
+}
+
+img[data-zd-sw-active="grid"] {
+	display: grid !important;
 }

@@ -1,206 +1,286 @@
 {
-    "extensionName": {
-        "message": "Zoom & Drag"
-    },
-    "extensionDescription": {
-        "message": "Zooma, ruota, sposta, regola e salva immagini o sfondi con clic destro e rotellina del mouse, senza alterare la pagina."
-    },
-    "cmTopMenu": {
-        "message": "Zoom && Drag"
-    },
-    "cmZoomCustom": {
-        "message": "Regola / salva..."
-    },
-    "cmZoomIn": {
-        "message": "Dimensione x 2.0"
-    },
-    "cmZoomOut": {
-        "message": "Dimensione x 0.5"
-    },
-    "cmR90": {
-        "message": "Ruota 90° (D)"
-    },
-    "cmL90": {
-        "message": "Ruota 90° (S)"
-    },
-    "cmRot180": {
-        "message": "Ruota 180°"
-    },
-    "cmFitWin": {
-        "message": "Adatta alla finestra"
-    },
-    "cmFit": {
-        "message": "Dimensione originale"
-    },
-    "cmSetting": {
-        "message": "Apri impostazioni"
-    },
-    "h2Setting": {
-        "message": "Impostazioni"
-    },
-    "thFunc": {
-        "message": "Funzioni"
-    },
-    "thCtrl": {
-        "message": "Comandi (sulle immagini)"
-    },
-    "optFreeZoom": {
-        "message": "Zoom fluttuante"
-    },
-    "optSwapCommands": {
-        "message": "Scambia comandi"
-    },
-    "optZoom": {
-        "message": "Zoom"
-    },
-    "optRotation": {
-        "message": "Rotazione"
-    },
-    "lblAltRightWheel": {
-        "message": "Tasto Alt + Clic destro + Rotellina del mouse"
-    },
-    "optOriginalSize": {
-        "message": "Dimensione originale"
-    },
-    "lblRightLeftClick": {
-        "message": "Clic destro + Clic sinistro"
-    },
-    "lblRightWheel": {
-        "message": "Clic destro + Rotellina del mouse"
-    },
-    "lblCtrlRightWheel": {
-        "message": "Tasto Ctrl + Clic destro + Rotellina del mouse"
-    },
-    "optZoomStep": {
-        "message": "Fattore di zoom per scatto della rotellina"
-    },
-    "optRotationStep": {
-        "message": "Angolo di rotazione per scatto della rotellina"
-    },
-    "optReverseWheel": {
-        "message": "Inverti la rotellina del mouse"
-    },
-    "optIncludeBgImages": {
-        "message": "Includi immagini di sfondo"
-    },
-    "optAutoResetRelease": {
-        "message": "Ripristina le immagini al rilascio del clic destro"
-    },
-    "optEnableContextMenu": {
-        "message": "Abilita menu contestuale"
-    },
-    "optFitToWindow": {
-        "message": "Adatta alla finestra"
-    },
-    "lblRightMiddleClick": {
-        "message": "Clic destro + Clic centrale"
-    },
-    "optDragToMove": {
-        "message": "Trascina per spostare"
-    },
-    "lblLeftClickDrag": {
-        "message": "Clic sinistro per trascinare (su immagini zoomate)"
-    },
-    "optAltFreeRotation": {
-        "message": "Rotazione rapida"
-    },
-    "lblAltRightLeftClick": {
-        "message": "Tasto Alt + Clic destro + Clic sinistro"
-    },
-    "optCtrlAltQuickZoom": {
-        "message": "Zoom rapido"
-    },
-    "lblCtrlAltRightLeftClick": {
-        "message": "Tasto Ctrl + Tasto Alt + Clic destro + Clic sinistro"
-    },
-    "btnResetSettings": {
-        "message": "Ripristina impostazioni"
-    },
-    "optDraggableSingleImage": {
-        "message": "Vista immagine singola: Zoom diretto con rotellina. Trascinabile dopo l'ingrandimento"
-    },
-    "optRightClickTimeout": {
-        "message": "Tempo prima dell'annullamento del clic destro"
-    },
-    "hlpRightClickTimeout": {
-        "message": "Dopo il clic destro, se trascorre questo tempo senza ruotare la rotellina, il clic viene rilasciato. (1000ms\u00A0=\u00A01\u00A0secondo)"
-    },
-    "optShowZoomBadge": {
-        "message": "Mostra la percentuale di zoom"
-    },
-    "promptZoom": {
-        "message": "Dimensione desiderata in percentuale (es. 150):"
-    },
-    "lblExcludedDomains": {
-        "message": "Disabilita su questi domini (uno per riga):"
-    },
-    "hlpExcludedDomains": {
-        "message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)"
-    },
-    "optEnableKeyShortcuts": {
-        "message": "Abilita scorciatoie da tastiera [(Shift+), +/−, frecce, Esc, 0, R/L, P]"
-    },
-    "btnSupport": {
-        "message": "Supporta il progetto"
-    },
-    "optZoomToCursor": {
-        "message": "Zooma sul cursore (Modalità fluttuante)"
-    },
-    "panel_title": {
-        "message": "Regola i valori dell'immagine..."
-    },
-    "panel_tooltip_close": {
-        "message": "Chiudi"
-    },
-    "panel_label_zoom": {
-        "message": "Zoom (%)"
-    },
-    "panel_label_width": {
-        "message": "Larghezza (px)"
-    },
-    "panel_label_rot": {
-        "message": "Rotazione (°)"
-    },
-    "panel_label_opacity": {
-        "message": "Opacità (%)"
-    },
-    "panel_label_brightness": {
-        "message": "Luminosità (%)"
-    },
-    "panel_btn_reset": {
-        "message": "Reset"
-    },
-    "panel_btn_save": {
-        "message": "Salva"
-    },
-    "panel_btn_close": {
-        "message": "Chiudi"
-    },
-    "panel_cors_error": {
-        "message": "Impossibile salvare l'immagine.\n\nMotivo: il server di origine blocca l'esportazione per motivi di sicurezza (CORS)."
-    },
-    "panel_label_flip": {
-        "message": "Rifletti"
-    },
-    "panel_btn_flip_h": {
-        "message": "↔ Orizzontale"
-    },
-    "panel_btn_flip_v": {
-        "message": "↕ Verticale"
-    },
-    "panel_tooltip_reset_zoom": {
-        "message": "Ripristina zoom"
-    },
-    "panel_tooltip_reset_width": {
-        "message": "Ripristina larghezza"
-    },
-    "panel_tooltip_reset_rot": {
-        "message": "Ripristina rotazione"
-    },
-    "panel_tooltip_reset_opac": {
-        "message": "Ripristina opacità"
-    },
-    "panel_tooltip_reset_bright": {
-        "message": "Ripristina luminosità"
-    }
+	"extensionName": {
+		"message": "Zoom & Drag",
+		"description": "Name of the extension."
+	},
+	"extensionDescription": {
+		"message": "Zooma, ruota, sposta, regola e salva immagini o sfondi con clic destro e rotellina del mouse, senza alterare la pagina.",
+		"description": "Description of the extension."
+	},
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "Title of the top-level context menu entry."
+	},
+	"cmZoomCustom": {
+		"message": "Regola / salva...",
+		"description": "Context menu item to open the adjustment and export panel."
+	},
+	"cmZoomIn": {
+		"message": "Dimensione x 2.0",
+		"description": "Context menu item to double image size."
+	},
+	"cmZoomOut": {
+		"message": "Dimensione x 0.5",
+		"description": "Context menu item to halve image size."
+	},
+	"cmR90": {
+		"message": "Ruota 90° (D)",
+		"description": "Context menu item to rotate 90 degrees clockwise."
+	},
+	"cmL90": {
+		"message": "Ruota 90° (S)",
+		"description": "Context menu item to rotate 90 degrees counterclockwise."
+	},
+	"cmRot180": {
+		"message": "Ruota 180°",
+		"description": "Context menu item to rotate 180 degrees."
+	},
+	"cmFitWin": {
+		"message": "Adatta alla finestra",
+		"description": "Context menu item to fit image to window boundaries."
+	},
+	"cmFit": {
+		"message": "Dimensione predefinita / reale",
+		"description": "Context menu item to toggle between layout and natural image size."
+	},
+	"cmSetting": {
+		"message": "Apri impostazioni",
+		"description": "Context menu item to open settings page."
+	},
+	"h2Setting": {
+		"message": "Impostazioni",
+		"description": "Heading of the settings page."
+	},
+	"thFunc": {
+		"message": "Funzioni",
+		"description": "Table header for features column in settings."
+	},
+	"thCtrl": {
+		"message": "Comandi (sulle immagini)",
+		"description": "Table header for commands/triggers column in settings."
+	},
+	"optFreeZoom": {
+		"message": "Zoom fluttuante",
+		"description": "Option label for floating zoom mode."
+	},
+	"optSwapCommands": {
+		"message": "Scambia comandi",
+		"description": "Option label to swap command assignments."
+	},
+	"optZoom": {
+		"message": "Zoom",
+		"description": "Option label for standard zoom function."
+	},
+	"optRotation": {
+		"message": "Rotazione",
+		"description": "Option label for rotation function."
+	},
+	"lblAltRightWheel": {
+		"message": "Tasto Alt + Clic destro + Rotellina del mouse",
+		"description": "Shortcut label for Alt + Right click + Mouse wheel."
+	},
+	"optOriginalSize": {
+		"message": "Dimensione predefinita / reale",
+		"description": "Option label to toggle between layout and natural image size."
+	},
+	"lblRightLeftClick": {
+		"message": "Clic destro + Clic sinistro",
+		"description": "Shortcut label for Right click + Left click."
+	},
+	"lblRightWheel": {
+		"message": "Clic destro + Rotellina del mouse",
+		"description": "Shortcut label for Right click + Mouse wheel."
+	},
+	"lblCtrlRightWheel": {
+		"message": "Tasto Ctrl + Clic destro + Rotellina del mouse",
+		"description": "Shortcut label for Ctrl + Right click + Mouse wheel."
+	},
+	"optZoomStep": {
+		"message": "Fattore di zoom per scatto della rotellina",
+		"description": "Option label for zoom step percentage per wheel notch."
+	},
+	"optRotationStep": {
+		"message": "Angolo di rotazione per scatto della rotellina",
+		"description": "Option label for rotation angle per wheel notch."
+	},
+	"optReverseWheel": {
+		"message": "Inverti la rotellina del mouse",
+		"description": "Option label to reverse wheel direction."
+	},
+	"optIncludeBgImages": {
+		"message": "Includi immagini di sfondo",
+		"description": "Option label to include CSS background images."
+	},
+	"optAutoResetRelease": {
+		"message": "Ripristina le immagini al rilascio del clic destro",
+		"description": "Option label to auto-reset images upon releasing right-click."
+	},
+	"optEnableContextMenu": {
+		"message": "Abilita menu contestuale",
+		"description": "Option label to enable or disable context menus."
+	},
+	"optFitToWindow": {
+		"message": "Adatta alla finestra",
+		"description": "Option label for fitting image to window."
+	},
+	"lblRightMiddleClick": {
+		"message": "Clic destro + Clic centrale",
+		"description": "Shortcut label for Right click + Middle click."
+	},
+	"optDragToMove": {
+		"message": "Trascina per spostare",
+		"description": "Option label for dragging to move images."
+	},
+	"lblLeftClickDrag": {
+		"message": "Clic sinistro per trascinare (su immagini zoomate)",
+		"description": "Shortcut label for left-click dragging on zoomed images."
+	},
+	"optAltFreeRotation": {
+		"message": "Rotazione rapida",
+		"description": "Option label for quick mouse-guided rotation."
+	},
+	"lblAltRightLeftClick": {
+		"message": "Tasto Alt + Clic destro + Clic sinistro",
+		"description": "Shortcut label for Alt + Right click + Left click."
+	},
+	"optCtrlAltQuickZoom": {
+		"message": "Zoom rapido",
+		"description": "Option label for quick drag-based zoom."
+	},
+	"lblCtrlAltRightLeftClick": {
+		"message": "Tasto Ctrl + Tasto Alt + Clic destro + Clic sinistro",
+		"description": "Shortcut label for Ctrl + Alt + Right click + Left click."
+	},
+	"btnResetSettings": {
+		"message": "Ripristina impostazioni",
+		"description": "Button text to restore default extension settings."
+	},
+	"optDraggableSingleImage": {
+		"message": "Vista immagine singola: Zoom diretto con rotellina. Trascinabile dopo l'ingrandimento",
+		"description": "Option label for standalone image viewer enhancements."
+	},
+	"optRightClickTimeout": {
+		"message": "Tempo prima dell'annullamento del clic destro",
+		"description": "Option label for right-click cancellation timeout."
+	},
+	"hlpRightClickTimeout": {
+		"message": "Dopo il clic destro, se trascorre questo tempo senza ruotare la rotellina, il clic viene rilasciato. (1000ms\u00A0=\u00A01\u00A0secondo)",
+		"description": "Help tooltip for right-click timeout setting."
+	},
+	"optShowZoomBadge": {
+		"message": "Mostra la percentuale di zoom",
+		"description": "Option label to show zoom percentage badge overlay."
+	},
+	"lblExcludedDomains": {
+		"message": "Disabilita su questi domini (uno per riga):",
+		"description": "Label for excluded domains configuration."
+	},
+	"hlpExcludedDomains": {
+		"message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)",
+		"description": "Placeholder and hint text for domain exclusions."
+	},
+	"optEnableKeyShortcuts": {
+		"message": "Abilita scorciatoie da tastiera [(Shift+), +/−, frecce, Esc, 0, R/L, P]",
+		"description": "Option label to toggle keyboard shortcut support."
+	},
+	"btnSupport": {
+		"message": "Supporta il progetto",
+		"description": "Label for donation and support button."
+	},
+	"optZoomToCursor": {
+		"message": "Zooma sul cursore (Modalità fluttuante)",
+		"description": "Option label to zoom centered towards cursor position."
+	},
+	"panel_title": {
+		"message": "Regola i valori dell'immagine...",
+		"description": "Header title of the adjustment panel."
+	},
+	"panel_tooltip_close": {
+		"message": "Chiudi",
+		"description": "Tooltip for closing panel."
+	},
+	"panel_label_zoom": {
+		"message": "Zoom (%)",
+		"description": "Panel label for zoom percentage slider."
+	},
+	"panel_label_width": {
+		"message": "Larghezza (px)",
+		"description": "Panel label for width in pixels slider."
+	},
+	"panel_label_rot": {
+		"message": "Rotazione (°)",
+		"description": "Panel label for rotation slider."
+	},
+	"panel_label_opacity": {
+		"message": "Opacità (%)",
+		"description": "Panel label for opacity slider."
+	},
+	"panel_label_brightness": {
+		"message": "Luminosità (%)",
+		"description": "Panel label for brightness slider."
+	},
+	"panel_btn_reset": {
+		"message": "Reset",
+		"description": "Panel button to reset all image adjustments."
+	},
+	"panel_btn_save": {
+		"message": "Salva",
+		"description": "Panel button to save modified image to disk."
+	},
+	"panel_btn_close": {
+		"message": "Chiudi",
+		"description": "Panel button to close the adjustment dialog."
+	},
+	"panel_cors_error": {
+		"message": "Impossibile salvare l'immagine.\n\nMotivo: il server di origine blocca l'esportazione per motivi di sicurezza (CORS).",
+		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_label_flip": {
+		"message": "Rifletti",
+		"description": "Panel section label for flipping image."
+	},
+	"panel_btn_flip_h": {
+		"message": "↔ Orizzontale",
+		"description": "Panel button to flip image horizontally."
+	},
+	"panel_btn_flip_v": {
+		"message": "↕ Verticale",
+		"description": "Panel button to flip image vertically."
+	},
+	"panel_tooltip_reset_zoom": {
+		"message": "Ripristina zoom",
+		"description": "Tooltip for resetting zoom value."
+	},
+	"panel_tooltip_reset_width": {
+		"message": "Ripristina larghezza",
+		"description": "Tooltip for resetting width value."
+	},
+	"panel_tooltip_reset_rot": {
+		"message": "Ripristina rotazione",
+		"description": "Tooltip for resetting rotation value."
+	},
+	"panel_tooltip_reset_opac": {
+		"message": "Ripristina opacità",
+		"description": "Tooltip for resetting opacity value."
+	},
+	"panel_tooltip_reset_bright": {
+		"message": "Ripristina luminosità",
+		"description": "Tooltip for resetting brightness value."
+	},
+	"msgResetConfirm": {
+		"message": "Ripristinare tutte le impostazioni ai valori predefiniti?",
+		"description": "Confirmation shown before resetting all settings to their defaults."
+	},
+	"msgUpdateNotice": {
+		"message": "Zoom & Drag è stato aggiornato.",
+		"description": "Notice shown on the settings page after the extension was updated (version number is appended)."
+	},
+	"lnkChangelog": {
+		"message": "Vedi le modifiche",
+		"description": "Link text pointing to the changelog."
+	},
+	"btnDismissNotice": {
+		"message": "Chiudi avviso",
+		"description": "Tooltip for the button that dismisses the update notice."
+	}
 }

@@ -2,12 +2,68 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-10-12
+### Added
+- **Update Notice:** After a minor or major update, a dismissible banner with a link to this changelog now appears on the settings page, and the toolbar icon shows a badge until the settings are opened.
+- **CORS Fallback for Image Export:** If the image's server blocks exporting, the extension now retries the download in the background, so many previously blocked images can be saved
+- **Reset Confirmation:** The "Reset" button on the settings page now asks for confirmation before restoring the default settings.
+- **Touch & Stylus Support:** Migrated gesture handling from legacy mouse events to universal pointer events and touch events. This greatly improves interactions on touchscreens, trackpads, and with styluses.
+- **Image switcher support:** The main image is edited, the hover image stays untouched. The tile link is blocked for plain clicks while the image is modified and works again after reset.
+- **License:** Added the full MPL-2.0 license text (`LICENSE`).
+
+### Improved
+- **Overlay Image Detection**: Added a fallback during target checks, allowing images hidden behind transparent interaction overlays, anchors, or slider buttons to be zoomed directly.
+- **Heuristic Visual Target Scoring:** Implemented an intelligent scoring system in the target-detection engine to reliably identify the primary visible image while filtering out zero-dimension, transparent, or hidden overlay layers.
+- **Visual Stability:** Isolated the adjustment panel using Shadow DOM, preventing websites with aggressive styling from breaking the panel's layout.
+- **Code Refactoring:** Moved panel components into a dedicated template (`panel.html`) for cleaner architecture and better maintainability.
+- **Automatic Reset on Modal & Lightbox Transitions:** The adjustment panel now automatically closes and reverts active transformations whenever the page enters a focus mode.
+- **Carousel Focus Loss:** The panel now closes automatically when a slider shifts the active image out of its container.
+- **Fullscreen Floating Mode:** Fullscreen images now always float, preventing layout glitches and collapsing text in surrounding articles.
+- **Gallery Overlay Exclusion:** Introduced a rule-based whitelist for sites with active modal overlays (e.g., Bing Image Search) to ignore out-of-bounds background images, preventing unintended zooming and shortcut triggers on masked content.
+- **DOM Observer Overhead:** The mutation observer for floating images now activates strictly on demand instead of running continuously, reducing idle CPU usage to zero.
+- **Gesture Event Performance:** Deduplicated parallel event handlers during active drag and rotation gestures.
+- **Topmost Stacking for Dragged & Modified Images:** The most recently manipulated or dragged image is now automatically elevated above all other floating and modified images.
+- **Sequential Panel Reset Flow:** Resetting an image via the adjustment panel now immediately shifts active focus and bounding indicators to the next remaining modified image. When all images are reverted, the panel remains focused on the final reset image.
+- **Hover Detection Performance:** Image detection under the cursor now runs at most once per frame and skips images that are not under the pointer, reducing CPU load on image-heavy pages.
+- **Panel Performance:** An open adjustment panel now performs far fewer style calculations while idle, and its sync loop can no longer run twice in parallel.
+- **Settings Loading:** Content scripts now read the settings directly from storage, which saves a message round trip to the background script on every page and frame.
+- **Context Menu:** The menu is now created once and only shown or hidden, instead of being rebuilt on every right click.
+- **Touchpad Zoom:** Small wheel deltas (e.g. touchpads) now zoom proportionally. Regular mouse wheel steps are unchanged.
+- **Image Export Limits:** Very large exports are scaled down to the browser's canvas limits instead of failing, and errors are shown inside the panel instead of a blocking dialog.
+- **Accessibility (Reduced Motion):** The extension now respects the system-wide "prefers-reduced-motion" setting. UI animations and transitions (like the panel opening or image resetting) are automatically disabled for users who prefer no animations.
+- **Localization & Size Toggle Labels:** Streamlined the wording for the reset/native-size toggle across all locales. This accurately reflects the dual-action toggle behavior (layout size vs. native resolution).
+
+### Changed
+- **Zoom Badge Alignment:** Added dynamic Y-offset calculation based on zoom ratio, keeping the badge above the upper edge when downscaling below 100%.
+- **Minimum Image Size Limit:** Replaced the relative 5% threshold with a strict absolute minimum width of **20 px**. High-resolution images can now be zoomed out much further while ensuring the element always remains visible and clickable.
+- **Update Notice Behavior:** The changelog tab now only opens automatically on fresh installs. Updates show the in-settings banner instead of opening a tab.
+- **Modifier Clicks Open Links:** Clicks with `Ctrl`, `Shift`, `Alt` or `Meta` as well as middle clicks are no longer blocked on modified images, so links can still be opened in a new tab or window. Plain clicks stay blocked until the image is reset. This now applies consistently to inline images, floating images and image switchers.
+- **Revert on Right-Click Release:** The "Revert images when releasing the right click" option now also works while the adjustment panel is open, and only reverts images that were actually changed by the right click. Plain right clicks no longer reset images modified by shortcuts, dragging or the panel.
+
+### Fixed
+- **Panel Zoom Integration:** Preserved native `Ctrl` zoom and value readouts when the panel is open, deferring floating mode until panel controls are adjusted.
+- **Image Container Lock:** Inactivated original image containers from badge and zoom triggers until the active floating copy is reset.
+- **Off-Image Re-Zoom Prevention:** Prevented re-triggering right-click + wheel floating zoom when the cursor is positioned outside the active image boundaries.
+- **Quick Zoom Persistence:** Prevented unexpected timeout of quick zoom activity.
+- **Quick Zoom Floating Fix:** Prevented Quick Zoom from breaking page layouts on sites with forced inline styles.
+- **Panel Inline Frame:** Corrected bounding and rendering behavior for the custom panel's inline frame.
+- **Hovered Target Priority:** Hovered images now consistently take precedence over open panel selections.
+- **Shortcut Target Recognition:** Fixed shortcuts failing on images inside interactive elements (e.g. gallery buttons)
+- **Seamless transition in single image view:** The add-on now perfectly harmonizes with the browser's native zoom (zoom-in / zoom-out).
+- **Modal Image Gestures:** Improved gesture recognition and rotation precision when interacting with images inside complex gallery sliders and lightbox components.
+- **Aspect Ratio Zoom Drift:** Fixed inaccurate scale multipliers and badge percentages on images with non-native CSS aspect ratios. Preset actions like "Size x 2.0" and "Size x 0.5" now reliably reach exact target sizes (200% / 50%).
+- **Single Image View Scroll Restoration:** When resetting an image in the single-image view, the extension now reliably remembers and restores your exact previous scroll position.
+- **Inline Click Shield:** Prevented native website actions (e.g., galleries) from triggering on modified images by reliably blocking clicks through invisible overlays.
+- **Accurate Target Selection in Stacked Containers:** Prevented target detection from latching onto underlying low-resolution thumbnails or invisible search overlays instead of the primary rendered image.
+- **Multi-Image Containers:** Tiles that combine several images (e.g. one large and two small images in Bing Image Search) now block their link as long as any of their images is modified, no matter which of the images was changed or clicked.
+
+
 ## [2.0.1] - 2026-09-24
 ### Fixed
 - **Revert images when to release the right click:** Improved functionality with automatically reverting and releasing images when the right mouse button is released.
 - **Single image view:** Fixed edge cases in the single image view (controlling mouse wheel zoom behavior and ensuring stable resets via the custom panel).
 - **Dragging:** Optimized image dragging mechanics to prevent unwanted layout jumps.
-- **Image frame:** The blue selection and quick zoom frames now align precisely with the actual image bounds (accounting for `object-fit: contain`).
+- **Image frame:** The blue selection and quick zoom frames now align precisely with the actual image bounds.
 - **Language adjustments:** Minor corrections and additions to localizations.
 
 ## [2.0.0] - 2026-09-21

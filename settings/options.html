@@ -1,3 +1,15 @@
+<!--
+ - This Source Code Form is subject to the terms of the Mozilla Public
+ - License, v. 2.0. If a copy of the MPL was not distributed with this
+ - file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ -
+ - Original work Copyright (c) Amu (http://crossblade.her.jp/)
+ - Modified work Copyright (c) 2026 pscholz
+ -
+ - Project:    Zoom & Drag
+ - Repository: https://github.com/pscholz-src/zoom-and-drag
+ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +18,11 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	<div id="update_notice" class="update_notice" role="status" hidden>
+		<span><span data-i18n="msgUpdateNotice"></span> <span id="update_version"></span></span>
+		<a href="https://github.com/pscholz-src/zoom-and-drag/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer"><span data-i18n="lnkChangelog"></span></a>
+		<button type="button" id="update_dismiss">&times;</button>
+	</div>
 	<h2><span id="h2Setting" data-i18n="h2Setting"></span></h2>
 	<article>
 		<div class="func_list">
@@ -18,11 +35,13 @@
 					<td class="fc"><span data-i18n="optFreeZoom"></span></td>
 					<td id="ctrl_op1"></td>
 					<td rowspan="2">
-						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
-	<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2" stroke-linejoin="miter" stroke-linecap="square"/>
-	<polygon points="8,1 0,7 8,13" fill="#666"/>
-	<polygon points="8,27 0,33 8,39" fill="#666"/>
-</svg>
+						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg"
+							style="vertical-align: middle; margin-right: 6px;">
+							<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2"
+								stroke-linejoin="miter" stroke-linecap="square" />
+							<polygon points="8,1 0,7 8,13" fill="#666" />
+							<polygon points="8,27 0,33 8,39" fill="#666" />
+						</svg>
 						<input type="checkbox" id="ctrlRvs" value="">
 						<label for="ctrlRvs"><span data-i18n="optSwapCommands"></span></label>
 					</td>
@@ -39,11 +58,13 @@
 					<td class="fc"><span data-i18n="optOriginalSize"></span></td>
 					<td id="click_op1"><span data-i18n="lblRightLeftClick"></span></td>
 					<td rowspan="2">
-						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
-	<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2" stroke-linejoin="miter" stroke-linecap="square"/>
-	<polygon points="8,1 0,7 8,13" fill="#666"/>
-	<polygon points="8,27 0,33 8,39" fill="#666"/>
-</svg>
+						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg"
+							style="vertical-align: middle; margin-right: 6px;">
+							<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2"
+								stroke-linejoin="miter" stroke-linecap="square" />
+							<polygon points="8,1 0,7 8,13" fill="#666" />
+							<polygon points="8,27 0,33 8,39" fill="#666" />
+						</svg>
 						<input type="checkbox" id="clickSwap" value="">
 						<label for="clickSwap"><span data-i18n="optSwapCommands"></span></label>
 					</td>
@@ -69,119 +90,120 @@
 			<input type="hidden" data-i18n="lblCtrlRightWheel" class="ctrl_op_d" value="">
 		</div>
 		<div class="options">
-            <table>
-                <tr>
-                    <td>
-                        <span data-i18n="optZoomStep"></span>
-                    </td>
-                    <td>
-                        <select id="dim">
-                            <option value="1">1%</option>
-                            <option value="5">5%</option>
-                            <option value="10" selected>10%</option>
-                            <option value="20">20%</option>
-                            <option value="30">30%</option>
-                            <option value="40">40%</option>
-                            <option value="50">50%</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span data-i18n="optRotationStep"></span>
-                    </td>
-                    <td>
-                        <select id="rotd">
-                            <option value="5">5°</option>
-                            <option value="15" selected>15°</option>
-                            <option value="45">45°</option>
-                            <option value="90">90°</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span data-i18n="optRightClickTimeout"></span>
-                        <svg class="qt_img" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                        <div class="help_nt" data-i18n="hlpRightClickTimeout"></div>
-                    </td>
-                    <td>
-                        <select id="rcCancel">
-                            <option value="500">500</option>
-                            <option value="1000">1000</option>
-                            <option value="2000">2000</option>
-                            <option value="3000" selected>3000</option>
-                            <option value="4000">4000</option>
-                            <option value="5000">5000</option>
-                            <option value="10000">10000</option>
-                            <option value="-1">∞</option>
-                        </select> ms
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="reverse" value="">
-                        <label for="reverse"><span data-i18n="optReverseWheel"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="zoom_trackCursor" value="">
-                        <label for="zoom_trackCursor"><span data-i18n="optZoomToCursor"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="bgImg" value="">
-                        <label for="bgImg"><span data-i18n="optIncludeBgImages"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="autoRtn" value="">
-                        <label for="autoRtn"><span data-i18n="optAutoResetRelease"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="enableCxt" value="">
-                        <label for="enableCxt"><span data-i18n="optEnableContextMenu"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="ivpDrag" value="">
-                        <label for="ivpDrag"><span data-i18n="optDraggableSingleImage"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="showZoomBadge" value="">
-                        <label for="showZoomBadge"><span data-i18n="optShowZoomBadge"></span></label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="checkbox" id="enableKeyShortcuts" value="">
-                        <label for="enableKeyShortcuts"><span data-i18n="optEnableKeyShortcuts"></span></label>
-                    </td>
-                </tr>
-            </table>
+			<table>
+				<tr>
+					<td>
+						<span data-i18n="optZoomStep"></span>
+					</td>
+					<td>
+						<select id="dim">
+							<option value="1">1%</option>
+							<option value="5">5%</option>
+							<option value="10" selected>10%</option>
+							<option value="20">20%</option>
+							<option value="30">30%</option>
+							<option value="40">40%</option>
+							<option value="50">50%</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span data-i18n="optRotationStep"></span>
+					</td>
+					<td>
+						<select id="rotd">
+							<option value="5">5°</option>
+							<option value="15" selected>15°</option>
+							<option value="45">45°</option>
+							<option value="90">90°</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span data-i18n="optRightClickTimeout"></span>
+						<svg class="qt_img" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+							stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+							<circle cx="12" cy="12" r="10"></circle>
+							<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+							<line x1="12" y1="17" x2="12.01" y2="17"></line>
+						</svg>
+						<div class="help_nt" data-i18n="hlpRightClickTimeout"></div>
+					</td>
+					<td>
+						<select id="rcCancel">
+							<option value="500">500</option>
+							<option value="1000">1000</option>
+							<option value="2000">2000</option>
+							<option value="3000" selected>3000</option>
+							<option value="4000">4000</option>
+							<option value="5000">5000</option>
+							<option value="10000">10000</option>
+							<option value="-1">∞</option>
+						</select> ms
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="reverse" value="">
+						<label for="reverse"><span data-i18n="optReverseWheel"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="zoom_trackCursor" value="">
+						<label for="zoom_trackCursor"><span data-i18n="optZoomToCursor"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="bgImg" value="">
+						<label for="bgImg"><span data-i18n="optIncludeBgImages"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="autoRtn" value="">
+						<label for="autoRtn"><span data-i18n="optAutoResetRelease"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="enableCxt" value="">
+						<label for="enableCxt"><span data-i18n="optEnableContextMenu"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="ivpDrag" value="">
+						<label for="ivpDrag"><span data-i18n="optDraggableSingleImage"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="showZoomBadge" value="">
+						<label for="showZoomBadge"><span data-i18n="optShowZoomBadge"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="enableKeyShortcuts" value="">
+						<label for="enableKeyShortcuts"><span data-i18n="optEnableKeyShortcuts"></span></label>
+					</td>
+				</tr>
+			</table>
 		</div>
 		<div class="exclude_section">
 			<label for="excludedDomains"><span data-i18n="lblExcludedDomains"></span></label>
 			<textarea id="excludedDomains" rows="3" spellcheck="false" data-i18n-placeholder="hlpExcludedDomains"></textarea>
 		</div>
 		<div class="footer_actions">
-		    <button type="button" id="reset_btn"><span data-i18n="btnResetSettings"></span></button>
-		    <a href="https://ko-fi.com/pscholz" target="_blank" rel="noopener noreferrer" class="kofi-link">
-			<img src="../icons/kofi_symbol.svg" alt="Ko-fi" class="kofi-icon">
-			<span data-i18n="btnSupport"></span>
-		    </a>
+			<button type="button" id="reset_btn"><span data-i18n="btnResetSettings"></span></button>
+			<a href="https://ko-fi.com/pscholz" target="_blank" rel="noopener noreferrer" class="kofi-link">
+				<img src="../icons/kofi_symbol.svg" alt="Ko-fi" class="kofi-icon">
+				<span data-i18n="btnSupport"></span>
+			</a>
 		</div>
 	</article>
 	<script type="module" src="script.js"></script>

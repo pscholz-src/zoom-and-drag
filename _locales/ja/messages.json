@@ -1,255 +1,286 @@
 {
-    "extensionName": {
-        "message": "Zoom & Drag - ズームとドラッグ",
-        "description": "拡張機能の名前です。"
-    },
-    "extensionDescription": {
-        "message": "右クリックとマウスホイールで画像や背景をズーム、回転、移動、調整、保存します。ページのレイアウトは崩れません。",
-        "description": "拡張機能の説明です。"
-    },
-    "cmTopMenu": {
-        "message": "Zoom && Drag",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmZoomCustom": {
-        "message": "調整 / 保存...",
-        "description": "Item of the context menu."
-    },
-    "cmZoomIn": {
-        "message": "2倍に拡大",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmZoomOut": {
-        "message": "0.5倍に縮小",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmR90": {
-        "message": "右に90度回転",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmL90": {
-        "message": "左に90度回転",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmRot180": {
-        "message": "180度回転",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmFitWin": {
-        "message": "ウィンドウに合わせる",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmFit": {
-        "message": "元に戻す / 実際のサイズ",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "cmSetting": {
-        "message": "設定を開く",
-        "description": "コンテキストメニューの項目です。"
-    },
-    "h2Setting": {
-        "message": "設定",
-        "description": "設定HTMLのテキストです。"
-    },
-    "thFunc": {
-        "message": "機能",
-        "description": "設定HTMLのテキストです。"
-    },
-    "thCtrl": {
-        "message": "操作（画像の上で）",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optFreeZoom": {
-        "message": "浮かせて拡大・縮小",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optSwapCommands": {
-        "message": "操作を入れ替え",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optZoom": {
-        "message": "拡大・縮小",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optRotation": {
-        "message": "回転",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblAltRightWheel": {
-        "message": "Altキーと右クリックを押しながらマウスホイール回転",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optOriginalSize": {
-        "message": "実際のサイズにする / 元に戻す",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblRightLeftClick": {
-        "message": "右クリックを押しながら左クリック",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblRightWheel": {
-        "message": "右クリックを押しながらマウスホイール回転",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblCtrlRightWheel": {
-        "message": "Ctrlキーと右クリックを押しながらマウスホイール回転",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optZoomStep": {
-        "message": "マウスホイール1回分の拡縮率",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optRotationStep": {
-        "message": "マウスホイール1回分の回転角度",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optReverseWheel": {
-        "message": "マウスホイールの方向を逆転",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optIncludeBgImages": {
-        "message": "背景画像も対象にする",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optAutoResetRelease": {
-        "message": "右クリックを離した時に画像を元に戻す",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optEnableContextMenu": {
-        "message": "コンテキストメニューを有効",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optFitToWindow": {
-        "message": "ウィンドウサイズに合わせる",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblRightMiddleClick": {
-        "message": "右クリックを押しながら中クリック",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optDragToMove": {
-        "message": "ドラッグで移動",
-        "description": "設定HTMLのテキストです。"
-    },
-    "lblLeftClickDrag": {
-        "message": "拡大した画像を左クリックでドラッグ",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optAltFreeRotation": {
-        "message": "素早い回転",
-        "description": "Setting HTML text."
-    },
-    "lblAltRightLeftClick": {
-        "message": "Altキーと右クリックを押しながら左クリック",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optCtrlAltQuickZoom": {
-        "message": "クイックズーム",
-        "description": "Setting HTML text."
-    },
-    "lblCtrlAltRightLeftClick": {
-        "message": "CtrlキーとAltキーと右クリックを押しながら左クリック",
-        "description": "設定HTMLのテキストです。"
-    },
-    "btnResetSettings": {
-        "message": "設定リセット",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optDraggableSingleImage": {
-        "message": "単一画像ビュー: マウスホイールで直接ズーム。拡大後は自由にドラッグ可能",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optRightClickTimeout": {
-        "message": "右クリックが解除されるまでの時間",
-        "description": "設定HTMLのテキストです。"
-    },
-    "hlpRightClickTimeout": {
-        "message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms\u00A0=\u00A01\u2060秒）",
-        "description": "設定HTMLのテキストです。"
-    },
-    "optShowZoomBadge": {
-        "message": "拡大時にズーム率を表示する",
-        "description": "Setting HTML text."
-    },
-    "promptZoom": {
-        "message": "希望のサイズをパーセントで入力 (例: 150):",
-        "description": "Prompt text for custom zoom."
-    },
-    "lblExcludedDomains": {
-        "message": "次のドメインで無効化（1行に1つ）:",
-        "description": "Label for excluded domains textarea."
-    },
-    "hlpExcludedDomains": {
-        "message": "例: maps.google.com, figma.com (サブドメインも自動的に対象となります)",
-        "description": "Placeholder for excluded domains textarea."
-    },
-    "optEnableKeyShortcuts": {
-        "message": "キーボードショートカットを有効化 [(Shift+), +/−, 矢印キー, Esc, 0, R/L, P]",
-        "description": "Setting HTML text."
-    },
-    "btnSupport": {
-        "message": "プロジェクトを支援",
-        "description": "Donation link text"
-    },
-    "optZoomToCursor": {
-        "message": "カーソル位置へズーム（フローティングモード）",
-        "description": "Setting HTML text."
-    },
-    "panel_title": {
-        "message": "画像の設定を変更..."
-    },
-    "panel_tooltip_close": {
-        "message": "閉じる"
-    },
-    "panel_label_zoom": {
-        "message": "ズーム (%)"
-    },
-    "panel_label_width": {
-        "message": "幅 (px)"
-    },
-    "panel_label_rot": {
-        "message": "回転 (°)"
-    },
-    "panel_label_opacity": {
-        "message": "不透明度 (%)"
-    },
-    "panel_label_brightness": {
-        "message": "明るさ (%)"
-    },
-    "panel_btn_reset": {
-        "message": "リセット"
-    },
-    "panel_btn_save": {
-        "message": "保存"
-    },
-    "panel_btn_close": {
-        "message": "閉じる"
-    },
-    "panel_cors_error": {
-        "message": "画像を保存できませんでした。\n\n理由: セキュリティポリシー (CORS) により、ソースサーバーがエクスポートをブロックしています。"
-    },
-    "panel_label_flip": {
-        "message": "反転"
-    },
-    "panel_btn_flip_h": {
-        "message": "↔ 水平"
-    },
-    "panel_btn_flip_v": {
-        "message": "↕ 垂直"
-    },
-    "panel_tooltip_reset_zoom": {
-        "message": "ズームをリセット"
-    },
-    "panel_tooltip_reset_width": {
-        "message": "幅をリセット"
-    },
-    "panel_tooltip_reset_rot": {
-        "message": "回転をリセット"
-    },
-    "panel_tooltip_reset_opac": {
-        "message": "不透明度をリセット"
-    },
-    "panel_tooltip_reset_bright": {
-        "message": "明るさをリセット"
-    }
+	"extensionName": {
+		"message": "Zoom & Drag - ズームとドラッグ",
+		"description": "Name of the extension."
+	},
+	"extensionDescription": {
+		"message": "右クリックとマウスホイールで画像や背景をズーム、回転、移動、調整、保存します。ページのレイアウトは崩れません。",
+		"description": "Description of the extension."
+	},
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "Title of the top-level context menu entry."
+	},
+	"cmZoomCustom": {
+		"message": "調整 / 保存...",
+		"description": "Context menu item to open the adjustment and export panel."
+	},
+	"cmZoomIn": {
+		"message": "2倍に拡大",
+		"description": "Context menu item to double image size."
+	},
+	"cmZoomOut": {
+		"message": "0.5倍に縮小",
+		"description": "Context menu item to halve image size."
+	},
+	"cmR90": {
+		"message": "右に90度回転",
+		"description": "Context menu item to rotate 90 degrees clockwise."
+	},
+	"cmL90": {
+		"message": "左に90度回転",
+		"description": "Context menu item to rotate 90 degrees counterclockwise."
+	},
+	"cmRot180": {
+		"message": "180度回転",
+		"description": "Context menu item to rotate 180 degrees."
+	},
+	"cmFitWin": {
+		"message": "ウィンドウに合わせる",
+		"description": "Context menu item to fit image to window boundaries."
+	},
+	"cmFit": {
+		"message": "標準 / 原寸サイズ",
+		"description": "Context menu item to toggle between layout and natural image size."
+	},
+	"cmSetting": {
+		"message": "設定を開く",
+		"description": "Context menu item to open settings page."
+	},
+	"h2Setting": {
+		"message": "設定",
+		"description": "Heading of the settings page."
+	},
+	"thFunc": {
+		"message": "機能",
+		"description": "Table header for features column in settings."
+	},
+	"thCtrl": {
+		"message": "操作（画像の上で）",
+		"description": "Table header for commands/triggers column in settings."
+	},
+	"optFreeZoom": {
+		"message": "浮かせて拡大・縮小",
+		"description": "Option label for floating zoom mode."
+	},
+	"optSwapCommands": {
+		"message": "操作を入れ替え",
+		"description": "Option label to swap command assignments."
+	},
+	"optZoom": {
+		"message": "拡大・縮小",
+		"description": "Option label for standard zoom function."
+	},
+	"optRotation": {
+		"message": "回転",
+		"description": "Option label for rotation function."
+	},
+	"lblAltRightWheel": {
+		"message": "Altキーと右クリックを押しながらマウスホイール回転",
+		"description": "Shortcut label for Alt + Right click + Mouse wheel."
+	},
+	"optOriginalSize": {
+		"message": "標準 / 原寸サイズ",
+		"description": "Option label to toggle between layout and natural image size."
+	},
+	"lblRightLeftClick": {
+		"message": "右クリックを押しながら左クリック",
+		"description": "Shortcut label for Right click + Left click."
+	},
+	"lblRightWheel": {
+		"message": "右クリックを押しながらマウスホイール回転",
+		"description": "Shortcut label for Right click + Mouse wheel."
+	},
+	"lblCtrlRightWheel": {
+		"message": "Ctrlキーと右クリックを押しながらマウスホイール回転",
+		"description": "Shortcut label for Ctrl + Right click + Mouse wheel."
+	},
+	"optZoomStep": {
+		"message": "マウスホイール1回分の拡縮率",
+		"description": "Option label for zoom step percentage per wheel notch."
+	},
+	"optRotationStep": {
+		"message": "マウスホイール1回分の回転角度",
+		"description": "Option label for rotation angle per wheel notch."
+	},
+	"optReverseWheel": {
+		"message": "マウスホイールの方向を逆転",
+		"description": "Option label to reverse wheel direction."
+	},
+	"optIncludeBgImages": {
+		"message": "背景画像も対象にする",
+		"description": "Option label to include CSS background images."
+	},
+	"optAutoResetRelease": {
+		"message": "右クリックを離した時に画像を元に戻す",
+		"description": "Option label to auto-reset images upon releasing right-click."
+	},
+	"optEnableContextMenu": {
+		"message": "コンテキストメニューを有効",
+		"description": "Option label to enable or disable context menus."
+	},
+	"optFitToWindow": {
+		"message": "ウィンドウサイズに合わせる",
+		"description": "Option label for fitting image to window."
+	},
+	"lblRightMiddleClick": {
+		"message": "右クリックを押しながら中クリック",
+		"description": "Shortcut label for Right click + Middle click."
+	},
+	"optDragToMove": {
+		"message": "ドラッグで移動",
+		"description": "Option label for dragging to move images."
+	},
+	"lblLeftClickDrag": {
+		"message": "拡大した画像を左クリックでドラッグ",
+		"description": "Shortcut label for left-click dragging on zoomed images."
+	},
+	"optAltFreeRotation": {
+		"message": "素早い回転",
+		"description": "Option label for quick mouse-guided rotation."
+	},
+	"lblAltRightLeftClick": {
+		"message": "Altキーと右クリックを押しながら左クリック",
+		"description": "Shortcut label for Alt + Right click + Left click."
+	},
+	"optCtrlAltQuickZoom": {
+		"message": "クイックズーム",
+		"description": "Option label for quick drag-based zoom."
+	},
+	"lblCtrlAltRightLeftClick": {
+		"message": "CtrlキーとAltキーと右クリックを押しながら左クリック",
+		"description": "Shortcut label for Ctrl + Alt + Right click + Left click."
+	},
+	"btnResetSettings": {
+		"message": "設定リセット",
+		"description": "Button text to restore default extension settings."
+	},
+	"optDraggableSingleImage": {
+		"message": "単一画像ビュー: マウスホイールで直接ズーム。拡大後は自由にドラッグ可能",
+		"description": "Option label for standalone image viewer enhancements."
+	},
+	"optRightClickTimeout": {
+		"message": "右クリックが解除されるまでの時間",
+		"description": "Option label for right-click cancellation timeout."
+	},
+	"hlpRightClickTimeout": {
+		"message": "右クリック後、ホイールを回転させずにこの時間が経過すると擬似的に右クリックが離された状態になります。（1000ms\u00A0=\u00A01\u2060秒）",
+		"description": "Help tooltip for right-click timeout setting."
+	},
+	"optShowZoomBadge": {
+		"message": "拡大時にズーム率を表示する",
+		"description": "Option label to show zoom percentage badge overlay."
+	},
+	"lblExcludedDomains": {
+		"message": "次のドメインで無効化（1行に1つ）:",
+		"description": "Label for excluded domains configuration."
+	},
+	"hlpExcludedDomains": {
+		"message": "例: maps.google.com, figma.com (サブドメインも自動的に対象となります)",
+		"description": "Placeholder and hint text for domain exclusions."
+	},
+	"optEnableKeyShortcuts": {
+		"message": "キーボードショートカットを有効化 [(Shift+), +/−, 矢印キー, Esc, 0, R/L, P]",
+		"description": "Option label to toggle keyboard shortcut support."
+	},
+	"btnSupport": {
+		"message": "プロジェクトを支援",
+		"description": "Label for donation and support button."
+	},
+	"optZoomToCursor": {
+		"message": "カーソル位置へズーム（フローティングモード）",
+		"description": "Option label to zoom centered towards cursor position."
+	},
+	"panel_title": {
+		"message": "画像の設定を変更...",
+		"description": "Header title of the adjustment panel."
+	},
+	"panel_tooltip_close": {
+		"message": "閉じる",
+		"description": "Tooltip for closing panel."
+	},
+	"panel_label_zoom": {
+		"message": "ズーム (%)",
+		"description": "Panel label for zoom percentage slider."
+	},
+	"panel_label_width": {
+		"message": "幅 (px)",
+		"description": "Panel label for width in pixels slider."
+	},
+	"panel_label_rot": {
+		"message": "回転 (°)",
+		"description": "Panel label for rotation slider."
+	},
+	"panel_label_opacity": {
+		"message": "不透明度 (%)",
+		"description": "Panel label for opacity slider."
+	},
+	"panel_label_brightness": {
+		"message": "明るさ (%)",
+		"description": "Panel label for brightness slider."
+	},
+	"panel_btn_reset": {
+		"message": "リセット",
+		"description": "Panel button to reset all image adjustments."
+	},
+	"panel_btn_save": {
+		"message": "保存",
+		"description": "Panel button to save modified image to disk."
+	},
+	"panel_btn_close": {
+		"message": "閉じる",
+		"description": "Panel button to close the adjustment dialog."
+	},
+	"panel_cors_error": {
+		"message": "画像を保存できませんでした。\n\n理由: セキュリティポリシー (CORS) により、ソースサーバーがエクスポートをブロックしています。",
+		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_label_flip": {
+		"message": "反転",
+		"description": "Panel section label for flipping image."
+	},
+	"panel_btn_flip_h": {
+		"message": "↔ 水平",
+		"description": "Panel button to flip image horizontally."
+	},
+	"panel_btn_flip_v": {
+		"message": "↕ 垂直",
+		"description": "Panel button to flip image vertically."
+	},
+	"panel_tooltip_reset_zoom": {
+		"message": "ズームをリセット",
+		"description": "Tooltip for resetting zoom value."
+	},
+	"panel_tooltip_reset_width": {
+		"message": "幅をリセット",
+		"description": "Tooltip for resetting width value."
+	},
+	"panel_tooltip_reset_rot": {
+		"message": "回転をリセット",
+		"description": "Tooltip for resetting rotation value."
+	},
+	"panel_tooltip_reset_opac": {
+		"message": "不透明度をリセット",
+		"description": "Tooltip for resetting opacity value."
+	},
+	"panel_tooltip_reset_bright": {
+		"message": "明るさをリセット",
+		"description": "Tooltip for resetting brightness value."
+	},
+	"msgResetConfirm": {
+		"message": "すべての設定を初期値に戻しますか？",
+		"description": "Confirmation shown before resetting all settings to their defaults."
+	},
+	"msgUpdateNotice": {
+		"message": "Zoom & Drag が更新されました。",
+		"description": "Notice shown on the settings page after the extension was updated (version number is appended)."
+	},
+	"lnkChangelog": {
+		"message": "変更内容を見る",
+		"description": "Link text pointing to the changelog."
+	},
+	"btnDismissNotice": {
+		"message": "通知を閉じる",
+		"description": "Tooltip for the button that dismisses the update notice."
+	}
 }

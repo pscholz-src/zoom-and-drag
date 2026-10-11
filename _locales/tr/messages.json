@@ -1,206 +1,286 @@
 {
-    "extensionName": {
-        "message": "Zoom & Drag"
-    },
-    "extensionDescription": {
-        "message": "Düzeni bozmadan sağ tık ve tekerlekle resimleri veya arka planları yakınlaştırın, döndürün, taşıyın, ayarlayın ve kaydedin."
-    },
-    "cmTopMenu": {
-        "message": "Zoom && Drag"
-    },
-    "cmZoomCustom": {
-        "message": "Ayarla / kaydet..."
-    },
-    "cmZoomIn": {
-        "message": "Boyut x 2.0"
-    },
-    "cmZoomOut": {
-        "message": "Boyut x 0.5"
-    },
-    "cmR90": {
-        "message": "90° Döndür (Sağ)"
-    },
-    "cmL90": {
-        "message": "90° Döndür (Sol)"
-    },
-    "cmRot180": {
-        "message": "180° Döndür"
-    },
-    "cmFitWin": {
-        "message": "Pencereye sığdır"
-    },
-    "cmFit": {
-        "message": "Orijinal boyut / Normal boyut"
-    },
-    "cmSetting": {
-        "message": "Ayarları aç"
-    },
-    "h2Setting": {
-        "message": "Ayarlar"
-    },
-    "thFunc": {
-        "message": "Özellikler"
-    },
-    "thCtrl": {
-        "message": "Komutlar (resimler üzerinde)"
-    },
-    "optFreeZoom": {
-        "message": "Serbest Yakınlaştırma (Yüzen)"
-    },
-    "optSwapCommands": {
-        "message": "Komutları değiştir"
-    },
-    "optZoom": {
-        "message": "Yakınlaştırma"
-    },
-    "optRotation": {
-        "message": "Döndürme"
-    },
-    "lblAltRightWheel": {
-        "message": "Alt + Sağ tık + Fare tekerleği"
-    },
-    "optOriginalSize": {
-        "message": "Orijinal boyut / Normal boyut"
-    },
-    "lblRightLeftClick": {
-        "message": "Sağ tık + Sol tık"
-    },
-    "lblRightWheel": {
-        "message": "Sağ tık + Fare tekerleği"
-    },
-    "lblCtrlRightWheel": {
-        "message": "Ctrl + Sağ tık + Fare tekerleği"
-    },
-    "optZoomStep": {
-        "message": "Fare tekerleği adımı başına yakınlaştırma oranı"
-    },
-    "optRotationStep": {
-        "message": "Fare tekerleği adımı başına dönüş açısı"
-    },
-    "optReverseWheel": {
-        "message": "Fare tekerleğini tersine çevir"
-    },
-    "optIncludeBgImages": {
-        "message": "Arka plan resimlerini dahil et"
-    },
-    "optAutoResetRelease": {
-        "message": "Sağ tık bırakıldığında resimleri sıfırla"
-    },
-    "optEnableContextMenu": {
-        "message": "Bağlam menüsünü etkinleştir"
-    },
-    "optFitToWindow": {
-        "message": "Pencereye sığdır"
-    },
-    "lblRightMiddleClick": {
-        "message": "Sağ tık + Orta tık"
-    },
-    "optDragToMove": {
-        "message": "Taşımak için sürükle"
-    },
-    "lblLeftClickDrag": {
-        "message": "Sürüklemek için sol tık (yakınlaştırılmış resimlerde)"
-    },
-    "optAltFreeRotation": {
-        "message": "Hızlı döndürme"
-    },
-    "lblAltRightLeftClick": {
-        "message": "Alt + Sağ tık + Sol tık"
-    },
-    "optCtrlAltQuickZoom": {
-        "message": "Hızlı yakınlaştırma"
-    },
-    "lblCtrlAltRightLeftClick": {
-        "message": "Ctrl + Alt + Sağ tık + Sol tık"
-    },
-    "btnResetSettings": {
-        "message": "Ayarları sıfırla"
-    },
-    "optDraggableSingleImage": {
-        "message": "Tek resim görünümü: Doğrudan fare tekerleğiyle yakınlaştırma. Büyütüldükten sonra serbestçe sürüklenebilir"
-    },
-    "optRightClickTimeout": {
-        "message": "Sağ tıklamanın otomatik iptal süresi"
-    },
-    "hlpRightClickTimeout": {
-        "message": "Sağ tıkladıktan sonra tekerleği çevirmeden bu süre geçerse sağ tık serbest bırakılır. (1000ms\u00A0=\u00A01\u00A0saniye)"
-    },
-    "optShowZoomBadge": {
-        "message": "Ölçeklendirirken yakınlaştırma yüzdesini göster"
-    },
-    "promptZoom": {
-        "message": "Yüzde olarak istenen boyut (örn. 150):"
-    },
-    "lblExcludedDomains": {
-        "message": "Bu alan adlarında devre dışı bırak (her satıra bir tane):"
-    },
-    "hlpExcludedDomains": {
-        "message": "örn. maps.google.com veya figma.com (alt alan adları otomatik olarak dahil edilir)"
-    },
-    "optEnableKeyShortcuts": {
-        "message": "Klavye kısayollarını etkinleştir [(Shift+), +/−, Yön tuşları, Esc, 0, R/L, P]"
-    },
-    "btnSupport": {
-        "message": "Projeyi destekle"
-    },
-    "optZoomToCursor": {
-        "message": "İmlece yakınlaştır (Yüzen mod)"
-    },
-    "panel_title": {
-        "message": "Görüntü değerlerini ayarla..."
-    },
-    "panel_tooltip_close": {
-        "message": "Kapat"
-    },
-    "panel_label_zoom": {
-        "message": "Yakınlaştırma (%)"
-    },
-    "panel_label_width": {
-        "message": "Genişlik (px)"
-    },
-    "panel_label_rot": {
-        "message": "Döndürme (°)"
-    },
-    "panel_label_opacity": {
-        "message": "Opaklık (%)"
-    },
-    "panel_label_brightness": {
-        "message": "Parlaklık (%)"
-    },
-    "panel_btn_reset": {
-        "message": "Sıfırla"
-    },
-    "panel_btn_save": {
-        "message": "Kaydet"
-    },
-    "panel_btn_close": {
-        "message": "Kapat"
-    },
-    "panel_cors_error": {
-        "message": "Resim kaydedilemedi.\n\nNeden: Kaynak sunucu güvenlik ilkeleri (CORS) nedeniyle dışa aktarmayı engelliyor."
-    },
-    "panel_label_flip": {
-        "message": "Çevir"
-    },
-    "panel_btn_flip_h": {
-        "message": "↔ Yatay"
-    },
-    "panel_btn_flip_v": {
-        "message": "↕ Dikey"
-    },
-    "panel_tooltip_reset_zoom": {
-        "message": "Yakınlaştırmayı sıfırla"
-    },
-    "panel_tooltip_reset_width": {
-        "message": "Genişliği sıfırla"
-    },
-    "panel_tooltip_reset_rot": {
-        "message": "Döndürmeyi sıfırla"
-    },
-    "panel_tooltip_reset_opac": {
-        "message": "Opaklığı sıfırla"
-    },
-    "panel_tooltip_reset_bright": {
-        "message": "Parlaklığı sıfırla"
-    }
+	"extensionName": {
+		"message": "Zoom & Drag",
+		"description": "Name of the extension."
+	},
+	"extensionDescription": {
+		"message": "Düzeni bozmadan sağ tık ve tekerlekle resimleri veya arka planları yakınlaştırın, döndürün, taşıyın, ayarlayın ve kaydedin.",
+		"description": "Description of the extension."
+	},
+	"cmTopMenu": {
+		"message": "Zoom && Drag",
+		"description": "Title of the top-level context menu entry."
+	},
+	"cmZoomCustom": {
+		"message": "Ayarla / kaydet...",
+		"description": "Context menu item to open the adjustment and export panel."
+	},
+	"cmZoomIn": {
+		"message": "Boyut x 2.0",
+		"description": "Context menu item to double image size."
+	},
+	"cmZoomOut": {
+		"message": "Boyut x 0.5",
+		"description": "Context menu item to halve image size."
+	},
+	"cmR90": {
+		"message": "90° Döndür (Sağ)",
+		"description": "Context menu item to rotate 90 degrees clockwise."
+	},
+	"cmL90": {
+		"message": "90° Döndür (Sol)",
+		"description": "Context menu item to rotate 90 degrees counterclockwise."
+	},
+	"cmRot180": {
+		"message": "180° Döndür",
+		"description": "Context menu item to rotate 180 degrees."
+	},
+	"cmFitWin": {
+		"message": "Pencereye sığdır",
+		"description": "Context menu item to fit image to window boundaries."
+	},
+	"cmFit": {
+		"message": "Varsayılan / Gerçek boyut",
+		"description": "Context menu item to toggle between layout and natural image size."
+	},
+	"cmSetting": {
+		"message": "Ayarları aç",
+		"description": "Context menu item to open settings page."
+	},
+	"h2Setting": {
+		"message": "Ayarlar",
+		"description": "Heading of the settings page."
+	},
+	"thFunc": {
+		"message": "Özellikler",
+		"description": "Table header for features column in settings."
+	},
+	"thCtrl": {
+		"message": "Komutlar (resimler üzerinde)",
+		"description": "Table header for commands/triggers column in settings."
+	},
+	"optFreeZoom": {
+		"message": "Serbest Yakınlaştırma (Yüzen)",
+		"description": "Option label for floating zoom mode."
+	},
+	"optSwapCommands": {
+		"message": "Komutları değiştir",
+		"description": "Option label to swap command assignments."
+	},
+	"optZoom": {
+		"message": "Yakınlaştırma",
+		"description": "Option label for standard zoom function."
+	},
+	"optRotation": {
+		"message": "Döndürme",
+		"description": "Option label for rotation function."
+	},
+	"lblAltRightWheel": {
+		"message": "Alt + Sağ tık + Fare tekerleği",
+		"description": "Shortcut label for Alt + Right click + Mouse wheel."
+	},
+	"optOriginalSize": {
+		"message": "Varsayılan / Gerçek boyut",
+		"description": "Option label to toggle between layout and natural image size."
+	},
+	"lblRightLeftClick": {
+		"message": "Sağ tık + Sol tık",
+		"description": "Shortcut label for Right click + Left click."
+	},
+	"lblRightWheel": {
+		"message": "Sağ tık + Fare tekerleği",
+		"description": "Shortcut label for Right click + Mouse wheel."
+	},
+	"lblCtrlRightWheel": {
+		"message": "Ctrl + Sağ tık + Fare tekerleği",
+		"description": "Shortcut label for Ctrl + Right click + Mouse wheel."
+	},
+	"optZoomStep": {
+		"message": "Fare tekerleği adımı başına yakınlaştırma oranı",
+		"description": "Option label for zoom step percentage per wheel notch."
+	},
+	"optRotationStep": {
+		"message": "Fare tekerleği adımı başına dönüş açısı",
+		"description": "Option label for rotation angle per wheel notch."
+	},
+	"optReverseWheel": {
+		"message": "Fare tekerleğini tersine çevir",
+		"description": "Option label to reverse wheel direction."
+	},
+	"optIncludeBgImages": {
+		"message": "Arka plan resimlerini dahil et",
+		"description": "Option label to include CSS background images."
+	},
+	"optAutoResetRelease": {
+		"message": "Sağ tık bırakıldığında resimleri sıfırla",
+		"description": "Option label to auto-reset images upon releasing right-click."
+	},
+	"optEnableContextMenu": {
+		"message": "Bağlam menüsünü etkinleştir",
+		"description": "Option label to enable or disable context menus."
+	},
+	"optFitToWindow": {
+		"message": "Pencereye sığdır",
+		"description": "Option label for fitting image to window."
+	},
+	"lblRightMiddleClick": {
+		"message": "Sağ tık + Orta tık",
+		"description": "Shortcut label for Right click + Middle click."
+	},
+	"optDragToMove": {
+		"message": "Taşımak için sürükle",
+		"description": "Option label for dragging to move images."
+	},
+	"lblLeftClickDrag": {
+		"message": "Sürüklemek için sol tık (yakınlaştırılmış resimlerde)",
+		"description": "Shortcut label for left-click dragging on zoomed images."
+	},
+	"optAltFreeRotation": {
+		"message": "Hızlı döndürme",
+		"description": "Option label for quick mouse-guided rotation."
+	},
+	"lblAltRightLeftClick": {
+		"message": "Alt + Sağ tık + Sol tık",
+		"description": "Shortcut label for Alt + Right click + Left click."
+	},
+	"optCtrlAltQuickZoom": {
+		"message": "Hızlı yakınlaştırma",
+		"description": "Option label for quick drag-based zoom."
+	},
+	"lblCtrlAltRightLeftClick": {
+		"message": "Ctrl + Alt + Sağ tık + Sol tık",
+		"description": "Shortcut label for Ctrl + Alt + Right click + Left click."
+	},
+	"btnResetSettings": {
+		"message": "Ayarları sıfırla",
+		"description": "Button text to restore default extension settings."
+	},
+	"optDraggableSingleImage": {
+		"message": "Tek resim görünümü: Doğrudan fare tekerleğiyle yakınlaştırma. Büyütüldükten sonra serbestçe sürüklenebilir",
+		"description": "Option label for standalone image viewer enhancements."
+	},
+	"optRightClickTimeout": {
+		"message": "Sağ tıklamanın otomatik iptal süresi",
+		"description": "Option label for right-click cancellation timeout."
+	},
+	"hlpRightClickTimeout": {
+		"message": "Sağ tıkladıktan sonra tekerleği çevirmeden bu süre geçerse sağ tık serbest bırakılır. (1000ms\u00A0=\u00A01\u00A0saniye)",
+		"description": "Help tooltip for right-click timeout setting."
+	},
+	"optShowZoomBadge": {
+		"message": "Ölçeklendirirken yakınlaştırma yüzdesini göster",
+		"description": "Option label to show zoom percentage badge overlay."
+	},
+	"lblExcludedDomains": {
+		"message": "Bu alan adlarında devre dışı bırak (her satıra bir tane):",
+		"description": "Label for excluded domains configuration."
+	},
+	"hlpExcludedDomains": {
+		"message": "örn. maps.google.com veya figma.com (alt alan adları otomatik olarak dahil edilir)",
+		"description": "Placeholder and hint text for domain exclusions."
+	},
+	"optEnableKeyShortcuts": {
+		"message": "Klavye kısayollarını etkinleştir [(Shift+), +/−, Yön tuşları, Esc, 0, R/L, P]",
+		"description": "Option label to toggle keyboard shortcut support."
+	},
+	"btnSupport": {
+		"message": "Projeyi destekle",
+		"description": "Label for donation and support button."
+	},
+	"optZoomToCursor": {
+		"message": "İmlece yakınlaştır (Yüzen mod)",
+		"description": "Option label to zoom centered towards cursor position."
+	},
+	"panel_title": {
+		"message": "Görüntü değerlerini ayarla...",
+		"description": "Header title of the adjustment panel."
+	},
+	"panel_tooltip_close": {
+		"message": "Kapat",
+		"description": "Tooltip for closing panel."
+	},
+	"panel_label_zoom": {
+		"message": "Yakınlaştırma (%)",
+		"description": "Panel label for zoom percentage slider."
+	},
+	"panel_label_width": {
+		"message": "Genişlik (px)",
+		"description": "Panel label for width in pixels slider."
+	},
+	"panel_label_rot": {
+		"message": "Döndürme (°)",
+		"description": "Panel label for rotation slider."
+	},
+	"panel_label_opacity": {
+		"message": "Opaklık (%)",
+		"description": "Panel label for opacity slider."
+	},
+	"panel_label_brightness": {
+		"message": "Parlaklık (%)",
+		"description": "Panel label for brightness slider."
+	},
+	"panel_btn_reset": {
+		"message": "Sıfırla",
+		"description": "Panel button to reset all image adjustments."
+	},
+	"panel_btn_save": {
+		"message": "Kaydet",
+		"description": "Panel button to save modified image to disk."
+	},
+	"panel_btn_close": {
+		"message": "Kapat",
+		"description": "Panel button to close the adjustment dialog."
+	},
+	"panel_cors_error": {
+		"message": "Resim kaydedilemedi.\n\nNeden: Kaynak sunucu güvenlik ilkeleri (CORS) nedeniyle dışa aktarmayı engelliyor.",
+		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_label_flip": {
+		"message": "Çevir",
+		"description": "Panel section label for flipping image."
+	},
+	"panel_btn_flip_h": {
+		"message": "↔ Yatay",
+		"description": "Panel button to flip image horizontally."
+	},
+	"panel_btn_flip_v": {
+		"message": "↕ Dikey",
+		"description": "Panel button to flip image vertically."
+	},
+	"panel_tooltip_reset_zoom": {
+		"message": "Yakınlaştırmayı sıfırla",
+		"description": "Tooltip for resetting zoom value."
+	},
+	"panel_tooltip_reset_width": {
+		"message": "Genişliği sıfırla",
+		"description": "Tooltip for resetting width value."
+	},
+	"panel_tooltip_reset_rot": {
+		"message": "Döndürmeyi sıfırla",
+		"description": "Tooltip for resetting rotation value."
+	},
+	"panel_tooltip_reset_opac": {
+		"message": "Opaklığı sıfırla",
+		"description": "Tooltip for resetting opacity value."
+	},
+	"panel_tooltip_reset_bright": {
+		"message": "Parlaklığı sıfırla",
+		"description": "Tooltip for resetting brightness value."
+	},
+	"msgResetConfirm": {
+		"message": "Tüm ayarlar varsayılan değerlere sıfırlansın mı?",
+		"description": "Confirmation shown before resetting all settings to their defaults."
+	},
+	"msgUpdateNotice": {
+		"message": "Zoom & Drag güncellendi.",
+		"description": "Notice shown on the settings page after the extension was updated (version number is appended)."
+	},
+	"lnkChangelog": {
+		"message": "Değişiklikleri görüntüle",
+		"description": "Link text pointing to the changelog."
+	},
+	"btnDismissNotice": {
+		"message": "Bildirimi kapat",
+		"description": "Tooltip for the button that dismisses the update notice."
+	}
 }
