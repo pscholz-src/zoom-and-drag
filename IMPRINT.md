@@ -1,4 +1,4 @@
-﻿# Impressum / Legal Notice
+# Impressum / Legal Notice
 
 [English version below](#legal-notice)
 
@@ -20,6 +20,13 @@ E-Mail: pscholz@mail.online-impressum.de
 Zweiter Kontaktweg: https://mein.online-impressum.de/pscholz/#zweiterkontaktweg  
 Webseite: https://github.com/pscholz-src/zoom-and-drag  
 Online-Impressum: https://mein.online-impressum.de/pscholz/  
+
+**Umsatzsteuer-Identifikationsnummer:**  
+Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:  
+DE465615668  
+
+**Wirtschafts-Identifikationsnummer:**  
+DE465615668-00001  
 
 **Zuständige Aufsichtsbehörde:**  
 Landesanstalt für Kommunikation Baden-Württemberg | Sitz: Deutschland  
@@ -47,6 +54,13 @@ Email: pscholz@mail.online-impressum.de
 Alternative contact method: https://mein.online-impressum.de/pscholz/#zweiterkontaktweg  
 Website: https://github.com/pscholz-src/zoom-and-drag  
 Online imprint: https://mein.online-impressum.de/pscholz/  
+
+**VAT ID:**  
+Sales tax identification number according to Sect. 27 a of the Sales Tax Law:  
+DE465615668  
+
+**Business Identification Number:**  
+DE465615668-00001  
 
 **Competent Supervisory Authority:**  
 Landesanstalt für Kommunikation Baden-Württemberg | Located in: Germany  
