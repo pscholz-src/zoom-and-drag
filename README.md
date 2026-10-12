@@ -57,5 +57,10 @@ From version 1.0.1 onwards, and specifically through the v1.1.0 native JS rewrit
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
 
+## 🚀 Zoom Further
+Enjoying the extension? Fuel future releases and help keep Zoom & Drag actively maintained:
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/pscholz)
+
 ## ⚖️ License
 Released under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE).
