@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "拡大時にズーム率を表示する",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "画像上にズーム率と回転角度を表示する",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "次のドメインで無効化（1行に1つ）:",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "画像を保存できませんでした。\n\n理由: セキュリティポリシー (CORS) により、ソースサーバーがエクスポートをブロックしています。",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "画像を保存できませんでした。\n\n理由: ソースサーバーがエクスポートをブロックしており (CORS)、画像ファイルが代替ダウンロードの制限サイズを超えています。",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "画像は縮小されたサイズで保存されました。\n\n理由: 指定されたサイズがエクスポートの上限を超えています。",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "反転",

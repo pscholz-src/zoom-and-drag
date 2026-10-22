@@ -2,17 +2,52 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.1] - 2026-10-22
+### Improved
+- **YouTube thumbnails:** Thumbnails in YouTube search results and the sidebar can now be zoomed, rotated and adjusted right away, using shortcuts, mouse gestures or the panel. The hover preview (animated image or video) is disabled for as long as the thumbnail is modified and no longer restarts.
+- **Panel keyboard isolation:** Keyboard events and focus inside the panel are now isolated from host page scripts, so they can no longer intercept panel inputs.
+- **Higher limits for panel input fields:** Number input fields in the custom panel now allow sizes up to 16,384 px on the longer side (matching the maximum canvas export limit), independent of the zoom value. The maximum zoom adapts to the image accordingly and entering a higher value snaps the field to it. The same limit applies to mouse wheel zoom and quick zoom. Slider ranges remain untouched to preserve comfortable and precise mouse control.
+- **Export notices & CORS error handling:** In addition to notifying users when an image is downscaled to fit export limits, the panel now provides a distinct error message when a CORS-restricted image exceeds the background fallback download limit.
+- **Code cleanup:** Zoom badge styling consolidated, unused code removed, duplicated reset and cleanup logic merged into shared helpers, and stored state of removed floating images is now released.
+- **Performance:** Lower CPU usage with the panel open and faster image detection on large pages.
+- **Context menu zoom badge:** Applying transformations via the context menu now temporarily displays the HUD zoom percentage badge when the feature is enabled.
+- **Real-time badge alignment:** Eliminated badge position jumping when using "Zoom to cursor" or toggling between layout and actual size; the badge now positions itself instantly on the animated target frame.
+- **Generic modal overlay detection:** Enhanced backdrop and gallery recognition so that full-screen popups, media lightboxes, and video players are reliably detected, regardless of how a website is coded.
+- **Panel slider handles (Chrome/Edge):** The slider handles in the panel are now slightly larger and easier to grab. Firefox keeps its native sliders.
+
+### Changed
+- **Panel text selection:** All panel buttons (reset, save, close, flip horizontal/vertical, and the small reset icons) can no longer be text-selected, consistent with the panel header and zoom badge.
+- **Zoom badge on right click:** A plain right click that only opens the context menu no longer flashes the zoom badge. It now appears after the right button has been held for 1 second without changing the image. Zooming, rotating and keyboard shortcuts still show it immediately.
+- **Zoom badge option wording:** Updated the settings label for the zoom badge to explicitly state that both the zoom percentage and rotation angle are displayed on the image.
+- **Typing conflict with image shortcuts:** Image shortcuts and arrow-key panning are now ignored while typing in active input fields or text areas, even if the mouse pointer hovers over an image.
+
+### Fixed
+- **Modifier clicks:** Fixed modifier clicks (Ctrl, Shift, Alt, Meta) and middle-clicks failing on containers where images and headline links are siblings using stretched link overlays, and on modified video poster images (inline as well as on the container area left behind by a floating poster), so the video starts as it would without the extension.
+- **Fit to window on inline images:** Fixed an issue where fitting an inline image to the window (key 0, right+middle click, or context menu) placed it offset from the window center, shifted up or down depending on where the image sat on the page.
+- **Right+middle click on linked images:** Fixed an issue where right+middle click ("Fit to window") also opened the image link, or, on containers with stretched link overlays, opened the link without fitting the image at all. The gesture is now handled reliably regardless of the event target or the order in which the buttons are released.
+- **Sub-pixel aspect ratio precision:** Fixed an issue where minor aspect ratio discrepancies (below the previous 1% tolerance threshold) on images caused tiny 1–2 pixel gaps between the image edge and the floating or panel border. Aspect ratios are now calculated with sub-pixel precision.
+- **Panel inline frame visibility on mode transition:** Fixed an issue where transitioning from floating zoom back to inline mode unintentionally displayed the blue panel selection frame. The inline indicator now strictly appears when hovering over or focusing the adjustment panel, and upon panel-triggered image activation.
+- **Modifier keys and live settings changes:** Releasing an unrelated key while holding Ctrl or Alt no longer resets the modifier state, and excluding a site (or switching off related options) while a page is open now also closes the panel and stops all remaining background timers.
+- **Localization:** Corrected the English label of the "Revert images when releasing the right click" option.
+- **Badge flash on reset actions:** Fixed unwanted badge flashes during reset operations. The badge no longer appears when resetting images via right-click + left-click, panel mini-reset buttons, `Esc`, `Shift`+`Esc`, or releasing the right mouse button in auto-reset mode.
+- **Gesture reliability on Bing Images:** Resolved a conflict preventing right-click + left-click toggling on Bing image search results.
+- **Gallery overlays with video:** While a video slide is shown in a gallery or modal overlay, images of the page behind the overlay can no longer be selected, zoomed or opened in the panel.
+- **Panel inline frame on rotated images:** Fixed an issue where the blue inline frame did not follow a rotated image while its size changed through a hover transition (e.g. on Bing Images). The frame now stays exactly on the image edge at any rotation angle, including after zooming.
+- **Zoom-in shortcut on international keyboards:** Fixed an issue where pressing the equals key (`=`) while holding `Shift` unintentionally triggered zoom-in. This prevents accidental zooming when pressing `Shift`+`0` on German (QWERTZ) keyboards or `Shift`+`-` on Japanese (JIS) layouts, while keeping `+`/`=` zooming fully functional on US/ANSI keyboards.
+- **Arrow key conflicts in image overlays:** Pressing arrow keys while a floating image is active now exclusively moves the image instead of simultaneously triggering page or gallery navigation.
+- **Stacking order of inline images:** Fixed an issue where modified inline images punched through page headers, search bars, and autocomplete dropdowns. Inline images now use a dynamic, capped stacking range, guaranteeing that the most recently manipulated image stays above adjacent grid tiles while strictly remaining beneath search inputs and navigation overlays.
+
 ## [2.1.0] - 2026-10-12
 ### Added
-- **Update Notice:** After a minor or major update, a dismissible banner with a link to this changelog now appears on the settings page, and the toolbar icon shows a badge until the settings are opened.
-- **CORS Fallback for Image Export:** If the image's server blocks exporting, the extension now retries the download in the background, so many previously blocked images can be saved
+- **Update Notice:** After a minor or major update, a dismissible banner with a link to this changelog now appears on the settings page, and the toolbar icon shows a badge until the settings are opened. The changelog tab now opens automatically on fresh installs only.
+- **CORS Fallback for Image Export:** If the image's server blocks exporting, the extension now retries the download in the background, so many previously blocked images can be saved.
 - **Reset Confirmation:** The "Reset" button on the settings page now asks for confirmation before restoring the default settings.
 - **Touch & Stylus Support:** Migrated gesture handling from legacy mouse events to universal pointer events and touch events. This greatly improves interactions on touchscreens, trackpads, and with styluses.
 - **Image switcher support:** The main image is edited, the hover image stays untouched. The tile link is blocked for plain clicks while the image is modified and works again after reset.
 - **License:** Added the full MPL-2.0 license text (`LICENSE`).
 
 ### Improved
-- **Overlay Image Detection**: Added a fallback during target checks, allowing images hidden behind transparent interaction overlays, anchors, or slider buttons to be zoomed directly.
+- **Overlay Image Detection:** Added a fallback during target checks, allowing images hidden behind transparent interaction overlays, anchors, or slider buttons to be zoomed directly.
 - **Heuristic Visual Target Scoring:** Implemented an intelligent scoring system in the target-detection engine to reliably identify the primary visible image while filtering out zero-dimension, transparent, or hidden overlay layers.
 - **Visual Stability:** Isolated the adjustment panel using Shadow DOM, preventing websites with aggressive styling from breaking the panel's layout.
 - **Code Refactoring:** Moved panel components into a dedicated template (`panel.html`) for cleaner architecture and better maintainability.
@@ -36,7 +71,6 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **Zoom Badge Alignment:** Added dynamic Y-offset calculation based on zoom ratio, keeping the badge above the upper edge when downscaling below 100%.
 - **Minimum Image Size Limit:** Replaced the relative 5% threshold with a strict absolute minimum width of **20 px**. High-resolution images can now be zoomed out much further while ensuring the element always remains visible and clickable.
-- **Update Notice Behavior:** The changelog tab now only opens automatically on fresh installs. Updates show the in-settings banner instead of opening a tab.
 - **Modifier Clicks Open Links:** Clicks with `Ctrl`, `Shift`, `Alt` or `Meta` as well as middle clicks are no longer blocked on modified images, so links can still be opened in a new tab or window. Plain clicks stay blocked until the image is reset. This now applies consistently to inline images, floating images and image switchers.
 - **Revert on Right-Click Release:** The "Revert images when releasing the right click" option now also works while the adjustment panel is open, and only reverts images that were actually changed by the right click. Plain right clicks no longer reset images modified by shortcuts, dragging or the panel.
 
@@ -48,7 +82,7 @@ All notable changes to this project will be documented in this file.
 - **Quick Zoom Floating Fix:** Prevented Quick Zoom from breaking page layouts on sites with forced inline styles.
 - **Panel Inline Frame:** Corrected bounding and rendering behavior for the custom panel's inline frame.
 - **Hovered Target Priority:** Hovered images now consistently take precedence over open panel selections.
-- **Shortcut Target Recognition:** Fixed shortcuts failing on images inside interactive elements (e.g. gallery buttons)
+- **Shortcut Target Recognition:** Fixed shortcuts failing on images inside interactive elements (e.g. gallery buttons).
 - **Seamless transition in single image view:** The add-on now perfectly harmonizes with the browser's native zoom (zoom-in / zoom-out).
 - **Modal Image Gestures:** Improved gesture recognition and rotation precision when interacting with images inside complex gallery sliders and lightbox components.
 - **Aspect Ratio Zoom Drift:** Fixed inaccurate scale multipliers and badge percentages on images with non-native CSS aspect ratios. Preset actions like "Size x 2.0" and "Size x 0.5" now reliably reach exact target sizes (200% / 50%).
@@ -57,10 +91,9 @@ All notable changes to this project will be documented in this file.
 - **Accurate Target Selection in Stacked Containers:** Prevented target detection from latching onto underlying low-resolution thumbnails or invisible search overlays instead of the primary rendered image.
 - **Multi-Image Containers:** Tiles that combine several images (e.g. one large and two small images in Bing Image Search) now block their link as long as any of their images is modified, no matter which of the images was changed or clicked.
 
-
 ## [2.0.1] - 2026-09-24
 ### Fixed
-- **Revert images when to release the right click:** Improved functionality with automatically reverting and releasing images when the right mouse button is released.
+- **Revert images when releasing the right click:** Improved functionality with automatically reverting and releasing images when the right mouse button is released.
 - **Single image view:** Fixed edge cases in the single image view (controlling mouse wheel zoom behavior and ensuring stable resets via the custom panel).
 - **Dragging:** Optimized image dragging mechanics to prevent unwanted layout jumps.
 - **Image frame:** The blue selection and quick zoom frames now align precisely with the actual image bounds.

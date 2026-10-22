@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "크기 조정 시 확대/축소 비율 표시",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "이미지 위에 확대/축소 비율과 회전 각도 표시",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "다음 도메인에서 사용 안 함 (한 줄에 하나씩):",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "이미지를 저장할 수 없습니다.\n\n이유: 보안 정책(CORS)으로 인해 소스 서버에서 내보내기를 차단했습니다.",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "이미지를 저장할 수 없습니다.\n\n이유: 소스 서버에서 내보내기를 차단했으며(CORS), 이미지 파일이 대체 다운로드로 처리하기에는 너무 큽니다.",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "이미지가 축소된 크기로 저장되었습니다.\n\n이유: 요청한 크기가 내보내기 최대 한도를 초과했습니다.",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "뒤집기",

@@ -112,7 +112,7 @@
 		"description": "Option label to include CSS background images."
 	},
 	"optAutoResetRelease": {
-		"message": "Revert images when to release the right click",
+		"message": "Revert images when releasing the right click",
 		"description": "Option label to auto-reset images upon releasing right-click."
 	},
 	"optEnableContextMenu": {
@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "Show zoom percentage when scaling",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "Show zoom percentage and rotation angle on the image",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "Disable on these domains (one per line):",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "Could not save image.\n\nReason: The source server blocks exporting due to security policies (CORS).",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "Could not save image.\n\nReason: The source server blocks exporting (CORS) and the image file is too large for the fallback download.",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "Image was saved at a reduced size.\n\nReason: The requested size exceeds the maximum export limit.",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "Flip",

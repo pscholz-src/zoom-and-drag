@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "Ölçeklendirirken yakınlaştırma yüzdesini göster",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "Resim üzerinde yakınlaştırma yüzdesini ve dönme açısını göster",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "Bu alan adlarında devre dışı bırak (her satıra bir tane):",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "Resim kaydedilemedi.\n\nNeden: Kaynak sunucu güvenlik ilkeleri (CORS) nedeniyle dışa aktarmayı engelliyor.",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "Resim kaydedilemedi.\n\nNeden: Kaynak sunucu dışa aktarmayı engelliyor (CORS) ve resim dosyası alternatif indirme için çok büyük.",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "Resim küçültülmüş boyutta kaydedildi.\n\nNeden: İstenen boyut maksimum dışa aktarma sınırını aşıyor.",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "Çevir",

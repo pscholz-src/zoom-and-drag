@@ -55,14 +55,6 @@
 		border: 1px solid var(--border-panel) !important;
 	}
 
-	#zd-panel-header h3 {
-		font-size: 15px !important;
-		font-weight: 500 !important;
-		margin: 0 !important;
-		padding: 0 !important;
-		line-height: 1.2 !important;
-	}
-
 	@media (prefers-color-scheme: dark) {
 		:host {
 			--bg-panel: rgba(30, 30, 32, 0.95);
@@ -85,6 +77,60 @@
 			--border-btn: rgba(255, 255, 255, 0.1) !important;
 			--hover-bright: 1.15;
 		}
+	}
+
+	#zd-panel-header {
+		background: var(--bg-header) !important;
+		padding: 12px 20px !important;
+		border-bottom: 1px solid var(--border-panel) !important;
+		cursor: grab !important;
+		display: flex !important;
+		justify-content: space-between !important;
+		align-items: center !important;
+	}
+
+	#zd-panel-header h3 {
+		font-size: 15px !important;
+		font-weight: 500 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		line-height: 1.2 !important;
+		color: var(--text-header) !important;
+	}
+
+	.zd-panel-body {
+		padding: 20px !important;
+		display: grid !important;
+		gap: 14px !important;
+		font-size: 13px !important;
+	}
+
+	.zd-panel-row {
+		display: flex !important;
+		align-items: center !important;
+		gap: 10px !important;
+	}
+
+	.zd-panel-row-flip {
+		margin-top: 4px !important;
+	}
+
+	.zd-flip-group {
+		display: flex !important;
+		gap: 8px !important;
+		flex: 1 !important;
+	}
+
+	.zd-panel-footer {
+		padding: 0 20px 20px 20px !important;
+		display: flex !important;
+		justify-content: space-between !important;
+		gap: 8px !important;
+	}
+
+	.zd-slider {
+		flex: 1 !important;
+		cursor: pointer !important;
 	}
 
 	:host input[type="range"] {
@@ -115,13 +161,13 @@
 	:host input[type="range"]::-webkit-slider-thumb {
 		-webkit-appearance: none !important;
 		appearance: none !important;
-		width: 16px !important;
-		height: 16px !important;
+		width: 20px !important;
+		height: 20px !important;
 		background: #5a5f68 !important;
 		border: 2px solid #ffffff !important;
 		border-radius: 50% !important;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-		margin-top: -5px !important;
+		margin-top: -7px !important;
 		cursor: pointer !important;
 	}
 
@@ -212,6 +258,10 @@
 	#zd-btn-x {
 		transition: color 0.2s ease, transform 0.2s ease !important;
 		color: #888 !important;
+		cursor: pointer !important;
+		font-size: 22px !important;
+		font-weight: bold !important;
+		line-height: 1 !important;
 		padding: 0 4px !important;
 		margin: 0 !important;
 	}
@@ -219,6 +269,12 @@
 	#zd-btn-x:hover {
 		color: #e63946 !important;
 		transform: scale(1.2) !important;
+	}
+
+	#zd-panel-header,
+	.zd-panel-btn,
+	.zd-mini-reset {
+		user-select: none !important;
 	}
 
 	.zd-panel-label {
@@ -250,63 +306,60 @@
 	}
 </style>
 
-<div id="zd-panel-header"
-	style="background: var(--bg-header); padding: 12px 20px; border-bottom: 1px solid var(--border-panel);
-	cursor: grab; display: flex; justify-content: space-between; align-items: center; user-select: none;">
-	<h3 style="margin: 0; font-size: 15px; color: var(--text-header);" data-i18n="panel_title"></h3>
-	<div id="zd-btn-x" data-i18n-title="panel_tooltip_close"
-		style="cursor: pointer; font-size: 22px; font-weight: bold; line-height: 1; padding: 0 4px;">&times;</div>
+<div id="zd-panel-header">
+	<h3 data-i18n="panel_title"></h3>
+	<div id="zd-btn-x" data-i18n-title="panel_tooltip_close">&times;</div>
 </div>
 
-<div style="padding: 20px; display: grid; gap: 14px; font-size: 13px;">
-	<div style="display: flex; align-items: center; gap: 10px;">
+<div class="zd-panel-body">
+	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_zoom"></span>
-		<input type="range" id="zd-sl-zoom" min="5" max="500" style="flex: 1; cursor: pointer;">
+		<input type="range" id="zd-sl-zoom" class="zd-slider" min="5" max="500">
 		<input type="number" id="zd-num-zoom" class="zd-input-num">
-		<button id="zd-btn-reset-zoom" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_zoom">&#x21BA;</button>
+		<button type="button" id="zd-btn-reset-zoom" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_zoom">&#x21BA;</button>
 	</div>
-	<div style="display: flex; align-items: center; gap: 10px;">
+	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_width"></span>
-		<input type="range" id="zd-sl-width" min="20" max="5000" style="flex: 1; cursor: pointer;">
+		<input type="range" id="zd-sl-width" class="zd-slider" min="20" max="5000">
 		<input type="number" id="zd-num-width" class="zd-input-num">
-		<button id="zd-btn-reset-width" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_width">&#x21BA;</button>
+		<button type="button" id="zd-btn-reset-width" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_width">&#x21BA;</button>
 	</div>
-	<div style="display: flex; align-items: center; gap: 10px;">
+	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_rot"></span>
-		<input type="range" id="zd-sl-rot" min="-180" max="180" style="flex: 1; cursor: pointer;">
+		<input type="range" id="zd-sl-rot" class="zd-slider" min="-180" max="180">
 		<input type="number" id="zd-num-rot" class="zd-input-num">
-		<button id="zd-btn-reset-rot" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_rot">&#x21BA;</button>
+		<button type="button" id="zd-btn-reset-rot" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_rot">&#x21BA;</button>
 	</div>
-	<div style="display: flex; align-items: center; gap: 10px;">
+	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_opacity"></span>
-		<input type="range" id="zd-sl-opac" min="10" max="100" style="flex: 1; cursor: pointer;">
+		<input type="range" id="zd-sl-opac" class="zd-slider" min="10" max="100">
 		<input type="number" id="zd-num-opac" class="zd-input-num">
-		<button id="zd-btn-reset-opac" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_opac">&#x21BA;</button>
+		<button type="button" id="zd-btn-reset-opac" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_opac">&#x21BA;</button>
 	</div>
-	<div style="display: flex; align-items: center; gap: 10px;">
+	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_brightness"></span>
-		<input type="range" id="zd-sl-bright" min="10" max="200" style="flex: 1; cursor: pointer;">
+		<input type="range" id="zd-sl-bright" class="zd-slider" min="10" max="200">
 		<input type="number" id="zd-num-bright" class="zd-input-num">
-		<button id="zd-btn-reset-bright" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_bright">&#x21BA;</button>
+		<button type="button" id="zd-btn-reset-bright" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_bright">&#x21BA;</button>
 	</div>
-	<div style="display: flex; align-items: center; gap: 10px; margin-top: 4px;">
+	<div class="zd-panel-row zd-panel-row-flip">
 		<span class="zd-panel-label" data-i18n="panel_label_flip"></span>
-		<div style="display: flex; gap: 8px; flex: 1;">
-			<button id="zd-btn-flip-h" class="zd-panel-btn"
+		<div class="zd-flip-group">
+			<button type="button" id="zd-btn-flip-h" class="zd-panel-btn"
 				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
 				data-i18n="panel_btn_flip_h"></button>
-			<button id="zd-btn-flip-v" class="zd-panel-btn"
+			<button type="button" id="zd-btn-flip-v" class="zd-panel-btn"
 				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
 				data-i18n="panel_btn_flip_v"></button>
 		</div>
 	</div>
 </div>
 
-<div style="padding: 0 20px 20px 20px; display: flex; justify-content: space-between; gap: 8px;">
-	<button id="zd-btn-reset" class="zd-panel-btn"
+<div class="zd-panel-footer">
+	<button type="button" id="zd-btn-reset" class="zd-panel-btn"
 		style="background: var(--bg-btn-reset); color: var(--text-btn-reset);" data-i18n="panel_btn_reset"></button>
-	<button id="zd-btn-save" class="zd-panel-btn"
+	<button type="button" id="zd-btn-save" class="zd-panel-btn"
 		style="background: var(--bg-btn-save); color: var(--text-btn-save);" data-i18n="panel_btn_save"></button>
-	<button id="zd-btn-close" class="zd-panel-btn"
+	<button type="button" id="zd-btn-close" class="zd-panel-btn"
 		style="background: var(--bg-btn-close); color: var(--text-btn-close);" data-i18n="panel_btn_close"></button>
 </div>

@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "Mostrar porcentaje de zoom al escalar",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "Mostrar porcentaje de zoom y ángulo de rotación sobre la imagen",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "Deshabilitar en estos dominios (uno por línea):",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "No se pudo guardar la imagen.\n\nMotivo: El servidor de origen bloquea la exportación por políticas de seguridad (CORS).",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "No se pudo guardar la imagen.\n\nMotivo: El servidor de origen bloquea la exportación (CORS) y el archivo de imagen es demasiado grande para la descarga alternativa.",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "La imagen se guardó con un tamaño reducido.\n\nMotivo: El tamaño solicitado supera el límite máximo de exportación.",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "Voltear",

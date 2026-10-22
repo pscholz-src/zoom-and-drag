@@ -13,9 +13,10 @@
   </a>
 </div>
 
-Zoom & Drag enables you to seamlessly zoom, rotate, freely move, adjust filters, and save images and CSS background graphics directly on any webpage. Control everything effortlessly via intuitive mouse gestures, keyboard shortcuts, or the built-in context menu—all without breaking the page layout.
+Zoom & Drag enables you to seamlessly zoom, rotate, freely move, adjust filters, and save images, video thumbnails, and CSS background graphics directly on any webpage. Control everything effortlessly via intuitive mouse gestures, keyboard shortcuts, or the built-in context menu—all without breaking the page layout.
 
 ## ✨ Key Features
+- **Universal Media Support:** Works smoothly on standard images, video thumbnails, web galleries, and CSS background graphics.
 - **Context Menu & Adjustment Panel:** Access quick actions directly from the right-click context menu, or launch the sleek, draggable custom panel (via the `P` shortcut on images) to precisely tweak zoom, dimensions, rotation, opacity, and brightness, flip the image, and save your result.
 - **Intuitive Controls:** Zoom, rotate, and drag using right-click & mouse wheel gestures or dedicated keyboard shortcuts.
 - **Image Export:** Save your customized images (including applied filters and flips) directly as PNG files.
@@ -25,7 +26,7 @@ Zoom & Drag enables you to seamlessly zoom, rotate, freely move, adjust filters,
 - **Domain Filtering:** Easily exclude specific websites (like map services or design tools) via the settings page.
 - **Modern & Lightweight:** Built on Manifest V3 with pure Vanilla JS (zero external libraries).
 - **Multilingual:** Fully translated into 11 languages.
-- **Privacy First:** Operates entirely locally. No data collection, tracking, or analytics. See my [Privacy Policy](https://github.com/pscholz-src/zoom-and-drag/blob/main/PRIVACY.md) for more details.
+- **Privacy First:** Operates entirely locally. No data collection, tracking, or analytics. See my [Privacy Policy](PRIVACY.md) for more details.
 
 ## 🖱️ Mouse Controls
 - **Zoom:** Hold `Right Click` + Scroll Mouse Wheel
@@ -55,7 +56,7 @@ Zoom & Drag is a fundamentally modernized and completely rewritten evolution of 
 
 From version 1.0.1 onwards, and specifically through the v1.1.0 native JS rewrite and the massive v2.0.0 feature update, the project has been substantially extended, modernized, and is now actively maintained.
 
-See [CHANGELOG.md](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
+See [Changelog](CHANGELOG.md) for a detailed history of updates, new features, and bug fixes.
 
 ## 🚀 Zoom Further
 Enjoying the extension? Fuel future releases and help keep Zoom & Drag actively maintained:

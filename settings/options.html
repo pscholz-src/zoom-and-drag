@@ -35,14 +35,13 @@
 					<td class="fc"><span data-i18n="optFreeZoom"></span></td>
 					<td id="ctrl_op1"></td>
 					<td rowspan="2">
-						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg"
-							style="vertical-align: middle; margin-right: 6px;">
+						<svg class="swap_icon" width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
 							<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2"
 								stroke-linejoin="miter" stroke-linecap="square" />
 							<polygon points="8,1 0,7 8,13" fill="#666" />
 							<polygon points="8,27 0,33 8,39" fill="#666" />
 						</svg>
-						<input type="checkbox" id="ctrlRvs" value="">
+						<input type="checkbox" id="ctrlRvs">
 						<label for="ctrlRvs"><span data-i18n="optSwapCommands"></span></label>
 					</td>
 				</tr>
@@ -58,14 +57,13 @@
 					<td class="fc"><span data-i18n="optOriginalSize"></span></td>
 					<td id="click_op1"><span data-i18n="lblRightLeftClick"></span></td>
 					<td rowspan="2">
-						<svg width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg"
-							style="vertical-align: middle; margin-right: 6px;">
+						<svg class="swap_icon" width="16" height="40" viewBox="0 0 16 40" xmlns="http://www.w3.org/2000/svg">
 							<path d="M 6 7 L 14 7 L 14 33 L 6 33" fill="none" stroke="#666" stroke-width="2.2"
 								stroke-linejoin="miter" stroke-linecap="square" />
 							<polygon points="8,1 0,7 8,13" fill="#666" />
 							<polygon points="8,27 0,33 8,39" fill="#666" />
 						</svg>
-						<input type="checkbox" id="clickSwap" value="">
+						<input type="checkbox" id="clickSwap">
 						<label for="clickSwap"><span data-i18n="optSwapCommands"></span></label>
 					</td>
 				</tr>
@@ -86,15 +84,11 @@
 					<td><span data-i18n="lblCtrlAltRightLeftClick"></span></td>
 				</tr>
 			</table>
-			<input type="hidden" data-i18n="lblRightWheel" class="ctrl_op_d" value="">
-			<input type="hidden" data-i18n="lblCtrlRightWheel" class="ctrl_op_d" value="">
 		</div>
 		<div class="options">
 			<table>
 				<tr>
-					<td>
-						<span data-i18n="optZoomStep"></span>
-					</td>
+					<td><span data-i18n="optZoomStep"></span></td>
 					<td>
 						<select id="dim">
 							<option value="1">1%</option>
@@ -108,9 +102,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<span data-i18n="optRotationStep"></span>
-					</td>
+					<td><span data-i18n="optRotationStep"></span></td>
 					<td>
 						<select id="rotd">
 							<option value="5">5°</option>
@@ -146,49 +138,49 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="reverse" value="">
+						<input type="checkbox" id="reverse">
 						<label for="reverse"><span data-i18n="optReverseWheel"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="zoom_trackCursor" value="">
-						<label for="zoom_trackCursor"><span data-i18n="optZoomToCursor"></span></label>
+						<input type="checkbox" id="trackCursor">
+						<label for="trackCursor"><span data-i18n="optZoomToCursor"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="bgImg" value="">
+						<input type="checkbox" id="bgImg">
 						<label for="bgImg"><span data-i18n="optIncludeBgImages"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="autoRtn" value="">
+						<input type="checkbox" id="autoRtn">
 						<label for="autoRtn"><span data-i18n="optAutoResetRelease"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="enableCxt" value="">
+						<input type="checkbox" id="enableCxt">
 						<label for="enableCxt"><span data-i18n="optEnableContextMenu"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="ivpDrag" value="">
+						<input type="checkbox" id="ivpDrag">
 						<label for="ivpDrag"><span data-i18n="optDraggableSingleImage"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="showZoomBadge" value="">
+						<input type="checkbox" id="showZoomBadge">
 						<label for="showZoomBadge"><span data-i18n="optShowZoomBadge"></span></label>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="checkbox" id="enableKeyShortcuts" value="">
+						<input type="checkbox" id="enableKeyShortcuts">
 						<label for="enableKeyShortcuts"><span data-i18n="optEnableKeyShortcuts"></span></label>
 					</td>
 				</tr>

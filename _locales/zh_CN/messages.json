@@ -168,8 +168,8 @@
 		"description": "Help tooltip for right-click timeout setting."
 	},
 	"optShowZoomBadge": {
-		"message": "缩放时显示百分比",
-		"description": "Option label to show zoom percentage badge overlay."
+		"message": "在图片上显示缩放百分比和旋转角度",
+		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
 	},
 	"lblExcludedDomains": {
 		"message": "在以下域名上禁用 (每行一个):",
@@ -234,6 +234,14 @@
 	"panel_cors_error": {
 		"message": "无法保存图片。\n\n原因：由于安全策略 (CORS)，源服务器阻止了导出操作。",
 		"description": "Alert message when image export fails due to CORS restrictions."
+	},
+	"panel_export_source_too_large": {
+		"message": "无法保存图片。\n\n原因：源服务器阻止了导出 (CORS)，且图片文件超出备用下载的大小限制。",
+		"description": "Alert when export fails due to CORS and the fallback download size limit is exceeded."
+	},
+	"panel_export_downscaled": {
+		"message": "图片已按缩小后的尺寸保存。\n\n原因：请求的尺寸超过了导出上限。",
+		"description": "Notice shown after export when the image had to be scaled down because it exceeds the maximum export size."
 	},
 	"panel_label_flip": {
 		"message": "翻转",
