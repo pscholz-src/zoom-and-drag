@@ -34,7 +34,7 @@ Landesanstalt für Kommunikation Baden-Württemberg | Sitz: Deutschland
 ---
 
 **Haftungsausschluss:**  
-Dieses Projekt wird als Open Source unter der Mozilla Public License 2.0 (MPL-2.0) kostenlos zur Verfügung gestellt. Der auf der Projektseite oder im Add-on angebotene Ko-fi-Link dient ausschließlich der Möglichkeit, die Weiterentwicklung freiwillig durch Beiträge zu unterstützen. Es werden durch das Add-on keine Zahlungsdaten erfasst.
+Dieses Projekt wird als Open Source unter der Mozilla Public License 2.0 (MPL-2.0) kostenlos zur Verfügung gestellt. Die im Add-on (via Ko-fi) sowie auf der GitHub-Projektseite (u. a. via GitHub Sponsors und Stripe) angebotenen Zahlungs- und Unterstützungslinks dienen ausschließlich der Möglichkeit, die Weiterentwicklung und Pflege des Projekts freiwillig finanziell zu unterstützen. Durch das Add-on selbst werden zu keinem Zeitpunkt Zahlungsdaten erfasst, gespeichert oder verarbeitet.
 
 ---
 
@@ -68,6 +68,6 @@ Landesanstalt für Kommunikation Baden-Württemberg | Located in: Germany
 ---
 
 **Disclaimer:**  
-This project is made available free of charge as open source software under the Mozilla Public License 2.0 (MPL-2.0). The Ko-fi link provided on the project page or within the extension is intended solely to allow voluntary financial contributions in support of ongoing maintenance and development. The extension does not collect or process any payment data.
+This project is made available free of charge as open source software under the Mozilla Public License 2.0 (MPL-2.0). The support and payment links provided within the extension (via Ko-fi) and on the GitHub project page (including GitHub Sponsors and Stripe) are intended solely to allow voluntary financial contributions in support of ongoing maintenance and development. The extension itself never collects, stores, or processes any payment data.
 
 *> In case of any discrepancies or doubts, the German version of this document shall prevail.*
