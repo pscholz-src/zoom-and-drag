@@ -20,13 +20,28 @@ img.zdImgCls_b6ig4jvwe {
 	position: absolute !important;
 	z-index: 2147483640 !important;
 	border: none !important;
-	box-shadow: 0px 0px 4px 0px #666666 !important;
+	box-shadow: 0px 0px 4px 0px var(--zd-frame-idle, #666666) !important;
 	cursor: grab;
 }
 
 img.zdImgCls_b6ig4jvwe:hover,
 img.zdImgCls_b6ig4jvwe.zdImgCls_actionActive {
-	box-shadow: 0px 0px 4px 1px #3575dd !important;
+	box-shadow: 0px 0px 4px 1px var(--zd-frame-color, #3575dd) !important;
+}
+
+img.zdImgCls_b6ig4jvwe[data-zd-pinned] {
+	box-shadow: 0px 0px 4px 0px var(--zd-pin-color, #d93025) !important;
+}
+
+img.zdImgCls_b6ig4jvwe[data-zd-pinned]:hover,
+img.zdImgCls_b6ig4jvwe[data-zd-pinned].zdImgCls_actionActive {
+	box-shadow: 0px 0px 4px 1px var(--zd-pin-color, #d93025) !important;
+}
+
+img.zdImgCls_b6ig4jvwe[data-zd-frame-ext],
+img.zdImgCls_b6ig4jvwe[data-zd-frame-ext]:hover,
+img.zdImgCls_b6ig4jvwe[data-zd-frame-ext].zdImgCls_actionActive {
+	box-shadow: none !important;
 }
 
 img.zdImgCls_imgSrcView {
@@ -149,6 +164,10 @@ img[data-zd-anim-hide]:not([data-zd-pe-img]) {
 	display: none !important;
 	visibility: hidden !important;
 	pointer-events: none !important;
+}
+
+img[data-zd-float-hidden] {
+	transition: none !important;
 }
 
 img[data-zd-pe-img]:not([data-zd-float-hidden]) {

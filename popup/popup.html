@@ -1,0 +1,47 @@
+<!--
+ - This Source Code Form is subject to the terms of the Mozilla Public
+ - License, v. 2.0. If a copy of the MPL was not distributed with this
+ - file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ -
+ - Original work Copyright (c) Amu (http://crossblade.her.jp/)
+ - Modified work Copyright (c) 2026 pscholz
+ -
+ - Project:    Zoom & Drag
+ - Repository: https://github.com/pscholz-src/zoom-and-drag
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Zoom & Drag</title>
+	<link rel="stylesheet" type="text/css" href="popup.css">
+</head>
+<body>
+	<div class="host_row">
+		<span id="status_dot" class="dot" aria-hidden="true"></span>
+		<span id="host" class="host"></span>
+	</div>
+	<p id="status_text" class="status" role="status"></p>
+	<div id="rule_box" class="rule_box" hidden>
+		<div><span data-i18n="popup_rule_label"></span> <code id="rule_value"></code></div>
+		<div id="rule_hint" class="hint" data-i18n="popup_rule_hint" hidden></div>
+	</div>
+	<button type="button" id="toggle_btn" class="toggle_btn"></button>
+	<div id="scope_box" class="scope_box" hidden>
+		<div class="scope_title" data-i18n="popup_scope_title"></div>
+		<button type="button" id="scope_host_btn" class="scope_btn">
+			<span class="scope_label" data-i18n="popup_scope_host"></span>
+			<code id="scope_host_rule"></code>
+		</button>
+		<button type="button" id="scope_domain_btn" class="scope_btn">
+			<span class="scope_label" data-i18n="popup_scope_domain"></span>
+			<code id="scope_domain_rule"></code>
+		</button>
+		<button type="button" id="scope_cancel_btn" class="scope_cancel" data-i18n="popup_scope_cancel"></button>
+	</div>
+	<button type="button" id="settings_btn" class="settings_btn"><span data-i18n="cmSetting"></span><span id="update_badge" class="update_badge" hidden>!</span></button>
+	<script src="../shared-utils.js"></script>
+	<script type="module" src="popup.js"></script>
+</body>
+</html>

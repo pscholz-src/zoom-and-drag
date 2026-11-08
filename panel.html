@@ -98,6 +98,27 @@
 		color: var(--text-header) !important;
 	}
 
+	.zd-title-wrap {
+		display: flex !important;
+		flex-direction: column !important;
+		gap: 2px !important;
+		min-width: 0 !important;
+	}
+
+	#zd-panel-meta {
+		font-size: 11px !important;
+		line-height: 1.2 !important;
+		color: var(--text-header) !important;
+		opacity: 0.7 !important;
+		white-space: nowrap !important;
+		font-variant-numeric: tabular-nums !important;
+		cursor: help !important;
+	}
+
+	#zd-panel-meta:empty {
+		display: none !important;
+	}
+
 	.zd-panel-body {
 		padding: 20px !important;
 		display: grid !important;
@@ -115,10 +136,129 @@
 		margin-top: 4px !important;
 	}
 
-	.zd-flip-group {
+	.zd-flip-group,
+	.zd-tool-group {
 		display: flex !important;
 		gap: 8px !important;
 		flex: 1 !important;
+	}
+
+	.zd-tool-btn svg {
+		display: block !important;
+		width: 16px !important;
+		height: 16px !important;
+		margin: 0 auto !important;
+		pointer-events: none !important;
+	}
+
+	.zd-split {
+		position: relative !important;
+		display: flex !important;
+		flex: 1.4 !important;
+		border-radius: 6px !important;
+		transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+	}
+
+	.zd-split .zd-panel-btn:hover,
+	.zd-split .zd-panel-btn:active {
+		transform: none !important;
+		box-shadow: none !important;
+	}
+
+	.zd-split:has(> .zd-split-main:hover) {
+		transform: translateY(-2px) !important;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+	}
+
+	.zd-split:has(> .zd-split-main:active) {
+		transform: translateY(1px) !important;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+	}
+
+	.zd-split .zd-split-main {
+		border-top-right-radius: 0 !important;
+		border-bottom-right-radius: 0 !important;
+	}
+
+	.zd-split .zd-split-arrow {
+		flex: 0 0 auto !important;
+		display: flex !important;
+		align-items: center !important;
+		gap: 4px !important;
+		font-size: 11px !important;
+		border-top-left-radius: 0 !important;
+		border-bottom-left-radius: 0 !important;
+		border-left: 1px solid rgba(255, 255, 255, 0.4) !important;
+	}
+
+	.zd-menu {
+		position: absolute !important;
+		right: 0 !important;
+		bottom: calc(100% + 6px) !important;
+		z-index: 10 !important;
+		min-width: 190px !important;
+		display: flex !important;
+		flex-direction: column !important;
+		padding: 4px !important;
+		background: var(--bg-input) !important;
+		color: var(--text-main) !important;
+		border: 1px solid var(--border-panel) !important;
+		border-radius: 6px !important;
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25) !important;
+	}
+
+	.zd-menu[hidden] {
+		display: none !important;
+	}
+
+	.zd-menu:focus {
+		outline: none !important;
+	}
+
+	.zd-menu-item {
+		display: flex !important;
+		align-items: center !important;
+		gap: 6px !important;
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 6px 8px !important;
+		background: transparent !important;
+		color: var(--text-main) !important;
+		border: none !important;
+		border-radius: 4px !important;
+		font-size: 13px !important;
+		text-align: left !important;
+		cursor: pointer !important;
+	}
+
+	.zd-menu-item::before {
+		content: "" !important;
+		display: inline-block !important;
+		width: 14px !important;
+		flex: 0 0 14px !important;
+		text-align: center !important;
+	}
+
+	.zd-menu-item[aria-checked="true"]::before {
+		content: "\2713" !important;
+	}
+
+	.zd-menu-item:hover,
+	.zd-menu-item:focus-visible {
+		background: var(--bg-btn-flip-active) !important;
+		color: var(--text-btn-flip-active) !important;
+		outline: none !important;
+	}
+
+	.zd-menu-item[disabled] {
+		opacity: 0.45 !important;
+		cursor: default !important;
+	}
+
+	.zd-menu-sep {
+		height: 1px !important;
+		margin: 4px 2px !important;
+		background: var(--border-panel) !important;
 	}
 
 	.zd-panel-footer {
@@ -292,6 +432,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.zd-panel-btn,
+		.zd-split,
 		.zd-mini-reset,
 		#zd-btn-x {
 			transition-duration: 0.01ms !important;
@@ -299,6 +440,8 @@
 
 		.zd-panel-btn:hover,
 		.zd-panel-btn:active,
+		.zd-split:has(> .zd-split-main:hover),
+		.zd-split:has(> .zd-split-main:active),
 		.zd-mini-reset:hover,
 		#zd-btn-x:hover {
 			transform: none !important;
@@ -307,7 +450,10 @@
 </style>
 
 <div id="zd-panel-header">
-	<h3 data-i18n="panel_title"></h3>
+	<div class="zd-title-wrap">
+		<h3 data-i18n="panel_title"></h3>
+		<div id="zd-panel-meta" data-i18n-title="panel_tooltip_meta"></div>
+	</div>
 	<div id="zd-btn-x" data-i18n-title="panel_tooltip_close">&times;</div>
 </div>
 
@@ -353,13 +499,49 @@
 				data-i18n="panel_btn_flip_v"></button>
 		</div>
 	</div>
+	<div class="zd-panel-row zd-panel-row-tools">
+		<div class="zd-tool-group">
+			<button type="button" id="zd-btn-invert" class="zd-panel-btn zd-tool-btn" aria-pressed="false"
+				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
+				data-i18n-title="panel_tooltip_invert">
+				<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg>
+			</button>
+			<button type="button" id="zd-btn-gray" class="zd-panel-btn zd-tool-btn" aria-pressed="false"
+				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
+				data-i18n-title="panel_tooltip_gray">
+				<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="3" width="3.5" height="10" fill="currentColor" opacity="0.25"/><rect x="6.25" y="3" width="3.5" height="10" fill="currentColor" opacity="0.6"/><rect x="10.5" y="3" width="3.5" height="10" fill="currentColor"/></svg>
+			</button>
+			<button type="button" id="zd-btn-pixel" class="zd-panel-btn zd-tool-btn" aria-pressed="false"
+				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
+				data-i18n-title="panel_tooltip_pixel">
+				<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2" y="2" width="4" height="4" fill="currentColor"/><rect x="10" y="2" width="4" height="4" fill="currentColor"/><rect x="6" y="6" width="4" height="4" fill="currentColor"/><rect x="2" y="10" width="4" height="4" fill="currentColor"/><rect x="10" y="10" width="4" height="4" fill="currentColor"/></svg>
+			</button>
+			<button type="button" id="zd-btn-pin" class="zd-panel-btn zd-tool-btn" aria-pressed="false"
+				style="background: var(--bg-btn-neutral); color: var(--text-btn-neutral);"
+				data-i18n-title="panel_tooltip_pin">
+				<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 1.5h6l-.6 4.5 2.1 2.2v1.3H8.75v5h-1.5v-5H3.5V8.2L5.6 6z" fill="currentColor"/></svg>
+			</button>
+		</div>
+	</div>
 </div>
 
 <div class="zd-panel-footer">
 	<button type="button" id="zd-btn-reset" class="zd-panel-btn"
 		style="background: var(--bg-btn-reset); color: var(--text-btn-reset);" data-i18n="panel_btn_reset"></button>
-	<button type="button" id="zd-btn-save" class="zd-panel-btn"
-		style="background: var(--bg-btn-save); color: var(--text-btn-save);" data-i18n="panel_btn_save"></button>
+	<div class="zd-split" id="zd-split-save">
+		<button type="button" id="zd-btn-save" class="zd-panel-btn zd-split-main"
+			style="background: var(--bg-btn-save); color: var(--text-btn-save);" data-i18n="panel_btn_save"></button>
+		<button type="button" id="zd-btn-save-menu" class="zd-panel-btn zd-split-arrow"
+			style="background: var(--bg-btn-save); color: var(--text-btn-save);"
+			aria-haspopup="menu" aria-expanded="false" data-i18n-title="panel_tooltip_format"><span id="zd-fmt-label">PNG</span><span aria-hidden="true">&#9662;</span></button>
+		<div id="zd-save-menu" class="zd-menu" role="menu" tabindex="-1" hidden>
+			<button type="button" class="zd-menu-item" role="menuitemradio" data-format="png" aria-checked="true">PNG</button>
+			<button type="button" class="zd-menu-item" role="menuitemradio" data-format="jpeg" aria-checked="false">JPEG</button>
+			<button type="button" class="zd-menu-item" role="menuitemradio" data-format="webp" aria-checked="false">WebP</button>
+			<div class="zd-menu-sep" role="separator"></div>
+			<button type="button" class="zd-menu-item" id="zd-btn-copy" role="menuitem" data-i18n="panel_menu_copy"></button>
+		</div>
+	</div>
 	<button type="button" id="zd-btn-close" class="zd-panel-btn"
 		style="background: var(--bg-btn-close); color: var(--text-btn-close);" data-i18n="panel_btn_close"></button>
 </div>

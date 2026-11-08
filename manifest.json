@@ -3,7 +3,7 @@
 	"name": "__MSG_extensionName__",
 	"author": "pscholz",
 	"description": "__MSG_extensionDescription__",
-	"version": "2.1.1",
+	"version": "2.2.0",
 	"homepage_url": "https://github.com/pscholz-src/zoom-and-drag",
 	"icons": {
 		"16": "icons/icon.svg",
@@ -13,7 +13,8 @@
 		"128": "icons/icon.svg"
 	},
 	"action": {
-		"default_title": "__MSG_cmSetting__",
+		"default_title": "__MSG_extensionName__",
+		"default_popup": "popup/popup.html",
 		"default_icon": {
 			"16": "icons/icon.svg",
 			"32": "icons/icon.svg"
@@ -43,7 +44,7 @@
 		{
 			"matches": ["<all_urls>"],
 			"css": ["style.css"],
-			"js": ["content-script.js"],
+			"js": ["shared-utils.js", "content-script.js"],
 			"run_at": "document_end",
 			"all_frames": true
 		}

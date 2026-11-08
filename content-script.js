@@ -29,9 +29,16 @@ const _srckey = "source";
 const _sizekey = "size";
 const _rotkey = "rotate";
 const _bgsrckey = "bgsrc";
+const _bgsizekey = "bgsize";
 const _flipXkey = "flipX";
 const _flipYkey = "flipY";
+const _pinkey = "pinned";
+const _galleryRootkey = "galleryRoot";
+const _origRectkey = "origRect";
+const _galleryRootSel =
+	'[role="dialog"], [aria-modal="true"], [aria-roledescription="carousel"], #fullScreenGallery, #detailPage, .slick-slider, .swiper, swiper-container, .lightbox-inner, cs-responsive-infopane, [data-testid="media-gallery-modal"]';
 
+const _zdPanelId = "zd-custom-panel";
 const _zdExImgId = `zdImg_${_uqid}floatImgWraper`;
 const _zdImgCls = "zdImgCls_b6ig4jvwe";
 const _draggedCls = "zdImgCls_dragged";
@@ -39,6 +46,11 @@ const _imgSrcViewCls = "zdImgCls_imgSrcView";
 const _imgLinkCls = "zdImgCls_mhdt687po";
 const _imgNoLinkCls = "zdImgCls_asntrs58f";
 const _zdStateCls = new Set(["zdImgCls_animated", _draggedCls, "zdImgCls_draggingCur"]);
+const _floatFrameCls = "zdImgCls_floatFrame";
+const _frameExtAttr = "data-zd-frame-ext";
+const _pinnedAttr = "data-zd-pinned";
+const _hiResAttr = "data-zd-hires";
+const _hiResStateAttr = "data-zd-hires-state";
 
 const RESET_STYLE_PROPS = [
 	"left",
@@ -60,20 +72,50 @@ const RESET_STYLE_PROPS = [
 	"align-self"
 ];
 
-let _endInit = false;
-let _img_element = null;
-let _current_element = null;
-let _ctx_show = true;
-const _accKeyState = { ctrl: false, alt: false };
-let _dragParam = null;
-let _draggingCnt = 0;
-let _rotParam = null;
-let _zoomParam = null;
-let _cancelNextClick = false;
-let _midChord = false;
-let _clickFunc = null;
-let _mdownFunc = null;
-let _rclickTimer = null;
+const _zdExImgBaseZ = 2147483640;
+const _zdMaxZ = 2147483647;
+const _pinGrip = 48;
+const _useFloatFrameOverlay = true;
+const _toastDurationMs = 8000;
+const _gallerySwitchGraceMs = 800;
+const _toastSuccessDurationMs = 2500;
+const _zdBadgeHoldDelay = 1000;
+
+const _maxExportSide = 16384;
+const _maxExportPixels = 100000000;
+const _exportFormats = {
+	png: { mime: "image/png", ext: "png" },
+	jpeg: { mime: "image/jpeg", ext: "jpg" },
+	webp: { mime: "image/webp", ext: "webp" }
+};
+const _fetchErrTooLarge = "image-too-large";
+const _hiResDataAttrs = [
+	"data-orig-file",
+	"data-large-file",
+	"data-full-url",
+	"data-zoom-image",
+	"data-large_image",
+	"data-hires",
+	"data-original"
+];
+const _hiResLazyAttrs = ["data-src", "data-lazy-src"];
+
+const _frameColorDefault = "#3575dd";
+const _pinColorDefault = "#d93025";
+const _floatIdleShadow = "0px 0px 4px 0px #666666";
+const _noFrameVisual = { outline: "none", shadow: "none" };
+const _noFrameVisuals = { idle: _noFrameVisual, hover: _noFrameVisual, panel: _noFrameVisual };
+
+function buildFrameVisuals(color, idleShadow) {
+	return {
+		idle: { outline: "none", shadow: idleShadow },
+		hover: { outline: "none", shadow: `0px 0px 4px 1px ${color}` },
+		panel: {
+			outline: `2px solid ${ZDShared.hexToRgba(color, 0.5)}`,
+			shadow: `0 0 10px ${ZDShared.hexToRgba(color, 0.4)}`
+		}
+	};
+}
 
 let _zoom_dim = 10;
 let _zoom_rotd = 15;
@@ -87,39 +129,70 @@ let _zoom_ivpDrag = false;
 let _zoom_clickSwap = false;
 let _zoom_showZoomBadge = true;
 let _zoom_enableKeyShortcuts = true;
+let _zoom_frameColor = "#3575dd";
+let _zoom_pinColor = "#d93025";
+let _zoom_frameOff = false;
+let _zoom_pinFrameOff = false;
 let _zoom_trackCursor = true;
-let _hoverTarget = null;
-let _lastMouseX = 0;
-let _lastMouseY = 0;
+let _zoom_hiResUpgrade = false;
 let _zoom_excludedDomains = "";
 let _isExcludedHost = false;
+
+let _endInit = false;
+let _settingsLoaded = false;
+let _img_element = null;
+let _current_element = null;
+let _ctx_show = true;
+const _accKeyState = { ctrl: false, alt: false };
+let _dragParam = null;
+let _draggingCnt = 0;
+let _rotParam = null;
+let _zoomParam = null;
+let _cancelNextClick = false;
+let _midChord = false;
+let _clickFunc = null;
+let _mdownFunc = null;
+let _rclickTimer = null;
+let _rightBtnDown = false;
+let _rclickHoldTimer = null;
+let _singleImgPage = false;
+let _lastResetElement = null;
 let _savedScrollPos = null;
 let _zIndexCounter = 10;
 
-const _zdPanelId = "zd-custom-panel";
-const _maxExportSide = 16384;
-const _maxExportPixels = 100000000;
-const _fetchErrTooLarge = "image-too-large";
-let _blockWheelZoom = false;
-let _blockNextEscKeyup = false;
-let _zdSuppressBadge = false;
-const _zdBadgeHoldDelay = 1000;
-let _badgeHoldTimer = null;
-let _settingsLoaded = false;
-let _panelShadow = null;
-let _panelTemplate = null;
+let _hoverTarget = null;
+let _lastMouseX = 0;
+let _lastMouseY = 0;
 let _hoverRafId = 0;
 let _hoverEventData = null;
+let _blockWheelZoom = false;
+let _blockNextEscKeyup = false;
 
+let _panelShadow = null;
+let _panelHover = false;
+let _panelTemplate = null;
+let _previewLeaveTarget = null;
+let _previewGuardTimer = null;
+let _floatFrameVisuals = buildFrameVisuals(_frameColorDefault, _floatIdleShadow);
+let _pinFrameVisuals = buildFrameVisuals(_pinColorDefault, `0px 0px 4px 0px ${_pinColorDefault}`);
+let _floatFrameObserver = null;
+let _floatFrameObserved = null;
+let _floatingMutationObserver = null;
+let _exImgCheckRafId = 0;
+let _pinResizeRaf = 0;
+
+let _zdSuppressBadge = false;
+let _badgeHoldTimer = null;
 let _badgeTimer = null;
-let _rightBtnDown = false;
-const _rcModifiedEls = new WeakSet();
-let _rclickHoldTimer = null;
-let _singleImgPage = false;
+let _swTimer = null;
+let _lastFocusAttempt = 0;
 
+const _floatFrames = new Map();
 const elementDataMap = new WeakMap();
 const _modifiedElements = new Set();
-let _lastResetElement = null;
+const _rcModifiedEls = new WeakSet();
+const _attachedElements = new WeakSet();
+const _lockedSrcMap = new WeakMap();
 
 function getPanelHost() {
 	return document.getElementById(_zdPanelId);
@@ -135,18 +208,31 @@ function panelHasFocus() {
 	return Boolean(shadow && shadow.activeElement);
 }
 
+function isPanelHovered() {
+	const panel = getPanelHost();
+	return Boolean(panel && (_panelHover || panel.matches(":hover")));
+}
+
 function clearBorderStyles(el) {
 	if (!el) return;
 	el.style.removeProperty("outline");
 	el.style.removeProperty("outline-offset");
 	el.style.removeProperty("box-shadow");
+
+	const floatRec = _floatFrames.get(el);
+	if (floatRec) {
+		floatRec.panel = false;
+		refreshFloatFrameVisual(el);
+	}
 }
 
 function resetInlineStyles(el, origStyle = null, includeTransformAndZ = false) {
 	if (!el) return;
 	for (const prop of RESET_STYLE_PROPS) {
+		if (prop === "background-image" && !origStyle) continue;
 		el.style.removeProperty(prop);
 	}
+	releaseTransitionLock(el);
 	if (includeTransformAndZ) {
 		el.style.removeProperty("transform");
 		el.style.removeProperty("z-index");
@@ -172,7 +258,16 @@ function resetInlineStyles(el, origStyle = null, includeTransformAndZ = false) {
 		el.style.backgroundImage = origStyle.backgroundImage;
 	}
 	if (includeTransformAndZ) {
-		el.style.transform = origStyle.transform;
+		let origTransform = origStyle.transform;
+		if (
+			origTransform &&
+			/\bscale\((?!1\b)/.test(origTransform) &&
+			el.closest?.(".swiper-zoom-container") &&
+			!el.closest(".swiper-slide-zoomed")
+		) {
+			origTransform = origTransform.replace(/\bscale\([^)]*\)/g, "scale(1)");
+		}
+		el.style.transform = origTransform;
 		if (origStyle.zIndex !== undefined) {
 			el.style.zIndex = origStyle.zIndex;
 		}
@@ -199,16 +294,24 @@ function shouldUseFloating(el) {
 	return _zoom_ctrlRvs ? _accKeyState.ctrl : !_accKeyState.ctrl;
 }
 
-function needsFloatingForNativeZoom(img) {
-	const isFullscreen = img.classList.contains("fullscreen");
-	if (((_singleImgPage && !_zoom_ivpDrag) || isFullscreen) && img.tagName === "IMG") {
-		const winW = window.innerWidth;
-		const winH = window.innerHeight;
-		const isNativelyZoomed =
-			window.getComputedStyle(img).cursor === "zoom-out" || img.clientWidth > winW || img.clientHeight > winH;
-		return isNativelyZoomed || isFullscreen;
-	}
-	return false;
+const _imeKeyRe = /^Process$|[\u1100-\u11FF\u3000-\u30FF\u3130-\u318F\uAC00-\uD7AF\u4E00-\u9FFF]/;
+const _imeCodeKeys = new Map([
+	["Digit0", "0"],
+	["Numpad0", "0"],
+	["NumpadMultiply", "*"],
+	["Minus", "-"],
+	["Equal", "="]
+]);
+
+function getShortcutKey(e) {
+	const key = typeof e.key === "string" ? e.key : "";
+	if (e.isComposing) return key;
+	if (/^[\uFF01-\uFF5E]$/.test(key)) return String.fromCharCode(key.charCodeAt(0) - 0xfee0);
+	if (!/^[A-Za-z]$/.test(key) && /^Key[A-Z]$/.test(e.code)) return e.code.slice(3).toLowerCase();
+
+	const imeKey = _imeCodeKeys.get(e.code);
+	if (imeKey && _imeKeyRe.test(key) && (!e.shiftKey || e.code === "Equal")) return e.shiftKey ? "+" : imeKey;
+	return key;
 }
 
 function normalizeRot(deg) {
@@ -218,18 +321,35 @@ function normalizeRot(deg) {
 	return d;
 }
 
+function isZdTransitionLock(el) {
+	const prop = "transition-property";
+	return el.style.getPropertyValue(prop) === "none" && el.style.getPropertyPriority(prop) === "important";
+}
+
+function releaseTransitionLock(el) {
+	if (el && isZdTransitionLock(el)) el.style.removeProperty("transition");
+}
+
 function enableAnim(el) {
 	if (getPanelHost()) {
 		disableAnim(el);
 		return;
 	}
-	if (el && !el.classList.contains("zdImgCls_animated")) {
-		el.classList.add("zdImgCls_animated");
+	if (el) {
+		releaseTransitionLock(el);
+		if (!el.classList.contains("zdImgCls_animated")) {
+			el.classList.add("zdImgCls_animated");
+		}
 	}
 }
 
 function disableAnim(el) {
-	if (el) el.classList.remove("zdImgCls_animated");
+	if (el) {
+		el.classList.remove("zdImgCls_animated");
+		if (el.classList.contains(_zdImgCls) || el.classList.contains(_imgSrcViewCls)) {
+			el.style.setProperty("transition", "none", "important");
+		}
+	}
 }
 
 const _clickHostSel = "a[href], button, [role='link'], [role='button']";
@@ -377,6 +497,9 @@ function findThumbUnderPreview(x, y, stack) {
 
 function findMediaCardRoot(el) {
 	if (!el || !el.parentElement) return null;
+	const lightboxRoot = el.closest("hmg-theme, app-image-gallery-lightbox, .lightbox-inner, .storyline-image");
+	if (lightboxRoot) return lightboxRoot;
+
 	const data = getElData(el, _firstkey);
 	const iRect = el.getBoundingClientRect();
 	const baseW = data && data.sw > 0 ? data.sw : iRect.width;
@@ -407,8 +530,6 @@ function findMediaCardRoot(el) {
 	return card;
 }
 
-let _previewGuardTimer = null;
-
 function restorePointerEventsAttr(el) {
 	if (!el || !el.hasAttribute("data-zd-pe")) return;
 	const origPe = el.getAttribute("data-zd-pe");
@@ -428,6 +549,7 @@ function releaseLockedCard(card) {
 		else anc.style.removeProperty("visibility");
 		anc.removeAttribute("data-zd-anc-vis");
 	});
+	restorePointerEventsAttr(card);
 	card.querySelectorAll("[data-zd-pe]").forEach(restorePointerEventsAttr);
 }
 
@@ -491,6 +613,50 @@ function doesVideoOverlapLockedCard(v, curr, card) {
 	return sameBounds(probeRect, cRect) || sameBounds(probeRect, tRect) || rectsOverlap(probeRect, tRect);
 }
 
+function hasRecentPlayerStart(galleryRoot, docRect) {
+	if (!_playingFrames.size) return false;
+	const now = performance.now();
+	const ref = docRect ? docRectToViewportRect(docRect) : null;
+	for (const [frame, startedAt] of _playingFrames) {
+		if (now - startedAt > _playerSignalTtlMs || !frame.isConnected) {
+			_playingFrames.delete(frame);
+			continue;
+		}
+		if (galleryRoot && composedContains(galleryRoot, frame)) return true;
+		if (ref && rectsOverlap(frame.getBoundingClientRect(), ref)) return true;
+	}
+	return false;
+}
+
+function hasPlayerOverDocRect(docRect, galleryRoot = null) {
+	if (hasRecentPlayerStart(galleryRoot, docRect)) return true;
+	if (!docRect) return false;
+	const ref = docRectToViewportRect(docRect);
+	const isTakeover = (el) => {
+		if (isOwnElement(el)) return false;
+		const r = el.getBoundingClientRect();
+		if (r.width < ref.width * 0.5 || r.height < ref.height * 0.5 || !rectsOverlap(r, ref)) return false;
+		const cs = window.getComputedStyle(el);
+		return cs.display !== "none" && cs.visibility !== "hidden" && parseFloat(cs.opacity) >= 0.05;
+	};
+	for (const frame of document.getElementsByTagName("iframe")) {
+		if (isTakeover(frame)) return true;
+	}
+	for (const v of document.getElementsByTagName("video")) {
+		if (isVideoStarted(v) && !isDecorativeVideo(v) && isTakeover(v)) return true;
+	}
+	return false;
+}
+
+function isCoveredByStartedPlayer(img) {
+	if (!img || !img.isConnected) return false;
+	const card = img.closest("[data-zd-card-lock]");
+	for (const v of document.getElementsByTagName("video")) {
+		if (isPlayerVideo(v) && doesVideoOverlapLockedCard(v, img, card)) return true;
+	}
+	return false;
+}
+
 function suppressActivePreviewsForCard(curr, card) {
 	if (!curr || !curr.isConnected) return;
 
@@ -539,11 +705,25 @@ function suppressActivePreviewsForCard(curr, card) {
 	});
 
 	document.querySelectorAll("ytd-video-preview, #video-preview, .ytd-video-preview").forEach((vp) => {
-		if (!vp.hasAttribute("data-zd-vid-hide")) {
-			vp.setAttribute("data-zd-vid-hide", `${vp.style.pointerEvents || "empty"}|${vp.style.visibility || "empty"}`);
+		const overlapsCurrent = doesVideoOverlapLockedCard(vp, curr, card);
+		const overlapsAnyLocked =
+			overlapsCurrent ||
+			lockedImgs.some((img) => img !== curr && doesVideoOverlapLockedCard(vp, img, img.closest("[data-zd-card-lock]")));
+
+		if (overlapsAnyLocked) {
+			if (!vp.hasAttribute("data-zd-vid-hide")) {
+				vp.setAttribute("data-zd-vid-hide", `${vp.style.pointerEvents || "empty"}|${vp.style.visibility || "empty"}`);
+			}
+			vp.style.setProperty("pointer-events", "none", "important");
+			vp.style.setProperty("visibility", "hidden", "important");
+		} else if (vp.hasAttribute("data-zd-vid-hide")) {
+			const parts = (vp.getAttribute("data-zd-vid-hide") || "empty|empty").split("|");
+			if (parts[0] === "empty") vp.style.removeProperty("pointer-events");
+			else vp.style.pointerEvents = parts[0];
+			if (!parts[1] || parts[1] === "empty") vp.style.removeProperty("visibility");
+			else vp.style.visibility = parts[1];
+			vp.removeAttribute("data-zd-vid-hide");
 		}
-		vp.style.setProperty("pointer-events", "none", "important");
-		vp.style.setProperty("visibility", "hidden", "important");
 	});
 }
 
@@ -574,6 +754,22 @@ function startPreviewGuard() {
 			return;
 		}
 		lockedImgs.forEach((img) => {
+			const isCurrent = img === _img_element;
+			if (!isCurrent && (isInlineImageSwapped(img) || isInlineImageSlidAway(img))) {
+				resetInlineElement(img);
+				return;
+			}
+			if (isCurrent && isInlineImageSwapped(img)) {
+				resetInlineElement(img);
+				if (getPanelHost()) {
+					if (rebindPanelImage(img)) {
+						if (isPanelHovered() || panelHasFocus()) applyPanelBorder();
+					}
+				} else {
+					setZoom(img, null, true);
+				}
+				return;
+			}
 			const card = img.closest("[data-zd-card-lock]");
 			suppressActivePreviewsForCard(img, card);
 			suppressAnimatedPreviewsForCard(img, card);
@@ -596,6 +792,7 @@ function lockContainers(curr) {
 	if (!curr.hasAttribute("data-zd-pe-img")) {
 		curr.setAttribute("data-zd-pe-img", curr.style.pointerEvents || "empty");
 		curr.style.setProperty("pointer-events", "auto", "important");
+		_lockedSrcMap.set(curr, curr.getAttribute("src") || curr.getAttribute("srcset") || "");
 	}
 
 	const foundCard = findMediaCardRoot(curr);
@@ -675,29 +872,26 @@ function unlockContainers(curr) {
 		}
 	});
 
+	if (!curr.isConnected && !document.querySelector("[data-zd-pe-img]")) {
+		document.querySelectorAll("[data-zd-pe]").forEach(restorePointerEventsAttr);
+	}
+
 	if (!document.querySelector("[data-zd-card-lock]")) {
 		restoreAllVideoPreviews();
 	}
 }
 
 function checkIsExcluded(excludedStr) {
-	if (!excludedStr) return false;
-
-	const currentHost = location.hostname.toLowerCase();
-	if (!currentHost) return false;
-
-	return excludedStr.split(/[\r\n,]+/).some((line) => {
-		let rule = line.trim().toLowerCase();
-		if (!rule) return false;
-		rule = rule.replace(/^[a-z]+:\/\//i, "").split("/")[0];
-		return currentHost === rule || currentHost.endsWith(`.${rule}`);
-	});
+	return ZDShared.isExcluded(location.hostname, excludedStr);
 }
 
 const _playerMinWidth = 320;
 const _playerMinHeight = 180;
 const _playerMinRatio = 0.4;
 const _playerFrameRatio = 0.5;
+const _playerSignalTtlMs = 2000;
+const _zdPlayerMsg = "zd-player-start";
+const _playingFrames = new Map();
 const _playerExcludeSel =
 	"[id*='preview' i], [class*='preview' i], [id*='mouseover' i], [class*='mouseover' i], ytd-video-preview, a[href]";
 
@@ -714,7 +908,11 @@ function getVideoLayoutRect(video) {
 function isLargeVideo(video) {
 	const r = getVideoLayoutRect(video);
 	const winW = window.innerWidth || document.documentElement.clientWidth;
-	return r.width >= _playerMinWidth && r.height >= _playerMinHeight && r.width >= winW * _playerMinRatio;
+	const winH = window.innerHeight || document.documentElement.clientHeight;
+	if (r.width >= _playerMinWidth && r.height >= _playerMinHeight && r.width >= winW * _playerMinRatio) {
+		return true;
+	}
+	return r.height > r.width && r.width >= _playerMinHeight && r.height >= _playerMinWidth && r.height >= winH * _playerMinRatio;
 }
 
 function isDecorativeVideo(video) {
@@ -726,7 +924,9 @@ function isVideoStarted(video) {
 }
 
 function isPlayerCandidate(video) {
-	if (isOwnElement(video) || !isLargeVideo(video) || isDecorativeVideo(video)) return false;
+	if (isOwnElement(video)) return false;
+	if (video.closest && video.closest("sn-feed")) return true;
+	if (!isLargeVideo(video) || isDecorativeVideo(video)) return false;
 	return isFullscreenVideo(video) || !video.closest(_playerExcludeSel);
 }
 
@@ -735,6 +935,9 @@ function isPlayerVideo(video) {
 }
 
 function findPlayerRoot(video) {
+	const feedRoot = video.closest("sn-feed");
+	if (feedRoot) return feedRoot;
+
 	const vRect = getVideoLayoutRect(video);
 	let root = video;
 	let p = video.parentElement;
@@ -753,6 +956,8 @@ function findPlayerRoot(video) {
 }
 
 function isInPlayerZone(target) {
+	if (target && target.closest && target.closest("sn-feed")) return true;
+
 	const videos = document.getElementsByTagName("video");
 	if (!videos.length) return false;
 
@@ -775,14 +980,30 @@ function onPlayerVideoStart(e) {
 	const v = e.target;
 	if (_isExcludedHost || !v || v.tagName !== "VIDEO" || !isPlayerVideo(v)) return;
 
+	if (window !== window.top) window.parent.postMessage(_zdPlayerMsg, "*");
+
 	if (v.hasAttribute("data-zd-vid-hide")) {
 		restoreHiddenVideoPreview(v);
 	}
 
+	const isLockedImgInPlayerZone = (img) => isInPlayerZone(img) || doesVideoOverlapLockedCard(v, img, img.closest("[data-zd-card-lock]"));
+	resetImagesForPlayer(isLockedImgInPlayerZone, Boolean(v.closest("[data-zd-card-lock]")));
+}
+
+function onFullscreenChange() {
+	const fs = document.fullscreenElement;
+	if (_isExcludedHost || !fs || isOwnElement(fs)) return;
+	if (fs.tagName !== "VIDEO" && !fs.querySelector("video")) return;
+
+	const isInFullscreen = (img) => fs.contains(img) || img.contains(fs);
+	resetImagesForPlayer(isInFullscreen, Boolean(fs.closest("[data-zd-card-lock]") || fs.querySelector("[data-zd-card-lock]")));
+}
+
+function resetImagesForPlayer(isRelated, hasLockedCard) {
 	const panel = getPanelHost();
 	if (panel) {
 		const activeOrig = _img_element ? getElData(_img_element, _srckey) || _img_element : null;
-		if (!activeOrig || !activeOrig.isConnected || isInPlayerZone(activeOrig)) {
+		if (!activeOrig || !activeOrig.isConnected || isRelated(activeOrig)) {
 			removePanelBorder();
 			panel.remove();
 		} else {
@@ -791,14 +1012,24 @@ function onPlayerVideoStart(e) {
 	}
 
 	const lockedImgs = Array.from(document.querySelectorAll("img[data-zd-pe-img]"));
-	const lockedCard = v.closest("[data-zd-card-lock]");
-	if (!lockedCard && lockedImgs.length > 0 && !lockedImgs.some((img) => isInPlayerZone(img))) return;
+	if (!hasLockedCard && lockedImgs.length > 0 && !lockedImgs.some(isRelated)) return;
 
 	restoreOriginalDOM(false);
 	_hoverTarget = null;
 	_current_element = null;
 	_img_element = null;
 	setZoom();
+}
+
+function onPlayerFrameMessage(e) {
+	if (_isExcludedHost || e.data !== _zdPlayerMsg || !e.source || e.source === window) return;
+
+	const frame = Array.from(document.getElementsByTagName("iframe")).find((f) => f.contentWindow === e.source);
+	if (!frame) return;
+
+	_playingFrames.set(frame, performance.now());
+	if (window !== window.top) window.parent.postMessage(_zdPlayerMsg, "*");
+	if (!_exImgCheckRafId) _exImgCheckRafId = requestAnimationFrame(checkExImgWrapper);
 }
 
 function isBlockedBySiteOverlay(target) {
@@ -829,47 +1060,80 @@ function isCoveredByModalOverlay(el) {
 
 	const winW = window.innerWidth || document.documentElement.clientWidth;
 	const winH = window.innerHeight || document.documentElement.clientHeight;
-	const isFloatHidden = el.hasAttribute("data-zd-float-hidden");
+	const rect = el.getBoundingClientRect();
+	if (rect.width === 0 || rect.height === 0) return false;
 
-	let cx = 0;
-	let cy = 0;
-	if (!isFloatHidden) {
-		const rect = el.getBoundingClientRect();
-		if (rect.width === 0 || rect.height === 0) return false;
-		cx = Math.min(Math.max(rect.left + rect.width / 2, 1), winW - 1);
-		cy = Math.min(Math.max(rect.top + rect.height / 2, 1), winH - 1);
+	const cx = Math.min(Math.max(rect.left + rect.width / 2, 1), winW - 1);
+	const cy = Math.min(Math.max(rect.top + rect.height / 2, 1), winH - 1);
+	const stack = deepElementsFromPoint(cx, cy);
+	const isFloatHidden = el.hasAttribute("data-zd-float-hidden") || isLockedOriginal(el);
+
+	let refIdx = stack.indexOf(el);
+	if (refIdx === -1) {
+		for (let p = composedParent(el); p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
+			const idx = stack.indexOf(p);
+			if (idx !== -1) {
+				refIdx = idx;
+				break;
+			}
+		}
 	}
 
-	const modals = document.querySelectorAll('[aria-modal="true"], [role="dialog"], [data-testid="mediaItems"]');
+	const modals = document.querySelectorAll('[aria-modal="true"], [role="dialog"], [data-testid="media-gallery-modal"], sn-feed');
 	for (let i = 0; i < modals.length; i++) {
 		const modal = modals[i];
 		const dialogRoot =
-			modal.getAttribute("data-testid") === "mediaItems"
-				? modal.closest(".fixed, [style*='fixed']") || modal.parentElement?.parentElement?.parentElement || modal
-				: modal;
+			modal.tagName === "SN-FEED"
+				? modal.querySelector('[class*="EnterDone"], [class*="feedRootWrapper"]') || modal
+				: modal.getAttribute("data-testid") === "media-gallery-modal"
+					? modal.closest(".fixed, [style*='fixed']") || modal.parentElement || modal
+					: modal;
+
 		if (isOwnElement(dialogRoot) || composedContains(dialogRoot, el)) continue;
+
+		if (
+			dialogRoot.hasAttribute("inert") ||
+			dialogRoot.closest?.("[inert]") ||
+			dialogRoot.getAttribute("aria-hidden") === "true"
+		) {
+			continue;
+		}
+
 		const mStyle = window.getComputedStyle(dialogRoot);
-		if (mStyle.display === "none" || mStyle.visibility === "hidden" || parseFloat(mStyle.opacity) < 0.01) continue;
+		if (
+			mStyle.display === "none" ||
+			mStyle.visibility === "hidden" ||
+			mStyle.pointerEvents === "none" ||
+			parseFloat(mStyle.opacity) < 0.01
+		) {
+			continue;
+		}
+
 		const mRect = dialogRoot.getBoundingClientRect();
 		if (mRect.width >= winW * 0.3 && mRect.height >= winH * 0.3) {
-			if (mRect.width >= winW * 0.85 && mRect.height >= winH * 0.85) return true;
-			if (!isFloatHidden && cx >= mRect.left && cx <= mRect.right && cy >= mRect.top && cy <= mRect.bottom) {
-				return true;
-			}
+			const modalInFront = stack.some(
+				(node, idx) =>
+					!isOwnElement(node) &&
+					(refIdx === -1 || idx < refIdx) &&
+					composedContains(dialogRoot, node)
+			);
+			if (!modalInFront) continue;
+			return true;
 		}
 	}
 
 	if (isFloatHidden) return false;
 
-	const stack = deepElementsFromPoint(cx, cy);
 	for (let i = 0; i < stack.length; i++) {
 		const o = stack[i];
 		if (o === el) break;
-		if (isOwnElement(o) || composedContains(o, el) || composedContains(el, o)) continue;
+		if (isOwnElement(o) || o.classList?.contains(_zdImgCls) || composedContains(o, el) || composedContains(el, o)) continue;
 
 		for (let p = o; p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
 			if (isOwnElement(p) || composedContains(p, el)) break;
+			if (p.hasAttribute?.("inert") || p.getAttribute?.("aria-hidden") === "true") break;
 			const cs = window.getComputedStyle(p);
+			if (cs.pointerEvents === "none") continue;
 			if (cs.position === "fixed" || p.matches?.('[role="dialog"], [aria-modal="true"]')) {
 				const r = p.getBoundingClientRect();
 				if (r.width >= winW * 0.45 && r.height >= winH * 0.45) return true;
@@ -901,7 +1165,6 @@ function isSingleImgPage() {
 }
 
 const _switcherSel = '[class*="image-switcher" i], [class*="imageswitcher" i], [class*="img-switcher" i]';
-let _swTimer = null;
 const _switcherMainSel = 'img[class*="main-image" i], img[class*="primary-image" i]';
 const _switcherExtraSel = 'img[class*="additional-image" i], img[class*="secondary-image" i], img[class*="hover-image" i]';
 
@@ -922,6 +1185,17 @@ function getSwitcherMainImage(el) {
 	const main = host.querySelector(_switcherMainSel);
 	if (main && main !== el) return main;
 	return Array.from(host.querySelectorAll("img")).find((i) => i !== el && !i.matches(_switcherExtraSel) && !isOwnElement(i)) || null;
+}
+
+const _ownSrcAttrRe = /^data-(?:lazy-)?src(?:-|$)/i;
+
+function isOwnSrcSwitch(img, prevSrc, nextSrc) {
+	if (!img || img.tagName !== "IMG" || !prevSrc || !nextSrc) return false;
+	const own = new Set();
+	for (const attr of img.attributes) {
+		if (attr.value && _ownSrcAttrRe.test(attr.name)) own.add(attr.value);
+	}
+	return own.has(prevSrc) && own.has(nextSrc);
 }
 
 function registerSwitcherImage(img) {
@@ -1019,12 +1293,25 @@ function findFloatHiddenImgAtPoint(host, x, y) {
 	return null;
 }
 
+function findInlineModifiedTargetAtPoint(host, x, y) {
+	for (const el of _modifiedElements) {
+		if (!el.isConnected || el === host || isOwnElement(el) || getElData(el, _srckey) || !host.contains(el)) continue;
+		if (!isElementModified(el)) continue;
+		if (inRect(el, x, y)) return el;
+		const container = el.parentElement;
+		if (container && container !== host && host.contains(container) && inRect(container, x, y)) return container;
+	}
+	return null;
+}
+
 function dispatchPassThroughClick(host, e) {
 	e.preventDefault();
 	e.stopPropagation();
 	e.stopImmediatePropagation();
 	const isMid = e.type === "auxclick" && e.button === 1;
-	const imgTarget = host.matches("a[href]") ? null : findFloatHiddenImgAtPoint(host, e.clientX, e.clientY);
+	const imgTarget = host.matches("a[href]")
+		? null
+		: findFloatHiddenImgAtPoint(host, e.clientX, e.clientY) || findInlineModifiedTargetAtPoint(host, e.clientX, e.clientY);
 	(imgTarget || host).dispatchEvent(
 		new MouseEvent("click", {
 			bubbles: true,
@@ -1068,10 +1355,17 @@ function nativeCursor(el) {
 }
 
 function isPageZoomClick(host, t, x, y) {
-	const cands = new Set([host]);
+	const cands = new Set();
+	if (host && host.nodeType === 1 && !isOwnElement(host)) cands.add(host);
 	if (t && t.nodeType === 1 && !isOwnElement(t)) cands.add(t);
-	host.querySelectorAll("[data-zd-pe-img]").forEach((i) => cands.add(i));
-	if (t && t !== host && t.nodeType === 1 && !isOwnElement(t)) {
+	for (let p = t, i = 0; i < 6 && p && p !== document.body && p !== document.documentElement; i++, p = p.parentElement) {
+		if (!isOwnElement(p)) cands.add(p);
+		if (p === host) break;
+	}
+	if (host && host.querySelectorAll) {
+		host.querySelectorAll("[data-zd-pe-img]").forEach((i) => cands.add(i));
+	}
+	if (t && t !== host && t.nodeType === 1 && !isOwnElement(t) && t.querySelectorAll) {
 		t.querySelectorAll("[data-zd-pe-img]").forEach((i) => {
 			if (inRect(i, x, y)) cands.add(i);
 		});
@@ -1080,6 +1374,22 @@ function isPageZoomClick(host, t, x, y) {
 		if (nativeCursor(c).startsWith("zoom-")) return true;
 	}
 	return false;
+}
+
+function getClickTarget(e) {
+	const first = e.composedPath ? e.composedPath()[0] : null;
+	return first && first.nodeType === 1 ? first : e.target;
+}
+
+function queryAllScoped(el, selector) {
+	const root = el && el.getRootNode ? el.getRootNode() : document;
+	const list = root && root.querySelectorAll ? Array.from(root.querySelectorAll(selector)) : [];
+	if (root !== document) {
+		for (const n of document.querySelectorAll(selector)) {
+			if (!list.includes(n)) list.push(n);
+		}
+	}
+	return list;
 }
 
 function findCardClickHost(card, x, y) {
@@ -1103,7 +1413,7 @@ function findVideoPlayerRoot(el) {
 
 function findVideoPosterHost(t, x, y) {
 	if (t.tagName === "IMG") return findVideoPlayerRoot(t) ? t : null;
-	for (const img of document.querySelectorAll("[data-zd-pe-img]")) {
+	for (const img of queryAllScoped(t, "[data-zd-pe-img]")) {
 		if (isOwnElement(img) || !inRect(img, x, y)) continue;
 		const root = findVideoPlayerRoot(img);
 		if (root && (root.contains(t) || t.contains(root))) return img;
@@ -1112,7 +1422,7 @@ function findVideoPosterHost(t, x, y) {
 }
 
 function resolvePassThrough(e) {
-	const t = e.target;
+	const t = getClickTarget(e);
 	if (!t || t.nodeType !== 1 || isOwnElement(t)) return null;
 	const x = e.clientX;
 	const y = e.clientY;
@@ -1121,6 +1431,8 @@ function resolvePassThrough(e) {
 	let kind = "";
 
 	const path = e.composedPath ? e.composedPath() : [t];
+	const panelHost = getPanelHost();
+	if (panelHost && path.includes(panelHost)) return null;
 	host = path.find((n) => n && n.nodeType === 1 && !isOwnElement(n) && n.matches(_clickHostSel)) || null;
 	if (host) {
 		kind = "path";
@@ -1137,13 +1449,19 @@ function resolvePassThrough(e) {
 		}
 	} else if ((t.tagName === "IMG" || t.tagName === "CANVAS") && !isOwnElement(t)) {
 		host = findOverlayClickHost(t, x, y);
+		if (!host && !getElData(t, _srckey) && getElData(t, _firstkey) && isElementModified(t)) {
+			const restRect = getRestRect(t);
+			if (restRect.width > 0 && restRect.height > 0) {
+				host = findOverlayClickHost(t, restRect.left + restRect.width / 2, restRect.top + restRect.height / 2);
+			}
+		}
 		if (!host) {
 			const lockedCard = t.closest("[data-zd-card-lock]");
 			if (lockedCard) host = findCardClickHost(lockedCard, x, y);
 		}
 		kind = "overlay";
 	} else {
-		host = findLockedContainerHost(t, x, y);
+		host = findLockedContainerHost(t, x, y) || findModifiedContainerHost(t, x, y);
 		kind = "container";
 	}
 
@@ -1156,9 +1474,44 @@ function resolvePassThrough(e) {
 	return { host, kind };
 }
 
+function findModifiedContainerHost(t, x, y) {
+	for (const el of _modifiedElements) {
+		if (!el.isConnected) continue;
+		const src = getElData(el, _srckey);
+		const base = src && src.isConnected ? src : el;
+		if (base === t || isOwnElement(base) || base.classList.contains(_zdImgCls)) continue;
+
+		let inContainer = false;
+		let container = base.parentElement;
+		for (let i = 0; i < 3 && container && container.tagName !== "BODY"; i++, container = container.parentElement) {
+			if (!inRect(container, x, y)) continue;
+			if (composedContains(container, t) || composedContains(t, container)) {
+				inContainer = true;
+				break;
+			}
+		}
+		if (!inContainer) continue;
+
+		const rest = getRestRect(base);
+		if (rest.width === 0 || rest.height === 0) continue;
+		const cx = rest.left + rest.width / 2;
+		const cy = rest.top + rest.height / 2;
+
+		for (let n = base; n; n = composedParent(n)) {
+			if (n.nodeType === 1 && !isOwnElement(n) && n.matches(_clickHostSel)) return n;
+		}
+		const overlayHost = findOverlayClickHost(base, cx, cy);
+		if (overlayHost) return overlayHost;
+		const card = findMediaCardRoot(base) || base.closest("[data-zd-card-lock]");
+		const cardHost = card ? findCardClickHost(card, cx, cy) : null;
+		if (cardHost) return cardHost;
+	}
+	return null;
+}
+
 function findLockedContainerHost(t, x, y) {
 	if (!t || t.nodeType !== 1 || isOwnElement(t) || t.matches(_clickHostSel)) return null;
-	for (const pe of document.querySelectorAll("[data-zd-pe]")) {
+	for (const pe of queryAllScoped(t, "[data-zd-pe]")) {
 		if (isOwnElement(pe) || !t.contains(pe)) continue;
 		if (pe !== t && pe.matches(_clickHostSel) && inHostOrPseudoRect(pe, t, x, y)) return pe;
 		for (const h of pe.querySelectorAll(_clickHostSel)) {
@@ -1187,10 +1540,19 @@ function forwardPassThroughClick(e, el) {
 	if (el.classList.contains(_zdImgCls)) return false;
 
 	const r = resolvePassThrough(e);
-	if (!r || (r.kind !== "overlay" && r.kind !== "container")) return false;
+	if (!r || (r.kind !== "overlay" && r.kind !== "container" && r.kind !== "path")) return false;
+	if (r.kind === "path" && !isElementModified(el)) return false;
 
 	dispatchPassThroughClick(r.host, e);
 	return true;
+}
+
+function isContainerPassThrough(e, r) {
+	if (!r) return false;
+	if (r.kind === "container") return true;
+	if (r.kind !== "path" || !r.host.closest("[data-zd-card-lock]") || !r.host.querySelector("[data-zd-pe-img]")) return false;
+	const t = getClickTarget(e);
+	return Boolean(t) && t.tagName !== "IMG" && t.tagName !== "CANVAS";
 }
 
 function onContainerPassThroughClick(e) {
@@ -1199,14 +1561,16 @@ function onContainerPassThroughClick(e) {
 	if (e.type === "auxclick" && e.button !== 1) return;
 
 	const r = resolvePassThrough(e);
-	if (!r) return;
-	if (r.kind === "container") {
-		dispatchPassThroughClick(r.host, e);
-	} else if (r.kind === "path" && r.host.closest("[data-zd-card-lock]") && r.host.querySelector("[data-zd-pe-img]")) {
-		const t = e.target;
-		if (t && t.tagName !== "IMG" && t.tagName !== "CANVAS") {
-			dispatchPassThroughClick(r.host, e);
-		}
+	if (isContainerPassThrough(e, r)) dispatchPassThroughClick(r.host, e);
+}
+
+function onMiddleDownPassThrough(e) {
+	if (_isExcludedHost || !e.isTrusted || e.button !== 1 || _rightBtnDown) return;
+	const t = getClickTarget(e);
+	if (t && t.classList && t.classList.contains(_zdImgCls)) return;
+	const r = resolvePassThrough(e);
+	if (isContainerPassThrough(e, r) || (r && t && (t.tagName === "IMG" || t.tagName === "CANVAS"))) {
+		e.preventDefault();
 	}
 }
 
@@ -1234,7 +1598,15 @@ function switcherTick() {
 }
 
 function restoreSelfVisibility(el) {
+	if (!el) return;
 	el.removeAttribute("data-zd-float-hidden");
+	if (getElData(el, _bgsrckey)) {
+		const srcData = getElData(el, _firstkey);
+		el.style.removeProperty("background-image");
+		if (srcData?.origStyle?.backgroundImage !== undefined) {
+			el.style.backgroundImage = srcData.origStyle.backgroundImage;
+		}
+	}
 	const saved = el.getAttribute("data-zd-self-vis");
 	if (saved === null) {
 		el.style.removeProperty("visibility");
@@ -1251,26 +1623,176 @@ function touchModified(el) {
 	_modifiedElements.add(el);
 }
 
+function getBaseData(el) {
+	if (!el) return null;
+	return getElData(getElData(el, _srckey) || el, _firstkey) || null;
+}
+
+function getBaseFilter(el) {
+	return getBaseData(el)?.baseFilter || "";
+}
+
+function getBaseOpacity(el) {
+	const base = getBaseData(el)?.baseOpacity;
+	return base > 0 ? base : 1;
+}
+
+function getOwnFilter(el) {
+	const raw = el ? el.style.getPropertyValue("filter") : "";
+	if (!raw) return "";
+
+	const base = getBaseFilter(el);
+	return base && raw.startsWith(base) ? raw.slice(base.length) : raw;
+}
+
+function getFilterEffects(el) {
+	const own = getOwnFilter(el);
+	return { invert: /\binvert\(1\)/.test(own), gray: /\bgrayscale\(1\)/.test(own) };
+}
+
+function isPixelMode(el) {
+	return Boolean(el) && el.style.getPropertyValue("image-rendering") === "pixelated";
+}
+
+function hasEffectMods(el) {
+	const fx = getFilterEffects(el);
+	return fx.invert || fx.gray || isPixelMode(el);
+}
+
+function setPixelMode(el, on) {
+	if (!el) return;
+	if (on) el.style.setProperty("image-rendering", "pixelated", "important");
+	else restoreBaseRendering(el);
+}
+
+function getBrightnessPct(el) {
+	const own = getOwnFilter(el);
+	if (!own) return 100;
+
+	const matches = [...own.matchAll(/brightness\(([\d.]+)(%?)\)/g)];
+	if (!matches.length) return 100;
+
+	const last = matches[matches.length - 1];
+	const val = parseFloat(last[1]);
+	return Math.round(last[2] ? val : val * 100);
+}
+
+function getOpacityPct(el) {
+	const val = el ? parseFloat(el.style.getPropertyValue("opacity")) : NaN;
+	if (isNaN(val)) return 100;
+	return Math.round((val / getBaseOpacity(el)) * 100);
+}
+
+function restoreBaseFilter(el) {
+	if (!el) return;
+	const data = getBaseData(el);
+	const isFloat = Boolean(getElData(el, _srckey));
+	const val = (isFloat ? data?.baseFilter : data?.origStyle?.filter) || "";
+
+	if (val) el.style.setProperty("filter", val, isFloat ? "important" : "");
+	else el.style.removeProperty("filter");
+}
+
+function restoreBaseOpacity(el) {
+	if (!el) return;
+	const data = getBaseData(el);
+	const isFloat = Boolean(getElData(el, _srckey));
+	const base = getBaseOpacity(el);
+	const val = (isFloat ? (base !== 1 ? String(base) : "") : data?.origStyle?.opacity) || "";
+
+	if (val) el.style.setProperty("opacity", val, isFloat ? "important" : "");
+	else el.style.removeProperty("opacity");
+}
+
+function restoreBaseRendering(el) {
+	if (!el) return;
+	const isFloat = Boolean(getElData(el, _srckey));
+	const val = (isFloat ? "" : getBaseData(el)?.origStyle?.imageRendering) || "";
+
+	if (val) el.style.imageRendering = val;
+	else el.style.removeProperty("image-rendering");
+}
+
+function restoreFilterAndOpacity(el) {
+	restoreBaseOpacity(el);
+	restoreBaseFilter(el);
+	restoreBaseRendering(el);
+}
+
+function applyFilterAndOpacity(el, opac, bright, fx = getFilterEffects(el)) {
+	if (opac === 100) {
+		restoreBaseOpacity(el);
+	} else {
+		const val = Math.round(getBaseOpacity(el) * opac * 100) / 10000;
+		el.style.setProperty("opacity", String(val), "important");
+	}
+
+	const parts = [];
+	if (bright !== 100) parts.push(`brightness(${bright}%)`);
+	if (fx.invert) parts.push("invert(1)");
+	if (fx.gray) parts.push("grayscale(1)");
+
+	if (!parts.length) {
+		restoreBaseFilter(el);
+	} else {
+		el.style.setProperty("filter", `${getBaseFilter(el)} ${parts.join(" ")}`.trim(), "important");
+	}
+}
+
+function getExportEffectsFilter(el) {
+	const fx = getFilterEffects(el);
+	return [fx.invert ? "invert(1)" : "", fx.gray ? "grayscale(1)" : ""].filter(Boolean).join(" ");
+}
+
+function getExportFilter(filter, scale) {
+	if (!filter || filter.includes("url(")) return "";
+	if (scale === 1) return filter;
+	return filter.replace(/(-?[\d.]+)px/g, (m, num) => `${parseFloat(num) * scale}px`);
+}
+
+function getCoverCropRect(fit, objPos, natW, natH, boxW, boxH) {
+	if (fit !== "cover" || !(natW > 0 && natH > 0)) return null;
+
+	const scale = Math.max(boxW / natW, boxH / natH);
+	const sw = boxW / scale;
+	const sh = boxH / scale;
+	const pos = (objPos || "50% 50%").trim().split(/\s+(?![^(]*\))/);
+	const left = resolveObjectPos(pos[0], boxW - natW * scale, 1);
+	const top = resolveObjectPos(pos[1] ?? "50%", boxH - natH * scale, 1);
+
+	return {
+		sx: Math.max(0, Math.min(natW - sw, -left / scale)),
+		sy: Math.max(0, Math.min(natH - sh, -top / scale)),
+		sw,
+		sh
+	};
+}
+
 function isElementModified(el) {
 	if (!el || !el.isConnected) return false;
-	if (getElData(el, _srckey) || el.classList.contains(_zdImgCls) || el.classList.contains(_draggedCls)) return true;
+	if (getElData(el, _srckey) || isPinned(el) || el.classList.contains(_zdImgCls) || el.classList.contains(_draggedCls)) return true;
 
 	const d = getElData(el, _firstkey);
 	const s = getElData(el, _sizekey);
 	const r = getElData(el, _rotkey) || 0;
 	const fx = getElData(el, _flipXkey) || 1;
 	const fy = getElData(el, _flipYkey) || 1;
-	const hasOpac = Boolean(el.style.opacity && parseFloat(el.style.opacity) !== 1);
-	const hasBright = Boolean(
-		el.style.filter && !el.style.filter.includes("brightness(100%)") && !el.style.filter.includes("brightness(1)")
-	);
+	const hasOpac = getOpacityPct(el) !== 100;
+	const hasBright = getBrightnessPct(el) !== 100;
 
 	if (d && s && (Math.abs(s.w - d.sw) > 2 || Math.abs(s.h - d.sh) > 2)) return true;
-	return r !== 0 || fx !== 1 || fy !== 1 || hasOpac || hasBright;
+	return r !== 0 || fx !== 1 || fy !== 1 || hasOpac || hasBright || hasEffectMods(el);
 }
 
 function getRedirectedTarget(el) {
 	if (!el) return el;
+	const host = el.closest ? el.closest(".imgContainer, .richImage") : null;
+	if (host) {
+		const ovrr = host.querySelector("img.ovrr");
+		if (ovrr && ovrr !== el && !isInactiveImageTarget(ovrr)) {
+			el = ovrr;
+		}
+	}
 	const swMain = getSwitcherMainImage(el);
 	if (swMain) {
 		registerSwitcherImage(swMain);
@@ -1578,9 +2100,12 @@ function onGlobalMouseUp(e) {
 		stoppedAction = true;
 	}
 	if (_dragParam) {
-		if (_dragParam.obj) _dragParam.obj.classList.remove("zdImgCls_draggingCur");
+		const draggedObj = _dragParam.obj;
+		if (draggedObj) draggedObj.classList.remove("zdImgCls_draggingCur");
 		if (_draggingCnt > 2) _cancelNextClick = true;
 		_dragParam = null;
+		const panelHost = getPanelHost();
+		if (draggedObj && panelHost && !panelHost.matches(":hover") && !panelHasFocus()) clearBorderStyles(draggedObj);
 		d("Drag End", "");
 		stoppedAction = true;
 	}
@@ -1666,10 +2191,16 @@ function updateHoverTarget(data) {
 		}
 	}
 
+	if (extractBgUrlIfEnabled(t)) {
+		const rect = t.getBoundingClientRect();
+		if (rect.width > 0 && rect.height > 0) {
+			_hoverTarget = t;
+			return;
+		}
+	}
+
 	_hoverTarget = null;
 }
-
-let _lastFocusAttempt = 0;
 
 function ensureKeyboardFocus() {
 	if (!_zoom_enableKeyShortcuts) return;
@@ -1703,17 +2234,51 @@ function flushHoverUpdate() {
 	if (_hoverTarget && _hoverTarget.isConnected) ensureKeyboardFocus();
 }
 
+function preloadBgNaturalSize(el, url) {
+	if (!el || !url || /^data:image\/svg|\.svg(?:[?#]|$)/i.test(url)) return;
+	const cached = getElData(el, _bgsizekey);
+	if (cached && cached.url === url) return;
+
+	const probe = new Image();
+	const save = () => {
+		if (probe.naturalWidth > 0 && probe.naturalHeight > 0) {
+			setElData(el, _bgsizekey, { url, w: probe.naturalWidth, h: probe.naturalHeight });
+			if (getPanelHost() && (_img_element === el || getElData(_img_element, _srckey) === el)) {
+				syncPanelValues();
+			}
+		}
+	};
+	probe.onload = save;
+	probe.src = url;
+	if (probe.complete) save();
+}
+
+const _mediaThumbBgSel = '.vjs-poster, [class*="poster" i], [class*="thumbnail" i], [role="img"], [data-testid*="video" i] *';
+
+function isMediaThumbBgElement(el) {
+	return Boolean(el && el.matches && el.matches(_mediaThumbBgSel));
+}
+
 function extractBgUrlIfEnabled(el) {
-	if (!_zoom_bgImg || !el || el.tagName === "BODY" || el.tagName === "HTML") return false;
+	if (!el || el.tagName === "BODY" || el.tagName === "HTML") return false;
+	if (!_zoom_bgImg && !isMediaThumbBgElement(el)) return false;
 	const bg = window.getComputedStyle(el).backgroundImage;
 	if (bg !== "none" && bg.includes("url")) {
 		const match = bg.match(/url\(['"]?(.*?)['"]?\)/i);
 		if (match && match[1]) {
 			setElData(el, _bgsrckey, match[1]);
+			preloadBgNaturalSize(el, match[1]);
 			return true;
 		}
 	}
 	return false;
+}
+
+function isBgTargetBlocked(el) {
+	if (_zoom_bgImg || !el || el.nodeType !== 1) return false;
+	if (["IMG", "CANVAS", "VIDEO"].includes(el.tagName) || isMediaThumbBgElement(el)) return false;
+	const bg = window.getComputedStyle(el).backgroundImage;
+	return bg !== "none" && bg.includes("url");
 }
 
 function getActiveImageTarget(isActivationKey = true, isReset = false) {
@@ -1857,6 +2422,7 @@ function handleArrowKey(dx, dy) {
 	target.style.setProperty("left", `${curLeft + dx}px`, "important");
 	target.style.setProperty("top", `${curTop + dy}px`, "important");
 	target.classList.add(_draggedCls);
+	if (isPinned(target)) keepPinnedVisible(target);
 
 	if (_singleImgPage && target.classList.contains(_imgSrcViewCls)) {
 		const size = getElData(target, _sizekey);
@@ -1939,6 +2505,22 @@ function restoreSiblingVisibilities(container) {
 	});
 }
 
+function resetInlineElement(el) {
+	if (!el || el.nodeType !== 1) return;
+
+	const data = getElData(el, _firstkey);
+	unlockContainers(el);
+	resetInlineStyles(el, data ? data.origStyle : null, true);
+	restoreFilterAndOpacity(el);
+	clearBorderStyles(el);
+	restoreSelfVisibility(el);
+	restoreSiblingVisibilities(el.closest(".imgContainer, .mainContainer, .richImage"));
+	el.classList.remove(_draggedCls, "zdImgCls_draggingCur");
+
+	_modifiedElements.delete(el);
+	elementDataMap.delete(el);
+}
+
 function restoreOriginalDOM(withAnimation) {
 	const exWrapper = document.getElementById(_zdExImgId);
 	if (exWrapper) {
@@ -1965,8 +2547,7 @@ function restoreOriginalDOM(withAnimation) {
 			const data = getElData(el, _firstkey);
 			resetInlineStyles(el, data ? data.origStyle : null, true);
 
-			el.style.removeProperty("opacity");
-			el.style.removeProperty("filter");
+			restoreFilterAndOpacity(el);
 			clearBorderStyles(el);
 			restoreSelfVisibility(el);
 			el.classList.remove(_draggedCls, "zdImgCls_draggingCur");
@@ -2033,9 +2614,9 @@ function handleShiftEscapeKey() {
 	if (_singleImgPage && _zoom_ivpDrag) {
 		const nimg = document.querySelector(`.${_imgSrcViewCls}`);
 		if (nimg) {
+			unpinImage(nimg);
 			nimg.classList.remove(_draggedCls);
-			nimg.style.removeProperty("opacity");
-			nimg.style.removeProperty("filter");
+			restoreFilterAndOpacity(nimg);
 			setElData(nimg, _flipXkey, 1);
 			setElData(nimg, _flipYkey, 1);
 			imgRotate(0, nimg);
@@ -2070,15 +2651,6 @@ function handleShiftEscapeKey() {
 		syncPanelValues();
 
 		if (panel.matches(":hover") || panelHasFocus()) {
-			if (needsFloatingForNativeZoom(activeImg) && !getElData(activeImg, _srckey)) {
-				const bData = getElData(activeImg, _firstkey);
-				if (bData) {
-					const sz = getElData(activeImg, _sizekey) || { w: bData.sw, h: bData.sh };
-					_zdSuppressBadge = true;
-					generateImgEx({ w: sz.w, h: sz.h });
-					_zdSuppressBadge = false;
-				}
-			}
 			applyPanelBorder();
 		}
 	} else {
@@ -2093,8 +2665,15 @@ function handleEscapeKey(isActKey = false) {
 	let didSomething = false;
 	const panel = getPanelHost();
 	if (panel) {
-		panel.remove();
-		removePanelBorder();
+		const panelShadow = getPanelShadow();
+		const closeBtn = panelShadow ? panelShadow.getElementById("zd-btn-close") : null;
+		if (closeBtn) {
+			closeBtn.click();
+		} else {
+			panel.remove();
+			removePanelBorder();
+			setZoom();
+		}
 		didSomething = true;
 	}
 
@@ -2104,10 +2683,10 @@ function handleEscapeKey(isActKey = false) {
 	target = ensureTargetReady(target, true);
 	if (!target) return didSomething;
 
+	unpinImage(target);
 	enableAnim(target);
 	target.classList.remove(_draggedCls);
-	target.style.removeProperty("opacity");
-	target.style.removeProperty("filter");
+	restoreFilterAndOpacity(target);
 	clearBorderStyles(target);
 	target.style.removeProperty("cursor");
 
@@ -2116,6 +2695,7 @@ function handleEscapeKey(isActKey = false) {
 	restoreElementZIndex(target);
 
 	const src_elem = getElData(target, _srckey);
+	const origTarget = src_elem || target;
 	if (src_elem) {
 		imgRotate(0, target);
 		_zdSuppressBadge = true;
@@ -2124,6 +2704,15 @@ function handleEscapeKey(isActKey = false) {
 	} else {
 		setImageRect(undefined, target);
 		imgRotate(0, target);
+		unlockContainers(origTarget);
+	}
+
+	_modifiedElements.delete(origTarget);
+	if (!origTarget.isConnected || isInactiveImageTarget(origTarget)) {
+		elementDataMap.delete(origTarget);
+		_lastResetElement = null;
+	} else {
+		_lastResetElement = origTarget;
 	}
 
 	setZoom();
@@ -2251,7 +2840,10 @@ function init() {
 								break;
 							}
 
-							const sharedHosts = [el.closest(".imgpt, .iusc, .isv-r, article, [data-sctrack], [data-zd-card-lock]")];
+							const sharedHosts = [
+								el.closest(".imgpt, .iusc, .isv-r, article, [data-sctrack], [data-zd-card-lock]"),
+								el.closest("hmg-theme, app-image-gallery-lightbox, .lightbox-inner, swiper-container, .storyline-image")
+							];
 							for (let h = el.closest(_clickHostSel); h; h = h.parentElement ? h.parentElement.closest(_clickHostSel) : null) {
 								sharedHosts.push(h);
 							}
@@ -2275,7 +2867,7 @@ function init() {
 		}
 	};
 
-	["pointerdown", "mousedown", "pointerup", "mouseup", "click"].forEach((type) => {
+	["pointerdown", "mousedown", "pointerup", "mouseup", "click", "dblclick"].forEach((type) => {
 		window.addEventListener(type, captureShield, true);
 	});
 
@@ -2313,6 +2905,7 @@ function init() {
 		window.addEventListener(type, onSwitcherLinkClick, true);
 		window.addEventListener(type, onContainerPassThroughClick, true);
 	});
+	window.addEventListener("mousedown", onMiddleDownPassThrough, true);
 
 	const blockLockedCardHover = (e) => {
 		if (_isExcludedHost || !e.target || e.target.nodeType !== 1 || isOwnElement(e.target)) return;
@@ -2332,6 +2925,8 @@ function init() {
 	});
 
 	window.addEventListener("play", onPlayerVideoStart, true);
+	document.addEventListener("fullscreenchange", onFullscreenChange);
+	window.addEventListener("message", onPlayerFrameMessage);
 
 	window.addEventListener(
 		"dragstart",
@@ -2461,8 +3056,10 @@ function init() {
 						}
 						setTimeout(() => {
 							const b = document.getElementById("zdImg_zoomBadge");
-							if (b && !_rightBtnDown) b.style.opacity = "0";
-							_ctx_show = true;
+							if (b && !_rightBtnDown) {
+								b.style.opacity = "0";
+								_ctx_show = true;
+							}
 						}, 100);
 						return;
 					}
@@ -2499,9 +3096,21 @@ function init() {
 		"wheel",
 		(e) => {
 			const panel = getPanelHost();
-			if (panel && panel.contains(e.target)) return;
-			if ((!_singleImgPage || !_zoom_ivpDrag) && !_rightBtnDown) return;
-			if (_rightBtnDown && _img_element) e.preventDefault();
+			if (panel && (panel.contains(e.target) || (e.composedPath && e.composedPath().includes(panel)))) return;
+			if (_rightBtnDown && _img_element) {
+				e.preventDefault();
+				return;
+			}
+			const activeOrig = _img_element ? getElData(_img_element, _srckey) || _img_element : null;
+			if (
+				activeOrig &&
+				activeOrig.isConnected &&
+				activeOrig.classList?.contains("fullscreen") &&
+				(panel || isElementModified(_img_element) || isElementModified(activeOrig))
+			) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
 		},
 		{ passive: false, capture: true }
 	);
@@ -2524,13 +3133,26 @@ function init() {
 				return;
 			}
 
+			const saveMenu = panelShadowEl && panelShadowEl.getElementById("zd-save-menu");
+			const isSaveMenuOpen = Boolean(saveMenu && !saveMenu.hidden);
+			const isOnSaveMenuBtn = Boolean(panelActiveEl && panelActiveEl.id === "zd-btn-save-menu");
+			if (isSaveMenuOpen || (isOnSaveMenuBtn && (e.key === "ArrowDown" || e.key === "ArrowUp"))) {
+				if (isSaveMenuOpen && e.key === "Escape") {
+					closeSaveMenu();
+					e.preventDefault();
+					e.stopPropagation();
+					e.stopImmediatePropagation();
+				}
+				return;
+			}
+
 			if (isEditableTarget(e.target) || isEditableTarget(document.activeElement)) {
 				return;
 			}
 
 			if (e.ctrlKey || e.metaKey || e.altKey) return;
 
-			const key = e.key;
+			const key = getShortcutKey(e);
 
 			if (panel && (panel.matches(":hover") || inPanelInput)) {
 				const deadZoneKeys = [
@@ -2550,7 +3172,8 @@ function init() {
 			const isActKey =
 				isZoomInKey ||
 				key === "-" || key === "_" || e.code === "NumpadSubtract" ||
-				key === "0" || key === "r" || key === "R" || key === "l" || key === "L" || key === "p" || key === "P";
+				key === "0" || key === "r" || key === "R" || key === "l" || key === "L" || key === "p" || key === "P" ||
+				key === "f" || key === "F";
 
 			if (key === "Escape") {
 				handled = e.shiftKey ? handleShiftEscapeKey() : handleEscapeKey(false);
@@ -2597,6 +3220,8 @@ function init() {
 				handled = handleRotationKey(e.shiftKey ? -45 : -90, isActKey);
 			} else if (key === "p" || key === "P") {
 				handled = handlePanelKey(isActKey);
+			} else if (key === "f" || key === "F") {
+				handled = e.shiftKey ? handleShiftPinKey() : handlePinKey(isActKey);
 			}
 
 			if (handled) {
@@ -2648,9 +3273,18 @@ function init() {
 		true
 	);
 
-	window.addEventListener("contextmenu", (e) => {
-		if (!_ctx_show) e.preventDefault();
-	});
+	window.addEventListener(
+		"contextmenu",
+		(e) => {
+			if (!_ctx_show) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.stopImmediatePropagation();
+				_ctx_show = true;
+			}
+		},
+		true
+	);
 
 	const releaseInputState = () => {
 		_accKeyState.ctrl = _accKeyState.alt = false;
@@ -2673,6 +3307,8 @@ function init() {
 	document.addEventListener("visibilitychange", () => {
 		if (document.visibilityState === "hidden") releaseInputState();
 	});
+
+	window.addEventListener("resize", keepAllPinnedVisible, { passive: true });
 
 	_endInit = true;
 	d("Init End", "");
@@ -2883,7 +3519,12 @@ function settingData(setting) {
 		const isFirstApply = !_settingsLoaded;
 		_zoom_ivpDrag = setting.ivpDrag;
 		if (_zoom_ivpDrag && _singleImgPage && !_isExcludedHost) {
-			if (!document.querySelector(`.${_imgSrcViewCls}`)) singlePageAltImg();
+			if (!document.querySelector(`.${_imgSrcViewCls}`)) {
+				if (!wasIvpDrag && (document.getElementById(_zdExImgId) || _modifiedElements.size > 0 || getPanelHost())) {
+					resetAllChanges();
+				}
+				singlePageAltImg();
+			}
 		} else if (!_zoom_ivpDrag && _singleImgPage && (wasIvpDrag || isFirstApply)) {
 			resetAllChanges();
 		}
@@ -2892,6 +3533,15 @@ function settingData(setting) {
 
 	if (setting.showZoomBadge != null) _zoom_showZoomBadge = setting.showZoomBadge;
 	if (setting.enableKeyShortcuts != null) _zoom_enableKeyShortcuts = setting.enableKeyShortcuts;
+	if (setting.hiResUpgrade != null) _zoom_hiResUpgrade = setting.hiResUpgrade;
+	if (setting.frameColor != null || setting.pinColor != null || setting.frameOff != null || setting.pinFrameOff != null) {
+		applyFrameColors(
+			setting.frameColor ?? _zoom_frameColor,
+			setting.pinColor ?? _zoom_pinColor,
+			setting.frameOff ?? _zoom_frameOff,
+			setting.pinFrameOff ?? _zoom_pinFrameOff
+		);
+	}
 	if (setting.excludedDomains != null) {
 		_zoom_excludedDomains = setting.excludedDomains;
 		const wasExcluded = _isExcludedHost;
@@ -2960,6 +3610,11 @@ function checkTarget(t, e, skipBadge = false) {
 				if (mainImg) t = mainImg;
 			}
 
+			if (t.tagName === "IMG" || t.tagName === "CANVAS") {
+				d("Image Type", t.tagName);
+				return attach(t);
+			}
+
 			if (extractBgUrlIfEnabled(t)) {
 				d("Image Type", "BG");
 				return attach(t);
@@ -2992,12 +3647,279 @@ function checkTarget(t, e, skipBadge = false) {
 	}
 }
 
+function applyFrameColors(frameColor, pinColor, frameOff, pinFrameOff) {
+	const frame = ZDShared.isHexColor(frameColor) ? frameColor.toLowerCase() : _frameColorDefault;
+	const pin = ZDShared.isHexColor(pinColor) ? pinColor.toLowerCase() : _pinColorDefault;
+	const noFrame = Boolean(frameOff);
+	const noPinFrame = Boolean(pinFrameOff);
+	if (
+		frame === _zoom_frameColor &&
+		pin === _zoom_pinColor &&
+		noFrame === _zoom_frameOff &&
+		noPinFrame === _zoom_pinFrameOff
+	) {
+		return;
+	}
+
+	_zoom_frameColor = frame;
+	_zoom_pinColor = pin;
+	_zoom_frameOff = noFrame;
+	_zoom_pinFrameOff = noPinFrame;
+	_floatFrameVisuals = noFrame ? _noFrameVisuals : buildFrameVisuals(frame, _floatIdleShadow);
+	_pinFrameVisuals = noPinFrame ? _noFrameVisuals : buildFrameVisuals(pin, `0px 0px 4px 0px ${pin}`);
+
+	const frameVar = frame === _frameColorDefault ? "" : frame;
+	const pinVar = pin === _pinColorDefault ? "" : pin;
+	const rootStyle = document.documentElement.style;
+	const setVar = (name, value) => (value ? rootStyle.setProperty(name, value) : rootStyle.removeProperty(name));
+	setVar("--zd-frame-color", noFrame ? "transparent" : frameVar);
+	setVar("--zd-frame-idle", noFrame ? "transparent" : "");
+	setVar("--zd-pin-color", noPinFrame ? "transparent" : pinVar);
+
+	document.querySelectorAll(`img.${_zdImgCls}`).forEach((img) => {
+		if (_floatFrames.has(img)) refreshFloatFrameVisual(img);
+	});
+	if (_img_element && getPanelHost()) {
+		applyPanelBorder();
+		const panelShadow = getPanelShadow();
+		if (panelShadow) updateEffectButtons(panelShadow);
+	}
+}
+
+function isPinned(el) {
+	return Boolean(el && getElData(el, _pinkey));
+}
+
+function getScrollOffset(el) {
+	return isPinned(el) ? { x: 0, y: 0 } : { x: window.scrollX, y: window.scrollY };
+}
+
 function getOffset(el) {
 	const rect = el.getBoundingClientRect();
+	const scrollOfs = getScrollOffset(el);
 	return {
-		left: rect.left + window.scrollX,
-		top: rect.top + window.scrollY
+		left: rect.left + scrollOfs.x,
+		top: rect.top + scrollOfs.y
 	};
+}
+
+function keepPinnedVisible(img) {
+	if (!isPinned(img) || !img.isConnected) return;
+
+	const size = getElData(img, _sizekey);
+	const left = parseFloat(img.style.left);
+	const top = parseFloat(img.style.top);
+	if (!size || isNaN(left) || isNaN(top)) return;
+
+	const rad = ((getElData(img, _rotkey) || 0) * Math.PI) / 180;
+	const cosA = Math.abs(Math.cos(rad));
+	const sinA = Math.abs(Math.sin(rad));
+	const visW = size.w * cosA + size.h * sinA;
+	const visH = size.w * sinA + size.h * cosA;
+	const visLeft = left + size.w / 2 - visW / 2;
+	const visTop = top + size.h / 2 - visH / 2;
+
+	const winW = document.documentElement.clientWidth;
+	const winH = document.documentElement.clientHeight;
+	const gripW = Math.min(_pinGrip, visW, winW);
+	const gripH = Math.min(_pinGrip, visH, winH);
+
+	let dx = 0;
+	let dy = 0;
+	if (visLeft + visW < gripW) dx = gripW - (visLeft + visW);
+	else if (visLeft > winW - gripW) dx = winW - gripW - visLeft;
+	if (visTop + visH < gripH) dy = gripH - (visTop + visH);
+	else if (visTop > winH - gripH) dy = winH - gripH - visTop;
+	if (dx === 0 && dy === 0) return;
+
+	img.style.setProperty("left", `${left + dx}px`, "important");
+	img.style.setProperty("top", `${top + dy}px`, "important");
+	img.classList.add(_draggedCls);
+}
+
+function keepAllPinnedVisible() {
+	if (_pinResizeRaf) return;
+	_pinResizeRaf = requestAnimationFrame(() => {
+		_pinResizeRaf = 0;
+		document.querySelectorAll(`img[${_pinnedAttr}]`).forEach(keepPinnedVisible);
+	});
+}
+
+function refreshPinVisuals(img) {
+	syncFloatFrame(img);
+	if (img === _img_element && getPanelHost()) applyPanelBorder();
+}
+
+function pinImage(img) {
+	const isSinglePageImg = _singleImgPage && img?.classList.contains(_imgSrcViewCls);
+	if (!img || isPinned(img) || (!getElData(img, _srckey) && !isSinglePageImg)) return false;
+
+	const data = getElData(img, _firstkey);
+	const scrX = window.scrollX;
+	const scrY = window.scrollY;
+	const rawLeft = parseFloat(img.style.left);
+	const rawTop = parseFloat(img.style.top);
+	const docPos = getOffset(img);
+
+	disableAnim(img);
+	img.style.setProperty("left", `${(isNaN(rawLeft) ? docPos.left : rawLeft) - scrX}px`, "important");
+	img.style.setProperty("top", `${(isNaN(rawTop) ? docPos.top : rawTop) - scrY}px`, "important");
+	if (data) {
+		data.sx -= scrX;
+		data.sy -= scrY;
+	}
+
+	setElData(img, _pinkey, true);
+	img.setAttribute(_pinnedAttr, "");
+	img.style.setProperty("position", "fixed", "important");
+	img.getBoundingClientRect();
+
+	keepPinnedVisible(img);
+	refreshPinVisuals(img);
+	return true;
+}
+
+function unpinImage(img) {
+	if (!isPinned(img)) return false;
+
+	const data = getElData(img, _firstkey);
+	const src_elem = getElData(img, _srckey);
+	const scrX = window.scrollX;
+	const scrY = window.scrollY;
+	const rawLeft = parseFloat(img.style.left);
+	const rawTop = parseFloat(img.style.top);
+	const newLeft = isNaN(rawLeft) ? NaN : rawLeft + scrX;
+	const newTop = isNaN(rawTop) ? NaN : rawTop + scrY;
+
+	disableAnim(img);
+	if (!isNaN(newLeft)) img.style.setProperty("left", `${newLeft}px`, "important");
+	if (!isNaN(newTop)) img.style.setProperty("top", `${newTop}px`, "important");
+	if (data) {
+		data.sx += scrX;
+		data.sy += scrY;
+	}
+
+	if (src_elem && src_elem.isConnected && !isNaN(newLeft) && !isNaN(newTop)) {
+		const srcOfs = getOffset(src_elem);
+		if (Math.abs(newLeft - srcOfs.left) > 1 || Math.abs(newTop - srcOfs.top) > 1) {
+			img.classList.add(_draggedCls);
+		}
+	}
+
+	setElData(img, _pinkey, false);
+	img.removeAttribute(_pinnedAttr);
+	img.style.setProperty("position", "absolute", "important");
+	img.getBoundingClientRect();
+
+	refreshPinVisuals(img);
+	return true;
+}
+
+function togglePinned(target) {
+	_zdSuppressBadge = true;
+	try {
+		let el = ensureTargetReady(target);
+		if (!el) return false;
+
+		const isSinglePageImg = _singleImgPage && el.classList.contains(_imgSrcViewCls);
+		if (!getElData(el, _srckey) && !isSinglePageImg) {
+			if (el.tagName.toUpperCase() === "CANVAS") {
+				return false;
+			}
+
+			ensureFloating();
+			el = _img_element;
+			if (!el || !getElData(el, _srckey)) return false;
+		}
+
+		if (isPinned(el)) {
+			unpinImage(el);
+			removePanelBorder();
+			el = _img_element;
+		} else {
+			pinImage(el);
+		}
+
+		if (isSinglePageImg && el) {
+			const size = getElData(el, _sizekey);
+			if (size) checkSingleImgActivation(el, size.w, size.h);
+		}
+
+		if (isElementModified(el)) ensureElevatedZIndex(el);
+		if (getPanelHost()) {
+			syncPanelValues();
+			applyPanelBorder();
+		}
+		return true;
+	} finally {
+		_zdSuppressBadge = false;
+		hideBadgeImmediate();
+	}
+}
+
+function handleShiftPinKey() {
+	const pinnedImgs = document.querySelectorAll(`img[${_pinnedAttr}]`);
+	if (!pinnedImgs.length) return false;
+
+	_zdSuppressBadge = true;
+	try {
+		const prevActive = _img_element;
+		const prevActiveSrc = prevActive ? getElData(prevActive, _srckey) || prevActive : null;
+		pinnedImgs.forEach((img) => {
+			unpinImage(img);
+			if (_singleImgPage && img.classList.contains(_imgSrcViewCls)) {
+				const size = getElData(img, _sizekey);
+				if (size) checkSingleImgActivation(img, size.w, size.h);
+				return;
+			}
+			const src_elem = getElData(img, _srckey);
+			const data = getElData(img, _firstkey);
+			const size = getElData(img, _sizekey);
+			const isUnmodified =
+				src_elem &&
+				!img.classList.contains(_draggedCls) &&
+				(getElData(img, _rotkey) || 0) === 0 &&
+				(getElData(img, _flipXkey) || 1) === 1 &&
+				(getElData(img, _flipYkey) || 1) === 1 &&
+				getOpacityPct(img) === 100 &&
+				getBrightnessPct(img) === 100 &&
+				!hasEffectMods(img) &&
+				data &&
+				size &&
+				Math.abs(size.w - data.sw) < 2 &&
+				Math.abs(size.h - data.sh) < 2;
+
+			if (isUnmodified) {
+				_img_element = img;
+				clearImgEx(src_elem);
+				_modifiedElements.delete(src_elem);
+			}
+		});
+		if (prevActive && prevActive.isConnected) {
+			_img_element = prevActive;
+		} else if (getPanelHost() && !_img_element && prevActiveSrc) {
+			rebindPanelOrActiveGalleryImg(prevActiveSrc);
+		}
+		if (getPanelHost()) {
+			syncPanelValues();
+			applyPanelBorder();
+		}
+	} finally {
+		_zdSuppressBadge = false;
+		hideBadgeImmediate();
+	}
+
+	refreshShortcutTimeout();
+	return true;
+}
+
+function handlePinKey(isActKey) {
+	const target = getActiveImageTarget(isActKey);
+	if (!target) return false;
+	if (!togglePinned(target)) return false;
+
+	refreshShortcutTimeout();
+	return true;
 }
 
 function deepElementFromPoint(x, y) {
@@ -3013,20 +3935,47 @@ function deepElementFromPoint(x, y) {
 function isInactiveImageTarget(el, x, y) {
 	if (!el || !el.closest) return false;
 	if (el.classList && el.classList.contains(_zdImgCls)) return false;
-	if (el.closest(".slick-slide:not(.slick-active)") || el.closest("[inert]")) return true;
+	if (
+		el.closest(".slick-slide:not(.slick-active)") ||
+		el.closest('[aria-roledescription="slide"][aria-current="false"]') ||
+		el.closest("[inert]")
+	) {
+		return true;
+	}
+
+	if (!el.hasAttribute?.("data-zd-float-hidden") && !el.closest("[data-zd-card-lock]")) {
+		for (let p = el; p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
+			if (p.nodeType !== 1) continue;
+			const pcs = window.getComputedStyle(p);
+			if (pcs.display === "none" || pcs.visibility === "hidden" || parseFloat(pcs.opacity) < 0.05) {
+				return true;
+			}
+		}
+	}
 
 	const hasPoint = typeof x === "number" && typeof y === "number";
-	const hiddenRoot = el.closest('[aria-hidden="true"]');
+	const findHiddenAncestor = (start) => {
+		for (let p = start; p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
+			if (p.nodeType === 1 && p.getAttribute("aria-hidden") === "true") return p;
+		}
+		return null;
+	};
+	const hiddenRoot = findHiddenAncestor(el.tagName === "IMG" || el.tagName === "CANVAS" ? composedParent(el) : el);
 	if (hiddenRoot) {
-		if (!hasPoint) return true;
-		const top = deepElementFromPoint(x, y);
-		const isNearOrInside = top && (hiddenRoot.contains(top) || isNearRelated(el, top) || isPreviewVideoOverlay(top, el));
-		const isLinkThumb = hiddenRoot.matches(_clickHostSel) && inRect(hiddenRoot, x, y);
-		if (!isNearOrInside && !isLinkThumb) return true;
+		const isLinkThumb = hiddenRoot.matches(_clickHostSel);
+		if (!hasPoint) {
+			if (!isLinkThumb) return true;
+		} else {
+			let top = deepElementFromPoint(x, y);
+			if (isInsidePanel(top)) top = deepElementsFromPoint(x, y).find((o) => !isInsidePanel(o)) || null;
+			const isNearOrInside =
+				top && (composedContains(hiddenRoot, top) || isNearRelated(el, top) || isPreviewVideoOverlay(top, el));
+			if (!isNearOrInside && !(isLinkThumb && inRect(hiddenRoot, x, y))) return true;
+		}
 	}
 
 	if (hasPoint && (el.tagName === "IMG" || el.tagName === "CANVAS")) {
-		const stack = deepElementsFromPoint(x, y).filter((o) => !isOwnElement(o));
+		const stack = deepElementsFromPoint(x, y).filter((o) => !isOwnElement(o) && !isInsidePanel(o));
 		if (stack.length > 0) {
 			const previewVideos = findPreviewVideos(x, y, stack).filter((v) => isPreviewVideoOverlay(v, el));
 			const elRect = el.getBoundingClientRect();
@@ -3054,6 +4003,12 @@ function isInactiveImageTarget(el, x, y) {
 				if (previewVideos.some((v) => o.contains(v) || findPreviewRoot(v).contains(o))) continue;
 				if (
 					(o.tagName === "IMG" || o.tagName === "CANVAS") &&
+					o.closest('[aria-hidden="true"], [aria-roledescription="slide"][aria-current="false"], .slick-slide:not(.slick-active)')
+				) {
+					continue;
+				}
+				if (
+					(o.tagName === "IMG" || o.tagName === "CANVAS") &&
 					hasPreviewVideo &&
 					sameBounds(o.getBoundingClientRect(), elRect)
 				) {
@@ -3062,7 +4017,8 @@ function isInactiveImageTarget(el, x, y) {
 				if (idx === -1 && isPeNone && isNearRelated(el, stack[0]) && !isNearRelated(o, stack[0])) {
 					continue;
 				}
-				if (o.tagName === "IMG" || o.tagName === "CANVAS" || o.tagName === "VIDEO" || isOpaqueCover(o)) {
+				if (o.tagName === "IMG" || o.tagName === "CANVAS" || o.tagName === "VIDEO" || isOpaqueCover(o, elRect)) {
+					if (isTransparentLayer(o)) continue;
 					return true;
 				}
 			}
@@ -3093,9 +4049,21 @@ function composedParent(n) {
 	return n.parentNode || n.host || null;
 }
 
+function findGalleryRoot(el) {
+	const seen = new Set();
+	for (let n = el; n && !seen.has(n); n = composedParent(n)) {
+		if (n.nodeType === 1 && n.matches(_galleryRootSel)) return n;
+		seen.add(n);
+	}
+	return null;
+}
+
 function composedContains(a, b) {
-	for (let n = b; n; n = composedParent(n)) {
+	if (!a || !b) return false;
+	const seen = new Set();
+	for (let n = b; n && !seen.has(n); n = n.assignedSlot || n.parentNode || n.host || null) {
 		if (n === a) return true;
+		seen.add(n);
 	}
 	return false;
 }
@@ -3103,11 +4071,16 @@ function composedContains(a, b) {
 function isNearRelated(el, top) {
 	if (composedContains(el, top) || composedContains(top, el)) return true;
 	let anc = composedParent(el);
-	for (let i = 0; i < 5 && anc && anc !== document.body && anc !== document.documentElement; i++) {
+	for (let i = 0; i < 8 && anc && anc !== document.body && anc !== document.documentElement; i++) {
 		if (composedContains(anc, top)) return true;
 		anc = composedParent(anc);
 	}
 	return false;
+}
+
+function isInsidePanel(n) {
+	const host = getPanelHost();
+	return Boolean(host && n && composedContains(host, n));
 }
 
 function isOwnElement(o) {
@@ -3117,7 +4090,15 @@ function isOwnElement(o) {
 	return o.className.split(/\s+/).some((c) => c.includes("zdImg") && !_zdStateCls.has(c));
 }
 
-function isOpaqueCover(o) {
+function isTransparentLayer(o) {
+	for (let p = o; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
+		const pcs = window.getComputedStyle(p);
+		if (pcs.display === "none" || pcs.visibility === "hidden" || parseFloat(pcs.opacity) < 0.05) return true;
+	}
+	return false;
+}
+
+function isOpaqueCover(o, refRect) {
 	const cs = window.getComputedStyle(o);
 	if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.85) return false;
 
@@ -3127,7 +4108,13 @@ function isOpaqueCover(o) {
 	if (nums.length < 3) return false;
 	const alpha = nums.length >= 4 ? nums[3] : 1;
 
-	if (alpha >= 0.85) return true;
+	if (alpha >= 0.85) {
+		if (refRect && refRect.width > 0 && refRect.height > 0) {
+			const r = o.getBoundingClientRect();
+			if (r.width < refRect.width * 0.5 && r.height < refRect.height * 0.5) return false;
+		}
+		return true;
+	}
 	if (alpha >= 0.3 && cs.position === "fixed") {
 		const r = o.getBoundingClientRect();
 		if (r.width >= window.innerWidth * 0.9 && r.height >= window.innerHeight * 0.9) return true;
@@ -3179,8 +4166,10 @@ function getVisualTarget(x, y, fallback) {
 	if (deepEl && deepEl.closest) {
 		const host = deepEl.closest(".imgContainer, .richImage");
 		if (host) {
-			const mainImg = host.querySelector("img.ovrr") || host.querySelector(`img:not(.${_zdImgCls})`);
-			if (mainImg) return mainImg;
+			const imgs = host.querySelectorAll(`img.ovrr, img:not(.${_zdImgCls})`);
+			for (const cand of imgs) {
+				if (!isInactiveImageTarget(cand)) return cand;
+			}
 		}
 	}
 
@@ -3252,7 +4241,7 @@ function showZoomBadge() {
 	const ratio = data.sw > 0 ? Math.round((curW / data.sw) * 100) : 100;
 	const rot = getElData(_img_element, _rotkey) || 0;
 
-	b.textContent = rot !== 0 ? `${ratio}% • ${rot}°` : `${ratio}%`;
+	b.textContent = rot !== 0 ? `${ratio}% \u2022 ${rot}\u00B0` : `${ratio}%`;
 
 	const rect = _img_element.getBoundingClientRect();
 	if (!_img_element.isConnected || (rect.width === 0 && rect.height === 0)) {
@@ -3279,8 +4268,9 @@ function showZoomBadge() {
 			const centerDocX = rawLeft + sizeData.w / 2;
 			const centerDocY = rawTop + sizeData.h / 2;
 
-			boxLeft = centerDocX - visW / 2 - window.scrollX;
-			boxTop = centerDocY - visH / 2 - window.scrollY;
+			const scrollOfs = getScrollOffset(_img_element);
+			boxLeft = centerDocX - visW / 2 - scrollOfs.x;
+			boxTop = centerDocY - visH / 2 - scrollOfs.y;
 			boxW = visW;
 		}
 	}
@@ -3306,6 +4296,69 @@ function updateSliderFill(input) {
 	const val = Math.min(max, Math.max(min, isNaN(parsedVal) ? min : parsedVal));
 	const percent = ((val - min) / (max - min)) * 100;
 	input.style.setProperty("--val", `${percent}%`);
+}
+
+function getNaturalSize(el) {
+	if (!el) return null;
+	if (el.tagName === "CANVAS") return el.width > 0 && el.height > 0 ? { w: el.width, h: el.height } : null;
+	if (el.tagName === "IMG") {
+		if (!(el.naturalWidth > 0 && el.naturalHeight > 0)) {
+			if (!el.complete) {
+				el.addEventListener(
+					"load",
+					() => {
+						if (getPanelHost() && (_img_element === el || getElData(_img_element, _srckey) === el)) {
+							syncPanelValues();
+						}
+					},
+					{ once: true }
+				);
+			}
+			return null;
+		}
+		const src = el.currentSrc || el.getAttribute("src") || "";
+		return /^data:image\/svg|\.svg(?:[?#]|$)/i.test(src) ? null : { w: el.naturalWidth, h: el.naturalHeight };
+	}
+
+	const bgUrl = getElData(el, _bgsrckey);
+	if (bgUrl) {
+		const bgSize = getElData(el, _bgsizekey);
+		if (bgSize && bgSize.w > 0 && bgSize.h > 0) return { w: bgSize.w, h: bgSize.h };
+		preloadBgNaturalSize(el, bgUrl);
+	}
+	return null;
+}
+
+function updatePanelMeta(shadow) {
+	const metaEl = shadow.getElementById("zd-panel-meta");
+	if (!metaEl) return;
+
+	const nat = getNaturalSize(_img_element) || getNaturalSize(getElData(_img_element, _srckey));
+	const size = getElData(_img_element, _sizekey);
+	metaEl.textContent = nat && size ? `${nat.w} \u00D7 ${nat.h} px \u00B7 ${Math.round((size.w / nat.w) * 100)} %` : "";
+}
+
+function updateEffectButtons(shadow) {
+	const fx = getFilterEffects(_img_element);
+	const states = {
+		"zd-btn-invert": fx.invert,
+		"zd-btn-gray": fx.gray,
+		"zd-btn-pixel": isPixelMode(_img_element),
+		"zd-btn-pin": isPinned(_img_element)
+	};
+
+	for (const [id, isOn] of Object.entries(states)) {
+		const btn = shadow.getElementById(id);
+		if (!btn) continue;
+		const isPin = id === "zd-btn-pin";
+		btn.setAttribute("aria-pressed", String(isOn));
+		btn.style.background = isOn ? (isPin ? _zoom_pinColor : "var(--bg-btn-flip-active)") : "var(--bg-btn-neutral)";
+		btn.style.color = isOn
+			? isPin
+				? ZDShared.readableTextColor(_zoom_pinColor)
+				: "var(--text-btn-flip-active)"
+			: "var(--text-btn-neutral)";
+	}
 }
 
 function syncPanelValues() {
@@ -3334,6 +4387,9 @@ function syncPanelValues() {
 		btnFlipV.style.color = flipY === -1 ? "var(--text-btn-flip-active)" : "var(--text-btn-neutral)";
 	}
 
+	updateEffectButtons(shadow);
+	updatePanelMeta(shadow);
+
 	const curZoom = Math.round((size.w / data.sw) * 100);
 	const curWidth = Math.round(size.w);
 	const curRot = getElData(_img_element, _rotkey) || 0;
@@ -3349,27 +4405,17 @@ function syncPanelValues() {
 	const bSl = shadow.getElementById("zd-sl-bright");
 	const bNum = shadow.getElementById("zd-num-bright");
 
-	let curOpac = 100;
-	const rawOpac = _img_element.style.getPropertyValue("opacity") || _img_element.style.opacity;
-	if (rawOpac) curOpac = Math.round(parseFloat(rawOpac) * 100);
-
-	let curBright = 100;
-	const rawFilter = _img_element.style.getPropertyValue("filter") || _img_element.style.filter;
-	if (rawFilter && rawFilter.includes("brightness")) {
-		const match = rawFilter.match(/brightness\((\d+)%\)/);
-		if (match) {
-			curBright = parseInt(match[1], 10);
-		} else {
-			const matchFloat = rawFilter.match(/brightness\(([\d.]+)\)/);
-			if (matchFloat) curBright = Math.round(parseFloat(matchFloat[1]) * 100);
-		}
-	}
+	const curOpac = getOpacityPct(_img_element);
+	const curBright = getBrightnessPct(_img_element);
 
 	const active = shadow.activeElement;
-	const isSizeActive = active === zSl || active === zNum || active === wSl || active === wNum;
-	const isRotActive = active === rSl || active === rNum;
-	const isOpacActive = active === oSl || active === oNum;
-	const isBrightActive = active === bSl || active === bNum;
+	const isTypingNum = active && active.tagName === "INPUT" && active.type === "number" && active.matches(":focus-visible");
+	const isDraggingSlider = active && active.tagName === "INPUT" && active.type === "range" && active.matches(":active");
+	const isInputBusy = isTypingNum || isDraggingSlider;
+	const isSizeActive = isInputBusy && (active === zSl || active === zNum || active === wSl || active === wNum);
+	const isRotActive = isInputBusy && (active === rSl || active === rNum);
+	const isOpacActive = isInputBusy && (active === oSl || active === oNum);
+	const isBrightActive = isInputBusy && (active === bSl || active === bNum);
 
 	if (zSl && !isSizeActive && Math.abs(parseInt(zSl.value, 10) - curZoom) > 1) {
 		zSl.value = zNum.value = curZoom;
@@ -3405,6 +4451,23 @@ function adjustSizeToNaturalAspectRatio(img, uw, uh, isBg) {
 	return { w: uw, h: uh };
 }
 
+function getObjectFitHeight(img, targetW, bData) {
+	const isBg = Boolean(getElData(getElData(img, _srckey) || img, _bgsrckey));
+	const objFit = window.getComputedStyle(img).objectFit || "fill";
+
+	if (
+		!isBg &&
+		img.tagName === "IMG" &&
+		img.naturalWidth > 0 &&
+		img.naturalHeight > 0 &&
+		objFit !== "cover" &&
+		objFit !== "fill"
+	) {
+		return targetW / (img.naturalWidth / img.naturalHeight);
+	}
+	return (bData.sh / bData.sw) * targetW;
+}
+
 function extractTransformMatrixData(img) {
 	let txPct = 0;
 	let tyPct = 0;
@@ -3423,7 +4486,23 @@ function extractTransformMatrixData(img) {
 	return { txPct, tyPct, origMatrix };
 }
 
-function syncBaseRect(img) {
+function getLiveScale(el) {
+	let x = 1;
+	let y = 1;
+	if (el && el.isConnected && !el.classList.contains("fullscreen")) {
+		const transform = window.getComputedStyle(el).transform;
+		if (transform && transform !== "none") {
+			try {
+				const matrix = new DOMMatrix(transform);
+				x = Math.hypot(matrix.a, matrix.b) || 1;
+				y = Math.hypot(matrix.c, matrix.d) || 1;
+			} catch (e) {}
+		}
+	}
+	return { x, y };
+}
+
+function syncBaseRect(img, lightweight = false) {
 	if (!img) return;
 	const data = getElData(img, _firstkey);
 	if (!data || getElData(img, _srckey)) return;
@@ -3431,29 +4510,35 @@ function syncBaseRect(img) {
 	const curSize = getElData(img, _sizekey);
 	const isSizeModified = curSize && (Math.abs(curSize.w - data.sw) > 2 || Math.abs(curSize.h - data.sh) > 2);
 	const isRotModified = (getElData(img, _rotkey) || 0) !== 0;
+	const isFlipped = (getElData(img, _flipXkey) || 1) !== 1 || (getElData(img, _flipYkey) || 1) !== 1;
 	const isDragged = img.classList.contains(_draggedCls);
 
-	if (!isSizeModified && !isRotModified && !isDragged && !img.classList.contains("zdImgCls_animated")) {
+	if (!isSizeModified && !isRotModified && !isFlipped && !isDragged && !img.classList.contains("zdImgCls_animated")) {
+		if (!img.isConnected || isInactiveImageTarget(img)) return;
+
+		if (lightweight && data.sw > 0 && data.sh > 0) {
+			const liveRect = img.getBoundingClientRect();
+			if (liveRect.width === 0 || liveRect.height === 0) return;
+			const cx = liveRect.left + window.scrollX + liveRect.width / 2;
+			const cy = liveRect.top + window.scrollY + liveRect.height / 2;
+			data.sx = cx - data.sw / 2;
+			data.sy = cy - data.sh / 2;
+			data.origSx = data.sx;
+			data.origSy = data.sy;
+			return;
+		}
+
 		const rect = img.classList.contains("fullscreen") ? img.getBoundingClientRect() : getRestRect(img);
+		if (rect.width === 0 || rect.height === 0) return;
 		let uw = rect.width || img.offsetWidth || img.naturalWidth || 100;
 		let uh = rect.height || img.offsetHeight || img.naturalHeight || 100;
 		let cx = rect.left + window.scrollX + rect.width / 2;
 		let cy = rect.top + window.scrollY + rect.height / 2;
 
 		const isBg = Boolean(getElData(img, _bgsrckey));
-		if (((_singleImgPage && !_zoom_ivpDrag) || img.classList.contains("fullscreen")) && !isBg && img.tagName === "IMG") {
-			const winW = window.innerWidth;
-			const winH = window.innerHeight;
-			const fitSize = calcLimit(img.naturalWidth || uw, img.naturalHeight || uh, winW, winH);
-			uw = fitSize.w;
-			uh = fitSize.h;
-			cx = window.scrollX + winW / 2;
-			cy = window.scrollY + winH / 2;
-		} else {
-			const adjusted = adjustSizeToNaturalAspectRatio(img, uw, uh, isBg);
-			uw = adjusted.w;
-			uh = adjusted.h;
-		}
+		const adjusted = adjustSizeToNaturalAspectRatio(img, uw, uh, isBg);
+		uw = adjusted.w;
+		uh = adjusted.h;
 
 		data.sw = uw;
 		data.sh = uh;
@@ -3461,6 +4546,11 @@ function syncBaseRect(img) {
 		data.sy = cy - uh / 2;
 		data.origSx = data.sx;
 		data.origSy = data.sy;
+
+		if (data.origStyle) {
+			data.origStyle.transform = img.style.transform;
+			data.origStyle.transformOrigin = img.style.transformOrigin;
+		}
 
 		const { txPct, tyPct, origMatrix } = extractTransformMatrixData(img);
 		data.origMatrix = origMatrix;
@@ -3471,63 +4561,156 @@ function syncBaseRect(img) {
 	}
 }
 
+const _restRectEps = 0.001;
+const _inlineTransformTags = new Set(["IMG", "VIDEO", "CANVAS", "SVG", "IFRAME", "OBJECT", "EMBED"]);
+
+function invertRestLevel(r, lv) {
+	return {
+		left: (r.left - lv.cx - lv.tx) / lv.sx + lv.cx,
+		top: (r.top - lv.cy - lv.ty) / lv.sy + lv.cy,
+		width: r.width / lv.sx,
+		height: r.height / lv.sy
+	};
+}
+
+function applyRestLevel(r, lv) {
+	return {
+		left: lv.sx * (r.left - lv.cx) + lv.cx + lv.tx,
+		top: lv.sy * (r.top - lv.cy) + lv.cy + lv.ty,
+		width: r.width * lv.sx,
+		height: r.height * lv.sy
+	};
+}
+
+function solveRestRect(imgRect, levels) {
+	const n = levels.length;
+	for (let i = n - 1; i >= 0; i--) {
+		const lv = levels[i];
+		let r = { left: lv.vis.left, top: lv.vis.top, width: lv.vis.width, height: lv.vis.height };
+		for (let j = n - 1; j > i; j--) r = invertRestLevel(r, levels[j]);
+		lv.cx = r.left - (1 - lv.sx) * lv.ox - lv.tx + lv.ox;
+		lv.cy = r.top - (1 - lv.sy) * lv.oy - lv.ty + lv.oy;
+	}
+
+	let r = { left: imgRect.left, top: imgRect.top, width: imgRect.width, height: imgRect.height };
+	for (let j = n - 1; j >= 0; j--) r = invertRestLevel(r, levels[j]);
+	for (const lv of levels) {
+		if (lv.inChain) {
+			r.left += lv.tx;
+			r.top += lv.ty;
+		} else {
+			r = applyRestLevel(r, lv);
+		}
+	}
+
+	return {
+		left: r.left,
+		top: r.top,
+		right: r.left + r.width,
+		bottom: r.top + r.height,
+		width: r.width,
+		height: r.height
+	};
+}
+
+function readRestRectLevel(el, inChain) {
+	const compStyle = window.getComputedStyle(el);
+	if (!compStyle.transform || compStyle.transform === "none") return null;
+	if (compStyle.display === "inline" && !_inlineTransformTags.has(el.tagName.toUpperCase())) return null;
+	if (el instanceof SVGElement && el.tagName.toLowerCase() !== "svg") return false;
+
+	try {
+		const m = new DOMMatrix(compStyle.transform);
+		const origin = compStyle.transformOrigin.split(" ").map(parseFloat);
+		const is3d = [m.m13, m.m23, m.m31, m.m32, m.m14, m.m24, m.m34].some((v) => Math.abs(v) > _restRectEps);
+		const isPlanar = Math.abs(m.b) < _restRectEps && Math.abs(m.c) < _restRectEps;
+		if (is3d || !isPlanar || m.a <= 0 || m.d <= 0 || !Number.isFinite(origin[0]) || !Number.isFinite(origin[1])) {
+			return false;
+		}
+
+		const vis = el.getBoundingClientRect();
+		return {
+			inChain,
+			sx: m.a,
+			sy: m.d,
+			tx: m.e,
+			ty: m.f,
+			ox: origin[0],
+			oy: origin[1],
+			vis: { left: vis.left, top: vis.top, width: vis.width, height: vis.height }
+		};
+	} catch (e) {
+		return false;
+	}
+}
+
+function computeRestRectExact(img, hoverWrapper, rect) {
+	const levels = [];
+	let inChain = true;
+	for (let p = img; p; p = composedParent(p)) {
+		if (p.nodeType !== 1) continue;
+		const level = readRestRectLevel(p, inChain);
+		if (level === false) return null;
+		if (level) levels.push(level);
+		if (p === hoverWrapper) inChain = false;
+	}
+	return solveRestRect(rect, levels);
+}
+
+function getRestRectApprox(rect, totalScaleX, totalScaleY) {
+	const restW = rect.width / totalScaleX;
+	const restH = rect.height / totalScaleY;
+	const cx = rect.left + rect.width / 2;
+	const cy = rect.top + rect.height / 2;
+
+	return {
+		left: cx - restW / 2,
+		top: cy - restH / 2,
+		right: cx + restW / 2,
+		bottom: cy + restH / 2,
+		width: restW,
+		height: restH
+	};
+}
+
 function getRestRect(img) {
+	const rect = img.getBoundingClientRect();
+	if (
+		rect.width === 0 ||
+		rect.height === 0 ||
+		img.classList.contains("fullscreen") ||
+		(img.closest && img.closest(".fullscreen, .swiper-slide-zoomed, .swiper-zoom-container"))
+	) {
+		return rect;
+	}
 	const hoverWrapper = img.parentElement
 		? img.parentElement.closest(".imgpt, .iusc, .isv-r, a, button, figure, picture")
 		: null;
-	if (!hoverWrapper) return img.getBoundingClientRect();
+	if (!hoverWrapper) return rect;
 
-	const resetEls = [];
+	let totalScaleX = 1;
+	let totalScaleY = 1;
 	let p = img;
 
 	while (p && p !== hoverWrapper.parentElement) {
 		const compStyle = window.getComputedStyle(p);
-		let newTransform = null;
-
 		if (compStyle.transform && compStyle.transform !== "none") {
 			try {
 				const matrix = new DOMMatrix(compStyle.transform);
-				if (Math.abs(matrix.a - 1) > 0.001 || Math.abs(matrix.d - 1) > 0.001) {
-					matrix.a = 1;
-					matrix.d = 1;
-					newTransform = matrix.toString();
-				}
+				const sx = Math.hypot(matrix.a, matrix.b);
+				const sy = Math.hypot(matrix.c, matrix.d);
+				if (sx > 0 && Math.abs(sx - 1) > 0.001) totalScaleX *= sx;
+				if (sy > 0 && Math.abs(sy - 1) > 0.001) totalScaleY *= sy;
 			} catch (e) {}
-		}
-
-		if (newTransform) {
-			resetEls.push({
-				el: p,
-				inlineTransform: p.style.getPropertyValue("transform"),
-				inlineTransformPriority: p.style.getPropertyPriority("transform"),
-				inlineTransition: p.style.getPropertyValue("transition"),
-				inlineTransitionPriority: p.style.getPropertyPriority("transition"),
-				newTransform
-			});
 		}
 		p = p.parentElement;
 	}
 
-	if (resetEls.length === 0) return img.getBoundingClientRect();
+	if (Math.abs(totalScaleX - 1) <= 0.001 && Math.abs(totalScaleY - 1) <= 0.001) {
+		return rect;
+	}
 
-	resetEls.forEach((item) => item.el.style.setProperty("transition", "none", "important"));
-	img.getBoundingClientRect();
-
-	resetEls.forEach((item) => item.el.style.setProperty("transform", item.newTransform, "important"));
-	const rect = img.getBoundingClientRect();
-
-	resetEls.forEach((item) => {
-		if (item.inlineTransform) item.el.style.setProperty("transform", item.inlineTransform, item.inlineTransformPriority);
-		else item.el.style.removeProperty("transform");
-	});
-	img.getBoundingClientRect();
-
-	resetEls.forEach((item) => {
-		if (item.inlineTransition) item.el.style.setProperty("transition", item.inlineTransition, item.inlineTransitionPriority);
-		else item.el.style.removeProperty("transition");
-	});
-
-	return rect;
+	return computeRestRectExact(img, hoverWrapper, rect) || getRestRectApprox(rect, totalScaleX, totalScaleY);
 }
 
 function setZoom(img, def, skipBadge = false, keepBadge = false) {
@@ -3544,6 +4727,13 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 			return;
 		}
 
+		if (_img_element && !isSameImageGroup(_img_element, img)) {
+			const prevOrig = getElData(_img_element, _srckey) || _img_element;
+			if (!isElementModified(_img_element) && !isElementModified(prevOrig)) {
+				unlockContainers(prevOrig);
+			}
+		}
+
 		d("ZoomTarget Set", "----------");
 		_img_element = img;
 		_current_element = img;
@@ -3553,6 +4743,9 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 		}
 
 		const data = getElData(img, _firstkey);
+		if (!getElData(img, _bgsrckey) && img.tagName !== "IMG" && img.tagName !== "CANVAS") {
+			extractBgUrlIfEnabled(img);
+		}
 		const isBg = Boolean(getElData(img, _bgsrckey));
 
 		if (!data) {
@@ -3562,26 +4755,14 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 			let cx = rect.left + window.scrollX + rect.width / 2;
 			let cy = rect.top + window.scrollY + rect.height / 2;
 
-			if (
-				!def &&
-				((_singleImgPage && !_zoom_ivpDrag) || img.classList.contains("fullscreen")) &&
-				!isBg &&
-				img.tagName === "IMG"
-			) {
-				const winW = window.innerWidth;
-				const winH = window.innerHeight;
-				const fitSize = calcLimit(img.naturalWidth || uw, img.naturalHeight || uh, winW, winH);
-				uw = fitSize.w;
-				uh = fitSize.h;
-				cx = window.scrollX + winW / 2;
-				cy = window.scrollY + winH / 2;
-			} else if (!def) {
+			if (!def) {
 				const adjusted = adjustSizeToNaturalAspectRatio(img, uw, uh, isBg);
 				uw = adjusted.w;
 				uh = adjusted.h;
 			}
 
 			const { txPct, tyPct, origMatrix } = extractTransformMatrixData(img);
+			const baseStyle = window.getComputedStyle(img);
 
 			const obj = {
 				id: `zdImg_${Date.now().toString(16)}`,
@@ -3594,6 +4775,8 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 				txPct,
 				tyPct,
 				origMatrix,
+				baseFilter: img.style.filter || (baseStyle.filter !== "none" ? baseStyle.filter : ""),
+				baseOpacity: img.style.opacity ? parseFloat(img.style.opacity) : parseFloat(baseStyle.opacity) || 1,
 				origStyle: {
 					left: img.style.left,
 					top: img.style.top,
@@ -3610,6 +4793,9 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 					transform: img.style.transform,
 					zIndex: img.style.zIndex,
 					objectFit: img.style.objectFit,
+					filter: img.style.filter,
+					opacity: img.style.opacity,
+					imageRendering: img.style.imageRendering,
 					backgroundImage: img.style.backgroundImage
 				}
 			};
@@ -3658,7 +4844,7 @@ function setZoom(img, def, skipBadge = false, keepBadge = false) {
 		}
 
 		_img_element = null;
-		_ctx_show = true;
+		if (!_rightBtnDown) _ctx_show = true;
 	}
 }
 
@@ -3680,19 +4866,26 @@ function autoResetImage() {
 	_rcModifiedEls.delete(getRcKey(_img_element));
 
 	_img_element.classList.remove(_draggedCls);
-	_img_element.style.removeProperty("opacity");
-	_img_element.style.removeProperty("filter");
+	restoreFilterAndOpacity(_img_element);
 	_img_element.style.removeProperty("cursor");
 
 	setElData(_img_element, _flipXkey, 1);
 	setElData(_img_element, _flipYkey, 1);
 
-	const src_elem = getElData(_img_element, _srckey);
+	const floatImg = _img_element;
+	const src_elem = getElData(floatImg, _srckey);
 	if (src_elem) {
+		const gRoot = getElData(floatImg, _galleryRootkey) || findGalleryRoot(src_elem);
 		_zdSuppressBadge = true;
-		clearImgEx(src_elem);
+		const sourceFullyReset = clearImgEx(src_elem);
 		_zdSuppressBadge = false;
 		_modifiedElements.delete(src_elem);
+		if (sourceFullyReset) {
+			_modifiedElements.delete(floatImg);
+			rebindPanelOrActiveGalleryImg(src_elem, gRoot);
+			hideBadgeImmediate();
+			return;
+		}
 	}
 
 	setImageRect();
@@ -3827,6 +5020,44 @@ function hideHostSiblingOverlays(element) {
 	});
 }
 
+function getHostStackZ(el) {
+	let z = 0;
+	for (
+		let node = el.parentElement;
+		node && node !== document.body && node !== document.documentElement;
+		node = node.parentElement || node.getRootNode()?.host
+	) {
+		const cs = window.getComputedStyle(node);
+		const zi = parseInt(cs.zIndex, 10);
+		const hasZ = cs.position !== "static" && !isNaN(zi);
+		if (
+			hasZ ||
+			cs.position === "fixed" ||
+			cs.position === "sticky" ||
+			parseFloat(cs.opacity) < 1 ||
+			cs.transform !== "none" ||
+			cs.filter !== "none" ||
+			cs.isolation === "isolate"
+		) {
+			z = hasZ ? zi : 0;
+		}
+	}
+	return z;
+}
+
+function raiseAboveHost(target, el) {
+	const hostZ = getHostStackZ(el);
+	if (hostZ < _zdExImgBaseZ) return;
+	const needed = Math.min(hostZ + 1, _zdMaxZ);
+	if (needed > (parseInt(target.style.zIndex, 10) || 0)) {
+		target.style.setProperty("z-index", String(needed), "important");
+	}
+}
+
+function getExUiAnchor() {
+	return document.body.querySelector(`:scope > #zdImg_zoomBadge, :scope > #${_zdPanelId}, :scope > #zd-panel-frame`);
+}
+
 function generateImgEx(size, keepCenter) {
 	d("Create FloatImage", "");
 	const prevScrollX = window.scrollX;
@@ -3838,24 +5069,27 @@ function generateImgEx(size, keepCenter) {
 		exImgWrapper.id = _zdExImgId;
 		exImgWrapper.style.cssText =
 			"position: absolute !important; top: 0 !important; left: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; z-index: 2147483640 !important; overflow: visible !important; overflow-anchor: none !important;";
-		document.body.appendChild(exImgWrapper);
+		document.body.insertBefore(exImgWrapper, getExUiAnchor());
 	}
+	raiseAboveHost(exImgWrapper, _img_element);
 
 	const data = getElData(_img_element, _firstkey);
 	const isBg = Boolean(getElData(_img_element, _bgsrckey));
 
-	if (_singleImgPage && !document.getElementById(data.id)) {
+	const isNativelyOverflowing =
+		_singleImgPage &&
+		(window.scrollX > 0 ||
+			window.scrollY > 0 ||
+			_img_element.clientWidth > window.innerWidth ||
+			_img_element.clientHeight > window.innerHeight);
+
+	if (_singleImgPage && !isNativelyOverflowing && !document.getElementById(data.id)) {
 		if (_savedScrollPos === null) {
 			_savedScrollPos = { x: window.scrollX, y: window.scrollY };
 		}
 		document.documentElement.style.setProperty("overflow", "hidden", "important");
 		document.body.style.setProperty("overflow", "hidden", "important");
 		window.scrollTo(0, 0);
-
-		if (!_zoom_ivpDrag && !isBg && _img_element.tagName === "IMG") {
-			data.sx = window.scrollX + window.innerWidth / 2 - data.sw / 2;
-			data.sy = window.scrollY + window.innerHeight / 2 - data.sh / 2;
-		}
 	}
 
 	if (!isBg && _img_element.tagName === "IMG" && _img_element.naturalWidth > 0 && _img_element.naturalHeight > 0) {
@@ -3865,8 +5099,7 @@ function generateImgEx(size, keepCenter) {
 		}
 	}
 
-	const isNativeSingleImg = _singleImgPage && !_zoom_ivpDrag && !isBg && _img_element.tagName === "IMG";
-	if (!keepCenter && !isNativeSingleImg && !getElData(_img_element, _srckey) && _img_element.isConnected) {
+	if (!keepCenter && !getElData(_img_element, _srckey) && _img_element.isConnected) {
 		const curRect = _img_element.getBoundingClientRect();
 		if (curRect.width > 0 && curRect.height > 0) {
 			data.sx = curRect.left + window.scrollX + curRect.width / 2 - data.sw / 2;
@@ -3878,6 +5111,7 @@ function generateImgEx(size, keepCenter) {
 		if (data?.origStyle && data.origStyle.backgroundImage === undefined) {
 			data.origStyle.backgroundImage = _img_element.style.backgroundImage;
 		}
+		_img_element.setAttribute("data-zd-float-hidden", "");
 		_img_element.style.setProperty("background-image", "none", "important");
 	} else {
 		_img_element.setAttribute("data-zd-float-hidden", "");
@@ -3920,14 +5154,22 @@ function generateImgEx(size, keepCenter) {
 		img.style.setProperty("margin", "0", "important");
 		img.style.setProperty("padding", "0", "important");
 		img.style.setProperty("border", "none", "important");
+		img.style.setProperty("transition", "none", "important");
 
-		if (_img_element.style.opacity) img.style.setProperty("opacity", _img_element.style.opacity, "important");
-		if (_img_element.style.filter) img.style.setProperty("filter", _img_element.style.filter, "important");
+		const baseOpac = getBaseOpacity(_img_element);
+		const curOpac = _img_element.style.opacity || (baseOpac !== 1 ? String(baseOpac) : "");
+		const curFilter = _img_element.style.filter || getBaseFilter(_img_element);
+		if (curOpac) img.style.setProperty("opacity", curOpac, "important");
+		if (curFilter) img.style.setProperty("filter", curFilter, "important");
+		if (isPixelMode(_img_element)) img.style.setProperty("image-rendering", "pixelated", "important");
 
 		["mouseover", "drag", "dragstart", "dragend"].forEach((evt) => {
 			img.addEventListener(evt, (e) => e.preventDefault());
 		});
 		img.addEventListener("pointerdown", (e) => e.stopPropagation());
+		img.addEventListener("load", () => {
+			if (img === _img_element) syncPanelValues();
+		});
 
 		const al = _img_element.closest("a");
 		if (al) {
@@ -3943,11 +5185,16 @@ function generateImgEx(size, keepCenter) {
 			exImgWrapper.appendChild(img);
 		}
 
+		const galleryRoot = findGalleryRoot(_img_element);
+		if (galleryRoot) setElData(img, _galleryRootkey, galleryRoot);
+		setElData(img, _origRectkey, getDocRect(_img_element));
 		setElData(img, _srckey, _img_element);
 		attachEvent(img);
 		setZoom(img, { sx: data.sx, sy: data.sy, sw: data.sw, sh: data.sh });
 		setImageRect({ w: rect.w, h: rect.h });
 		imgRotate(rot);
+		ensureFloatFrameObserver();
+		syncFloatFrame(img);
 		showZoomBadge();
 	}
 
@@ -3962,14 +5209,12 @@ function clearImgEx(src_elem, size) {
 	d("Delete FloatImage", "");
 	const data = getElData(_img_element, _firstkey);
 	const rot = getElData(_img_element, _rotkey);
+	const pinShift = isPinned(_img_element) ? { x: window.scrollX, y: window.scrollY } : { x: 0, y: 0 };
 
 	const isBg = Boolean(getElData(src_elem, _bgsrckey));
 	if (isBg) {
-		const srcData = getElData(src_elem, _firstkey);
-		src_elem.style.removeProperty("background-image");
-		if (srcData?.origStyle?.backgroundImage !== undefined) {
-			src_elem.style.backgroundImage = srcData.origStyle.backgroundImage;
-		}
+		restoreSelfVisibility(src_elem);
+		unlockContainers(src_elem);
 	} else {
 		restoreSelfVisibility(src_elem);
 		restoreSiblingVisibilities(src_elem.closest(".imgContainer, .mainContainer, .richImage"));
@@ -3985,16 +5230,23 @@ function clearImgEx(src_elem, size) {
 		}
 	}
 
-	if (_img_element.style.opacity) {
+	if (getOpacityPct(_img_element) !== 100) {
 		src_elem.style.setProperty("opacity", _img_element.style.opacity, "important");
 	} else {
-		src_elem.style.removeProperty("opacity");
+		restoreBaseOpacity(src_elem);
 	}
 
-	if (_img_element.style.filter) {
+	const fxState = getFilterEffects(_img_element);
+	if (getBrightnessPct(_img_element) !== 100 || fxState.invert || fxState.gray) {
 		src_elem.style.setProperty("filter", _img_element.style.filter, "important");
 	} else {
-		src_elem.style.removeProperty("filter");
+		restoreBaseFilter(src_elem);
+	}
+
+	if (isPixelMode(_img_element)) {
+		src_elem.style.setProperty("image-rendering", "pixelated", "important");
+	} else {
+		restoreBaseRendering(src_elem);
 	}
 
 	clearBorderStyles(src_elem);
@@ -4010,15 +5262,34 @@ function clearImgEx(src_elem, size) {
 	_modifiedElements.delete(floatImg);
 	elementDataMap.delete(floatImg);
 
-	setZoom(src_elem, { sx: data.sx, sy: data.sy, sw: data.sw, sh: data.sh });
-	setImageRect(size);
-	imgRotate(rot);
-	showZoomBadge();
+	const isSrcInActiveSlide = isImageShownInViewport(src_elem, true);
+
+	let sourceFullyReset = false;
+	if (!size && !isSrcInActiveSlide) {
+		sourceFullyReset = true;
+		const srcData = getElData(src_elem, _firstkey);
+		resetInlineStyles(src_elem, srcData ? srcData.origStyle : null, true);
+		restoreFilterAndOpacity(src_elem);
+		restoreSelfVisibility(src_elem);
+		unlockContainers(src_elem);
+		_modifiedElements.delete(src_elem);
+		elementDataMap.delete(src_elem);
+		_img_element = null;
+		_current_element = null;
+	} else {
+		const baseSx = data.origSx !== undefined ? data.origSx : data.sx + pinShift.x;
+		const baseSy = data.origSy !== undefined ? data.origSy : data.sy + pinShift.y;
+		setZoom(src_elem, { sx: baseSx, sy: baseSy, sw: data.sw, sh: data.sh });
+		setImageRect(size);
+		imgRotate(rot);
+		showZoomBadge();
+	}
 
 	const exWrapper = document.getElementById(_zdExImgId);
 	if (!exWrapper || exWrapper.children.length === 0) {
 		stopExImgObserver();
 	}
+	return sourceFullyReset;
 }
 
 function checkSingleImgActivation(element, curW, curH) {
@@ -4069,33 +5340,130 @@ function bringFloatingToFront(el) {
 	if (exImgWrapper && exImgWrapper.contains(el)) {
 		const aWrap = el.closest("a");
 		const targetNode = aWrap && aWrap.parentElement === exImgWrapper ? aWrap : el;
-		if (targetNode.parentElement === exImgWrapper && exImgWrapper.lastElementChild !== targetNode) {
+		const last = exImgWrapper.lastElementChild;
+		const isInFront = last === targetNode || (last?.classList.contains(_floatFrameCls) && last.previousElementSibling === targetNode);
+		if (targetNode.parentElement === exImgWrapper && !isInFront) {
 			exImgWrapper.appendChild(targetNode);
 		}
 	}
 }
 
+function isPlaceholderImg(img) {
+	const src = img.currentSrc || img.getAttribute("src") || "";
+	return !src || src.startsWith("data:") || (img.naturalWidth > 0 && img.naturalWidth <= 2);
+}
+
+function toHiResUrl(raw) {
+	const url = ZDShared.parseSafeHttpUrl(raw, document.baseURI, location.href);
+	return url && ZDShared.hasImageExtension(url) ? url.href : null;
+}
+
+function findHiResUrl(srcEl) {
+	const current = srcEl.currentSrc || srcEl.src || "";
+	const attrs = isPlaceholderImg(srcEl) ? [..._hiResDataAttrs, ..._hiResLazyAttrs] : _hiResDataAttrs;
+
+	for (const attr of attrs) {
+		const url = toHiResUrl(srcEl.getAttribute(attr));
+		if (url && url !== current) return url;
+	}
+
+	const anchor = srcEl.closest("a[href]");
+	const linkUrl = anchor ? toHiResUrl(anchor.getAttribute("href")) : null;
+	return linkUrl && linkUrl !== current ? linkUrl : null;
+}
+
+function maybeUpgradeHiRes(floatImg) {
+	if (!_zoom_hiResUpgrade || !floatImg || floatImg.hasAttribute(_hiResStateAttr)) return;
+
+	const srcEl = getElData(floatImg, _srckey);
+	if (!srcEl || srcEl.tagName !== "IMG" || getElData(srcEl, _bgsrckey)) return;
+
+	const size = getElData(floatImg, _sizekey);
+	if (!size) return;
+
+	const natW = srcEl.naturalWidth;
+	if (natW > 2 && size.w < natW) return;
+
+	const url = findHiResUrl(srcEl);
+	if (!url) {
+		floatImg.setAttribute(_hiResStateAttr, "none");
+		return;
+	}
+
+	floatImg.setAttribute(_hiResStateAttr, "loading");
+	const thumbRatio = natW > 2 && srcEl.naturalHeight > 0 ? natW / srcEl.naturalHeight : 0;
+	const probe = new Image();
+
+	const swapIn = () => {
+		const isCurrent = floatImg.isConnected && floatImg.getAttribute(_hiResStateAttr) === "loading";
+		const isLarger = probe.naturalWidth > Math.max(natW, 2) && probe.naturalHeight > 0;
+		const ratio = probe.naturalWidth / probe.naturalHeight;
+		const sameShape = !thumbRatio || Math.abs(ratio - thumbRatio) / thumbRatio <= 0.03;
+
+		if (!isCurrent) return;
+		if (!isLarger || !sameShape) {
+			floatImg.setAttribute(_hiResStateAttr, "failed");
+			return;
+		}
+
+		floatImg.removeAttribute("srcset");
+		floatImg.removeAttribute("sizes");
+		floatImg.src = probe.src;
+		floatImg.addEventListener(
+			"load",
+			() => {
+				if (!floatImg.isConnected || floatImg.naturalWidth === probe.naturalWidth) return;
+				floatImg.removeAttribute("src");
+				floatImg.src = probe.src;
+			},
+			{ once: true }
+		);
+		floatImg.setAttribute(_hiResAttr, probe.src);
+		floatImg.setAttribute(_hiResStateAttr, "done");
+		d("HiRes upgrade", probe.src);
+		if (floatImg === _img_element) syncPanelValues();
+	};
+
+	probe.onload = () => {
+		const decoded = typeof probe.decode === "function" ? probe.decode() : Promise.resolve();
+		decoded.catch(() => {}).then(swapIn);
+	};
+	probe.onerror = () => {
+		if (floatImg.isConnected) floatImg.setAttribute(_hiResStateAttr, "failed");
+	};
+	probe.src = url;
+}
+
+function setCssBoxSize(element, cssW, cssH) {
+	element.style.setProperty("width", `${cssW}px`, "important");
+	element.style.setProperty("height", `${cssH}px`, "important");
+	element.style.setProperty("min-width", `${cssW}px`, "important");
+	element.style.setProperty("min-height", `${cssH}px`, "important");
+}
+
 function setImageRect(size, element = _img_element) {
+	if (!element) return;
 	const data = getElData(element, _firstkey);
 
 	if (!size && !getElData(element, _srckey)) {
 		unlockContainers(element);
 		resetInlineStyles(element, data ? data.origStyle : null, false);
+		if (!data) return;
 
-		if (data && data.origSx !== undefined) {
+		if (data.origSx !== undefined) {
 			data.sx = data.origSx;
 			data.sy = data.origSy;
 		}
 
 		if (((_singleImgPage && !_zoom_ivpDrag) || element.classList.contains("fullscreen")) && element.tagName === "IMG") {
-			if (data) {
-				const winW = window.innerWidth;
-				const winH = window.innerHeight;
-				const fitSize = calcLimit(element.naturalWidth || 100, element.naturalHeight || 100, winW, winH);
-				data.sw = fitSize.w;
-				data.sh = fitSize.h;
-				data.sx = window.scrollX + winW / 2 - fitSize.w / 2;
-				data.sy = window.scrollY + winH / 2 - fitSize.h / 2;
+			const rect = element.getBoundingClientRect();
+			if (rect.width > 0 && rect.height > 0) {
+				const isBg = Boolean(getElData(element, _bgsrckey));
+				const adjusted = adjustSizeToNaturalAspectRatio(element, rect.width, rect.height, isBg);
+				data.sw = adjusted.w;
+				data.sh = adjusted.h;
+				data.sx = rect.left + window.scrollX + rect.width / 2 - adjusted.w / 2;
+				data.sy = rect.top + window.scrollY + rect.height / 2 - adjusted.h / 2;
 			}
 		}
 
@@ -4131,6 +5499,8 @@ function setImageRect(size, element = _img_element) {
 		return;
 	}
 
+	if (!data) return;
+
 	const rect = size ? calcPos({ w: size.w, h: size.h }) : { x: data.sx, y: data.sy, w: data.sw, h: data.sh };
 
 	if (size) {
@@ -4143,15 +5513,16 @@ function setImageRect(size, element = _img_element) {
 	ensureElevatedZIndex(element);
 
 	const isSinglePageImg = _singleImgPage && element.classList.contains(_imgSrcViewCls);
-	if (getElData(element, _srckey) || isSinglePageImg) {
+	const isFloating = Boolean(getElData(element, _srckey));
+	if (isFloating || isSinglePageImg) {
 		element.style.setProperty("left", `${rect.x}px`, "important");
 		element.style.setProperty("top", `${rect.y}px`, "important");
 	}
 
-	element.style.setProperty("width", `${rect.w}px`, "important");
-	element.style.setProperty("height", `${rect.h}px`, "important");
-	element.style.setProperty("min-width", `${rect.w}px`, "important");
-	element.style.setProperty("min-height", `${rect.h}px`, "important");
+	const live = isFloating || isSinglePageImg ? { x: 1, y: 1 } : getLiveScale(element);
+	data.scaleX = live.x;
+	data.scaleY = live.y;
+	setCssBoxSize(element, rect.w / live.x, rect.h / live.y);
 	element.style.setProperty("max-width", "none", "important");
 	element.style.setProperty("max-height", "none", "important");
 	element.style.setProperty("flex-shrink", "0", "important");
@@ -4174,15 +5545,19 @@ function setImageRect(size, element = _img_element) {
 		}
 	}
 
+	if (isPinned(element)) keepPinnedVisible(element);
+
 	if (isSinglePageImg) {
 		checkSingleImgActivation(element, rect.w, rect.h);
 	}
 	if (element === _img_element) {
 		syncPanelValues();
 	}
+	if (getElData(element, _srckey)) maybeUpgradeHiRes(element);
 }
 
 function imgRotate(rot, element = _img_element) {
+	if (!element) return;
 	const isFullscreen = element.classList.contains("fullscreen");
 	if (
 		((_singleImgPage && !element.classList.contains(_imgSrcViewCls)) || isFullscreen) &&
@@ -4253,6 +5628,8 @@ function imgRotate(rot, element = _img_element) {
 
 	d("ImageRotate deg", rot);
 
+	if (isPinned(element)) keepPinnedVisible(element);
+
 	if (_singleImgPage && element.classList.contains(_imgSrcViewCls)) {
 		const size = getElData(element, _sizekey);
 		if (size) checkSingleImgActivation(element, size.w, size.h);
@@ -4318,6 +5695,307 @@ function zoom(r, isZoomLimit) {
 	showZoomBadge();
 }
 
+function getDocRect(el) {
+	if (!el || !el.isConnected) return null;
+	const r = el.getBoundingClientRect();
+	return { x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height };
+}
+
+function isSameDocRect(a, b, tol = 2) {
+	return Boolean(
+		a &&
+			b &&
+			Math.abs(a.x - b.x) <= tol &&
+			Math.abs(a.y - b.y) <= tol &&
+			Math.abs(a.w - b.w) <= tol &&
+			Math.abs(a.h - b.h) <= tol
+	);
+}
+
+function docRectToViewportRect(r) {
+	const left = r.x - window.scrollX;
+	const top = r.y - window.scrollY;
+	return { left, top, right: left + r.w, bottom: top + r.h, width: r.w, height: r.h };
+}
+
+function isImageShownInViewport(el, usePoint = false) {
+	if (!el || !el.isConnected) return false;
+
+	const rect = el.getBoundingClientRect();
+	if (rect.width === 0 || rect.height === 0) return false;
+
+	const winW = window.innerWidth || document.documentElement.clientWidth;
+	const winH = window.innerHeight || document.documentElement.clientHeight;
+	const minVisiblePx = 20;
+	const overlapsViewport =
+		rect.right > minVisiblePx && rect.left < winW - minVisiblePx && rect.bottom > minVisiblePx && rect.top < winH - minVisiblePx;
+	if (!overlapsViewport) return false;
+
+	let visLeft = Math.max(rect.left, 0);
+	let visRight = Math.min(rect.right, winW);
+	let visTop = Math.max(rect.top, 0);
+	let visBottom = Math.min(rect.bottom, winH);
+
+	for (let p = composedParent(el); p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
+		if (p.nodeType !== 1) continue;
+		const pStyle = window.getComputedStyle(p);
+		if (
+			pStyle.overflow === "hidden" ||
+			pStyle.overflow === "scroll" ||
+			pStyle.overflow === "auto" ||
+			pStyle.overflow === "clip" ||
+			pStyle.overflowX === "hidden" ||
+			pStyle.overflowX === "clip"
+		) {
+			const pRect = p.getBoundingClientRect();
+			if (pRect.width > 0 && pRect.height > 0) {
+				const overlapsParent =
+					rect.right > pRect.left + 4 &&
+					rect.left < pRect.right - 4 &&
+					rect.bottom > pRect.top + 4 &&
+					rect.top < pRect.bottom - 4;
+				if (!overlapsParent) return false;
+
+				visLeft = Math.max(visLeft, pRect.left);
+				visRight = Math.min(visRight, pRect.right);
+				visTop = Math.max(visTop, pRect.top);
+				visBottom = Math.min(visBottom, pRect.bottom);
+				if (visRight <= visLeft || visBottom <= visTop) return false;
+			}
+		}
+	}
+
+	const cx = Math.min(Math.max((visLeft + visRight) / 2, 1), winW - 1);
+	const cy = Math.min(Math.max((visTop + visBottom) / 2, 1), winH - 1);
+	if (usePoint ? isInactiveImageTarget(el, cx, cy) : isInactiveImageTarget(el)) return false;
+
+	return true;
+}
+
+function collectGalleryImagesDeep(root, out = [], seen = new Set()) {
+	if (!root || seen.has(root)) return out;
+	seen.add(root);
+
+	if (root.querySelectorAll) {
+		for (const el of root.querySelectorAll("*")) {
+			if (el.tagName === "IMG" && !el.classList.contains(_zdImgCls) && !isOwnElement(el)) {
+				out.push(el);
+			}
+			const sr = el.shadowRoot || el.openOrClosedShadowRoot;
+			if (sr) collectGalleryImagesDeep(sr, out, seen);
+		}
+	}
+
+	const rootSr = root.shadowRoot || root.openOrClosedShadowRoot;
+	if (rootSr) collectGalleryImagesDeep(rootSr, out, seen);
+	return out;
+}
+
+function isInlineImageSlidAway(el) {
+	if (!el || !el.isConnected || !findGalleryRoot(el)) return false;
+	if (el.classList.contains(_zdImgCls) || el.hasAttribute("data-zd-float-hidden") || getElData(el, _srckey)) return false;
+	if (
+		el.closest(
+			'.slick-slide:not(.slick-active), [aria-roledescription="slide"][aria-current="false"], [aria-roledescription="slide"][aria-hidden="true"], [inert]'
+		)
+	) {
+		return true;
+	}
+
+	const isClipping = (overflow) => overflow === "hidden" || overflow === "scroll" || overflow === "auto" || overflow === "clip";
+	const rect = el.getBoundingClientRect();
+	let left = rect.left;
+	let right = rect.right;
+	let top = rect.top;
+	let bottom = rect.bottom;
+
+	for (let p = el.parentElement; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
+		const pStyle = window.getComputedStyle(p);
+		if (pStyle.display === "none") return true;
+
+		const clipX = isClipping(pStyle.overflowX);
+		const clipY = isClipping(pStyle.overflowY);
+		if (!clipX && !clipY) continue;
+
+		const pRect = p.getBoundingClientRect();
+		if (pRect.width === 0 || pRect.height === 0) continue;
+		if (clipX) {
+			left = Math.max(left, pRect.left);
+			right = Math.min(right, pRect.right);
+		}
+		if (clipY) {
+			top = Math.max(top, pRect.top);
+			bottom = Math.min(bottom, pRect.bottom);
+		}
+		if (right <= left || bottom <= top) return true;
+	}
+	return false;
+}
+
+function isInlineImageSwapped(el) {
+	if (!el || !el.isConnected || !_lockedSrcMap.has(el) || !findGalleryRoot(el)) return false;
+	if (el.classList.contains(_zdImgCls) || el.hasAttribute("data-zd-float-hidden") || getElData(el, _srckey)) return false;
+
+	const lockedSrc = _lockedSrcMap.get(el);
+	const curSrc = el.getAttribute("src") || el.getAttribute("srcset") || "";
+	if (curSrc === lockedSrc) return false;
+	if (isOwnSrcSwitch(el, lockedSrc, curSrc)) {
+		_lockedSrcMap.set(el, curSrc);
+		return false;
+	}
+	return true;
+}
+
+function isGalleryRootShown(galleryRoot) {
+	if (!galleryRoot || !galleryRoot.isConnected) return false;
+
+	for (let p = galleryRoot; p && p !== document.body && p !== document.documentElement; p = composedParent(p)) {
+		if (p.nodeType !== 1) continue;
+		const cs = window.getComputedStyle(p);
+		if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.01) return false;
+	}
+	return true;
+}
+
+function findActiveSlideBgThumb(scope) {
+	const slide = scope.querySelector?.(
+		'.slick-current, .swiper-slide-active, [aria-roledescription="slide"][aria-current="true"], [aria-roledescription="slide"][aria-hidden="false"]'
+	);
+	if (!slide) return null;
+
+	const pickLargest = (sel, minSide) => {
+		let best = null;
+		let bestArea = 0;
+		for (const el of slide.querySelectorAll(sel)) {
+			if (isOwnElement(el)) continue;
+			const r = el.getBoundingClientRect();
+			if (r.width < minSide || r.height < minSide || r.width * r.height < bestArea) continue;
+			if (!isImageShownInViewport(el, true) || !extractBgUrlIfEnabled(el)) continue;
+			bestArea = r.width * r.height;
+			best = el;
+		}
+		return best;
+	};
+
+	return pickLargest(_mediaThumbBgSel, 0) || (_zoom_bgImg ? pickLargest("*", 40) : null);
+}
+
+function findActiveGalleryImage(galleryRoot, prevImg) {
+	if (!isGalleryRootShown(galleryRoot)) return null;
+
+	if (
+		prevImg &&
+		prevImg.isConnected &&
+		composedContains(galleryRoot, prevImg) &&
+		isImageShownInViewport(prevImg, true)
+	) {
+		return getRedirectedTarget(prevImg);
+	}
+
+	const mainSel = '#mainImageWindow, #mainImageViewer, #mainImageRegion, [data-testid="selectedMedia"]';
+	const scope =
+		(prevImg && prevImg.isConnected && prevImg.closest(mainSel)) ||
+		galleryRoot.querySelector?.(mainSel) ||
+		galleryRoot;
+	const isGalleryThumb = (el) => Boolean(el.closest?.('[data-testid="mediaItems"]'));
+
+	const priorityImgs = scope.querySelectorAll
+		? scope.querySelectorAll(
+				`.mainImage.current img:not(.${_zdImgCls}), .curimgonview img:not(.${_zdImgCls}), .slick-current :is(img, canvas):not(.${_zdImgCls}), .swiper-slide-active :is(img, canvas):not(.${_zdImgCls}), [aria-roledescription="slide"][aria-current="true"] :is(img, canvas):not(.${_zdImgCls}), [aria-roledescription="slide"][aria-hidden="false"] :is(img, canvas):not(.${_zdImgCls})`
+			)
+		: [];
+	for (const cand of priorityImgs) {
+		if (!isOwnElement(cand) && !isGalleryThumb(cand) && isImageShownInViewport(cand, true)) {
+			return getRedirectedTarget(cand);
+		}
+	}
+
+	const bgThumb = findActiveSlideBgThumb(scope);
+	if (bgThumb) return getRedirectedTarget(bgThumb);
+
+	const gRect = scope.getBoundingClientRect();
+	if (gRect.width > 40 && gRect.height > 40) {
+		const winW = window.innerWidth || document.documentElement.clientWidth;
+		const winH = window.innerHeight || document.documentElement.clientHeight;
+		const cx = Math.min(Math.max(gRect.left + gRect.width / 2, 1), winW - 1);
+		const cy = Math.min(Math.max(gRect.top + gRect.height / 2, 1), winH - 1);
+		for (const el of deepElementsFromPoint(cx, cy)) {
+			if (
+				el.tagName === "IMG" &&
+				!el.classList.contains(_zdImgCls) &&
+				!isOwnElement(el) &&
+				!isGalleryThumb(el) &&
+				composedContains(galleryRoot, el)
+			) {
+				const r = el.getBoundingClientRect();
+				if (r.width >= 40 && r.height >= 40 && isImageShownInViewport(el, true)) {
+					return getRedirectedTarget(el);
+				}
+			}
+		}
+	}
+
+	let best = null;
+	let bestArea = 0;
+	for (const cand of collectGalleryImagesDeep(scope)) {
+		if (isGalleryThumb(cand)) continue;
+		const r = cand.getBoundingClientRect();
+		if (r.width < 40 || r.height < 40) continue;
+		if (!isImageShownInViewport(cand, true)) continue;
+		const area = r.width * r.height;
+		if (area > bestArea) {
+			bestArea = area;
+			best = cand;
+		}
+	}
+	return best ? getRedirectedTarget(best) : null;
+}
+
+function rebindPanelImage(img) {
+	if (!getPanelHost() || !isImageShownInViewport(img, true)) return false;
+
+	_modifiedElements.delete(img);
+	elementDataMap.delete(img);
+	img.classList.remove(_draggedCls);
+
+	setZoom(img, null, true);
+	_modifiedElements.delete(img);
+	syncPanelValues();
+	return true;
+}
+
+function keepPanelBoundToImage(img) {
+	if (!getPanelHost() || !img || !img.isConnected) return false;
+
+	const rect = img.getBoundingClientRect();
+	if (rect.width === 0 || rect.height === 0) return false;
+
+	_modifiedElements.delete(img);
+	elementDataMap.delete(img);
+	img.classList.remove(_draggedCls);
+
+	setZoom(img, null, true);
+	_modifiedElements.delete(img);
+	syncPanelValues();
+	return true;
+}
+
+function rebindPanelOrActiveGalleryImg(origImg, fallbackRoot = null) {
+	if (!getPanelHost()) return false;
+	if (origImg && rebindPanelImage(origImg)) return true;
+
+	const gRoot = (origImg && findGalleryRoot(origImg)) || fallbackRoot;
+	if (gRoot && gRoot.isConnected) {
+		const nextImg = findActiveGalleryImage(gRoot, origImg);
+		if (nextImg) {
+			attachEvent(nextImg);
+			if (rebindPanelImage(nextImg)) return true;
+		}
+	}
+
+	return keepPanelBoundToImage(origImg);
+}
+
 function sizeFit() {
 	if (getPanelHost() && _rightBtnDown && _current_element && !isSameImageGroup(_img_element, _current_element)) {
 		setZoom(_current_element, null, true);
@@ -4328,40 +6006,74 @@ function sizeFit() {
 
 	disableAnim(_img_element);
 	syncBaseRect(_img_element);
-	_img_element.classList.remove(_draggedCls);
-	_img_element.style.removeProperty("opacity");
-	_img_element.style.removeProperty("filter");
-	clearBorderStyles(_img_element);
-
-	setElData(_img_element, _flipXkey, 1);
-	setElData(_img_element, _flipYkey, 1);
-	restoreElementZIndex(_img_element);
 
 	const data = getElData(_img_element, _firstkey);
 	const src_elem = getElData(_img_element, _srckey);
+	const floatGalleryRoot = src_elem ? getElData(_img_element, _galleryRootkey) : null;
 	const curSize = getElData(_img_element, _sizekey);
 	const bRect = _img_element.getBoundingClientRect();
 	const w = curSize ? curSize.w : bRect.width;
 	const h = curSize ? curSize.h : bRect.height;
 
-	enableAnim(_img_element);
-
-	const nw = _img_element.naturalWidth;
-	const nh = _img_element.naturalHeight;
+	const origElem = src_elem || _img_element;
+	const isBg = Boolean(getElData(origElem, _bgsrckey));
+	const nat = getNaturalSize(_img_element) || getNaturalSize(origElem);
+	const nw = nat ? nat.w : _img_element.naturalWidth || 0;
+	const nh = nat ? nat.h : _img_element.naturalHeight || 0;
 	const tag = _img_element.tagName.toUpperCase();
 	const floating = shouldUseFloating(_img_element);
 
 	d("Floating zoom", floating);
 
 	let isReset = true;
+	const rot = getElData(_img_element, _rotkey) || 0;
+	const isFit = Math.abs(w - data.sw) < 2 && Math.abs(h - data.sh) < 2 && rot === 0;
+
+	if (isFit && (tag === "IMG" || isBg) && !(nw > 0 && nh > 0) && !src_elem) {
+		if (floating) {
+			_zdSuppressBadge = true;
+			generateImgEx({ w, h });
+			_zdSuppressBadge = false;
+		}
+		const targetImg = _img_element;
+		const applyWhenLoaded = () => {
+			if (targetImg !== _img_element || !targetImg.isConnected) return;
+			const fnw = targetImg.naturalWidth;
+			const fnh = targetImg.naturalHeight;
+			if (!(fnw > 0 && fnh > 0)) return;
+			if (isBg) setElData(origElem, _bgsizekey, { url: getElData(origElem, _bgsrckey), w: fnw, h: fnh });
+			enableAnim(targetImg);
+			const limSize = clampMaxSide(fnw, fnh);
+			setImageRect({ w: limSize.w, h: limSize.h }, targetImg);
+			targetImg.style.setProperty("object-fit", "contain", "important");
+			showZoomBadge();
+		};
+		if (targetImg.complete && targetImg.naturalWidth > 0) applyWhenLoaded();
+		else targetImg.addEventListener("load", applyWhenLoaded, { once: true });
+		markRcModified();
+		_ctx_show = false;
+		return false;
+	}
+
+	const canExpandToNatural =
+		isFit && (tag === "IMG" || isBg) && nw > 0 && nh > 0 && (Math.abs(nw - data.sw) >= 2 || Math.abs(nh - data.sh) >= 2);
+
+	if (!canExpandToNatural) {
+		unpinImage(_img_element);
+		_img_element.classList.remove(_draggedCls);
+		restoreFilterAndOpacity(_img_element);
+		clearBorderStyles(_img_element);
+		setElData(_img_element, _flipXkey, 1);
+		setElData(_img_element, _flipYkey, 1);
+		restoreElementZIndex(_img_element);
+	}
+
+	enableAnim(_img_element);
 
 	if (!src_elem) {
-		const rot = getElData(_img_element, _rotkey) || 0;
-		const isFit = Math.abs(w - data.sw) < 2 && Math.abs(h - data.sh) < 2 && rot === 0;
-
-		if (isFit && tag === "IMG" && nw > 0 && nh > 0 && (Math.abs(nw - data.sw) >= 2 || Math.abs(nh - data.sh) >= 2)) {
+		if (canExpandToNatural) {
 			isReset = false;
-			if ((nw > data.sw || nh > data.sh) && floating) {
+			if (floating) {
 				_zdSuppressBadge = true;
 				generateImgEx({ w, h });
 				_zdSuppressBadge = false;
@@ -4369,10 +6081,16 @@ function sizeFit() {
 			}
 			const limSize = clampMaxSide(nw, nh);
 			setImageRect({ w: limSize.w, h: limSize.h });
+			_img_element.style.setProperty("object-fit", "contain", "important");
 		} else {
 			setImageRect();
 			imgRotate(0);
 		}
+	} else if (canExpandToNatural) {
+		isReset = false;
+		const limSize = clampMaxSide(nw, nh);
+		setImageRect({ w: limSize.w, h: limSize.h });
+		_img_element.style.setProperty("object-fit", "contain", "important");
 	} else {
 		imgRotate(0);
 		_zdSuppressBadge = true;
@@ -4380,8 +6098,37 @@ function sizeFit() {
 		_zdSuppressBadge = false;
 	}
 
-	if (isReset) hideBadgeImmediate();
-	else showZoomBadge();
+	if (isReset) {
+		const origTarget = src_elem || _img_element;
+		if (origTarget) {
+			unlockContainers(origTarget);
+			_modifiedElements.delete(origTarget);
+			if (!origTarget.isConnected || isInactiveImageTarget(origTarget)) {
+				elementDataMap.delete(origTarget);
+			}
+		}
+		if (getPanelHost() && !_img_element) {
+			const nextTarget = findNextModifiedImage(origTarget);
+			if (nextTarget) {
+				attachEvent(nextTarget);
+				setZoom(nextTarget, null, true);
+				syncPanelValues();
+				applyPanelBorder();
+			} else if (rebindPanelOrActiveGalleryImg(origTarget, floatGalleryRoot)) {
+				if (isPanelHovered() || panelHasFocus()) applyPanelBorder();
+			} else {
+				const panelShadow = getPanelShadow();
+				const closeBtn = panelShadow ? panelShadow.getElementById("zd-btn-close") : null;
+				if (closeBtn) closeBtn.click();
+			}
+		} else if (getPanelHost()) {
+			removePanelBorder();
+			rebindPanelOrActiveGalleryImg(_img_element, floatGalleryRoot);
+		}
+		hideBadgeImmediate();
+	} else {
+		showZoomBadge();
+	}
 
 	markRcModified();
 	_ctx_show = false;
@@ -4406,8 +6153,9 @@ function windowFitting(fromCtxMenu) {
 		const data = getElData(_img_element, _firstkey);
 
 		if (data) {
-			data.sx = window.scrollX + winW / 2 - data.sw / 2;
-			data.sy = window.scrollY + winH / 2 - data.sh / 2;
+			const scrollOfs = getScrollOffset(_img_element);
+			data.sx = scrollOfs.x + winW / 2 - data.sw / 2;
+			data.sy = scrollOfs.y + winH / 2 - data.sh / 2;
 		}
 
 		zoom(10000, true);
@@ -4487,24 +6235,28 @@ function zoomEvent(e) {
 
 			_img_element.classList.add(_draggedCls);
 
+			const scrollOfs = getScrollOffset(_img_element);
+			const pointerX = e.clientX + scrollOfs.x;
+			const pointerY = e.clientY + scrollOfs.y;
+
 			const rect = _img_element.getBoundingClientRect();
-			const cx = rect.left + window.scrollX + rect.width / 2;
-			const cy = rect.top + window.scrollY + rect.height / 2;
+			const cx = rect.left + scrollOfs.x + rect.width / 2;
+			const cy = rect.top + scrollOfs.y + rect.height / 2;
 
 			zoom(r);
 
 			const newRect = _img_element.getBoundingClientRect();
 			if (rect.width > 0 && rect.height > 0) {
 				const actualR = newRect.width / rect.width;
-				const ncx = newRect.left + window.scrollX + newRect.width / 2;
-				const ncy = newRect.top + window.scrollY + newRect.height / 2;
+				const ncx = newRect.left + scrollOfs.x + newRect.width / 2;
+				const ncy = newRect.top + scrollOfs.y + newRect.height / 2;
 
-				const rendered_Mx = ncx + (e.pageX - cx) * actualR;
-				const rendered_My = ncy + (e.pageY - cy) * actualR;
+				const rendered_Mx = ncx + (pointerX - cx) * actualR;
+				const rendered_My = ncy + (pointerY - cy) * actualR;
 				const directionMultiplier = r > 1 ? -1 : 1;
 
-				const shiftX = (e.pageX - rendered_Mx) * directionMultiplier;
-				const shiftY = (e.pageY - rendered_My) * directionMultiplier;
+				const shiftX = (pointerX - rendered_Mx) * directionMultiplier;
+				const shiftY = (pointerY - rendered_My) * directionMultiplier;
 
 				const currentLeft = parseFloat(_img_element.style.left) || getOffset(_img_element).left;
 				const currentTop = parseFloat(_img_element.style.top) || getOffset(_img_element).top;
@@ -4570,6 +6322,184 @@ function resolveObjectPos(token, free, scale) {
 	return free / 2;
 }
 
+function getMenuFocusIndex(key, count, current) {
+	if (!count) return -1;
+	if (key === "Home") return 0;
+	if (key === "End") return count - 1;
+	if (key === "ArrowDown") return current < 0 ? 0 : (current + 1) % count;
+	if (key === "ArrowUp") return current < 0 ? count - 1 : (current - 1 + count) % count;
+	return -1;
+}
+
+function closeSaveMenu() {
+	const shadow = getPanelShadow();
+	const menu = shadow && shadow.getElementById("zd-save-menu");
+	if (!menu || menu.hidden) return;
+
+	const hadFocus = Boolean(shadow.activeElement && menu.contains(shadow.activeElement));
+	menu.hidden = true;
+	const btn = shadow.getElementById("zd-btn-save-menu");
+	if (!btn) return;
+	btn.setAttribute("aria-expanded", "false");
+	if (hadFocus) btn.focus();
+}
+
+function applyFloatOutlineInline(img) {
+	const visual = isPinned(img) ? _pinFrameVisuals.panel : _floatFrameVisuals.panel;
+	img.style.setProperty("outline", visual.outline, "important");
+	img.style.setProperty("outline-offset", "0px", "important");
+	img.style.setProperty("box-shadow", visual.shadow, "important");
+}
+
+function needsFloatFrame(img) {
+	return (
+		_useFloatFrameOverlay &&
+		Boolean(img) &&
+		img.tagName === "IMG" &&
+		Boolean(getElData(img, _srckey)) &&
+		img.style.getPropertyValue("filter") !== ""
+	);
+}
+
+function refreshFloatFrameVisual(img) {
+	const rec = _floatFrames.get(img);
+	if (!rec) return;
+
+	const isActive = rec.hover || img.classList.contains("zdImgCls_actionActive");
+	const visuals = isPinned(img) ? _pinFrameVisuals : _floatFrameVisuals;
+	const visual = visuals[rec.panel ? "panel" : isActive ? "hover" : "idle"];
+	rec.frame.style.setProperty("outline", visual.outline, "important");
+	rec.frame.style.setProperty("outline-offset", "0px", "important");
+	rec.frame.style.setProperty("box-shadow", visual.shadow, "important");
+}
+
+function placeFloatFrame(img, frame) {
+	const wrapper = document.getElementById(_zdExImgId);
+	let host = img;
+	while (host.parentNode && host.parentNode !== wrapper) host = host.parentNode;
+	if (host.parentNode === wrapper && host.nextSibling !== frame) host.after(frame);
+}
+
+function syncFloatFrameGeometry(img) {
+	const rec = _floatFrames.get(img);
+	if (!rec) return;
+
+	const target = rec.frame.style;
+	["position", "left", "top", "width", "height", "transform", "transform-origin", "display", "visibility"].forEach((prop) => {
+		const val = img.style.getPropertyValue(prop);
+		if (val) target.setProperty(prop, val, "important");
+		else target.removeProperty(prop);
+	});
+	target.setProperty("z-index", img.style.getPropertyValue("z-index") || "2147483640", "important");
+
+	const isAnimated = img.classList.contains("zdImgCls_animated") && img.style.getPropertyValue("transition") !== "none";
+	rec.frame.classList.toggle("zdImgCls_animated", isAnimated);
+	if (isAnimated) target.removeProperty("transition");
+	else target.setProperty("transition", "none", "important");
+}
+
+function createFloatFrame(img) {
+	const wrapper = document.getElementById(_zdExImgId);
+	if (!wrapper || !wrapper.contains(img)) return;
+
+	const frame = document.createElement("div");
+	frame.className = _floatFrameCls;
+	frame.setAttribute("aria-hidden", "true");
+	frame.style.cssText =
+		"position: absolute !important; margin: 0 !important; padding: 0 !important; border: none !important; box-sizing: border-box !important; background: transparent !important; pointer-events: none !important; overflow: visible !important;";
+
+	const inlineOutline = img.style.getPropertyValue("outline");
+	const rec = {
+		frame,
+		hover: false,
+		panel: inlineOutline !== "" && inlineOutline !== "none",
+		onEnter: () => {
+			rec.hover = true;
+			refreshFloatFrameVisual(img);
+		},
+		onLeave: () => {
+			rec.hover = false;
+			refreshFloatFrameVisual(img);
+		}
+	};
+
+	_floatFrames.set(img, rec);
+	img.addEventListener("pointerenter", rec.onEnter);
+	img.addEventListener("pointerleave", rec.onLeave);
+	img.style.removeProperty("outline");
+	img.style.removeProperty("outline-offset");
+	img.style.removeProperty("box-shadow");
+	img.setAttribute(_frameExtAttr, "");
+}
+
+function destroyFloatFrame(img) {
+	const rec = _floatFrames.get(img);
+	if (!rec) return;
+
+	_floatFrames.delete(img);
+	img.removeEventListener("pointerenter", rec.onEnter);
+	img.removeEventListener("pointerleave", rec.onLeave);
+	rec.frame.remove();
+	img.removeAttribute(_frameExtAttr);
+	if (rec.panel && img.isConnected) applyFloatOutlineInline(img);
+}
+
+function syncFloatFrame(img) {
+	if (!_useFloatFrameOverlay) return;
+	if (!img.isConnected) {
+		destroyFloatFrame(img);
+		return;
+	}
+
+	if (!needsFloatFrame(img)) {
+		destroyFloatFrame(img);
+		return;
+	}
+
+	if (!_floatFrames.has(img)) createFloatFrame(img);
+	const rec = _floatFrames.get(img);
+	if (!rec) return;
+
+	placeFloatFrame(img, rec.frame);
+	syncFloatFrameGeometry(img);
+	refreshFloatFrameVisual(img);
+}
+
+function onFloatFrameMutations(records) {
+	const imgs = new Set();
+	let isStructural = false;
+
+	records.forEach((record) => {
+		if (record.type === "childList") isStructural = true;
+		else if (record.target.tagName === "IMG" && getElData(record.target, _srckey)) imgs.add(record.target);
+	});
+
+	if (isStructural) {
+		for (const img of [..._floatFrames.keys()]) {
+			if (!img.isConnected) destroyFloatFrame(img);
+			else imgs.add(img);
+		}
+	}
+
+	imgs.forEach(syncFloatFrame);
+}
+
+function ensureFloatFrameObserver() {
+	if (!_useFloatFrameOverlay) return;
+	const wrapper = document.getElementById(_zdExImgId);
+	if (!wrapper || wrapper === _floatFrameObserved) return;
+
+	if (_floatFrameObserver) _floatFrameObserver.disconnect();
+	_floatFrameObserver = new MutationObserver(onFloatFrameMutations);
+	_floatFrameObserver.observe(wrapper, {
+		subtree: true,
+		childList: true,
+		attributes: true,
+		attributeFilter: ["style", "class"]
+	});
+	_floatFrameObserved = wrapper;
+}
+
 function applyPanelBorder() {
 	if (!getPanelHost() || !_img_element) return;
 
@@ -4586,28 +6516,58 @@ function applyPanelBorder() {
 	const origTarget = getElData(_img_element, _srckey) || _img_element;
 	if (isFloating || isElementModified(_img_element) || origTarget.hasAttribute("data-zd-pe-img")) {
 		lockContainers(origTarget);
+	} else if (isPanelHovered()) {
+		const card = findMediaCardRoot(origTarget);
+		const ytThumb = origTarget.closest("ytd-thumbnail, yt-thumbnail-view-model");
+		const ytPreview = document.querySelector("ytd-video-preview");
+		if (_previewLeaveTarget !== origTarget && (ytThumb || ytPreview)) {
+			_previewLeaveTarget = origTarget;
+			const thumbHost = origTarget.closest(_clickHostSel);
+			const hostRenderer = card && card.parentElement && card.parentElement.tagName.includes("-") ? card.parentElement : null;
+			[origTarget, thumbHost, ytThumb, card, hostRenderer, ytPreview]
+				.filter(Boolean)
+				.forEach((t) => {
+					t.dispatchEvent(new MouseEvent("mouseout", { bubbles: true, cancelable: true, relatedTarget: document.body }));
+					t.dispatchEvent(new MouseEvent("mouseleave", { bubbles: false, cancelable: false, relatedTarget: document.body }));
+					t.dispatchEvent(new PointerEvent("pointerout", { bubbles: true, cancelable: true, relatedTarget: document.body }));
+					t.dispatchEvent(new PointerEvent("pointerleave", { bubbles: false, cancelable: false, relatedTarget: document.body }));
+				});
+		}
+		suppressActivePreviewsForCard(origTarget, card);
+		suppressAnimatedPreviewsForCard(origTarget, card);
+	} else if (!document.querySelector("[data-zd-pe-img]") && document.querySelector("[data-zd-vid-hide], [data-zd-anim-hide]")) {
+		restoreAllVideoPreviews();
 	}
 
 	let frame = document.getElementById("zd-panel-frame");
 
 	if (isFloating || isDragged) {
 		if (frame) frame.style.setProperty("display", "none", "important");
-		_img_element.style.setProperty("outline", "2px solid rgba(53, 117, 221, 0.5)", "important");
-		_img_element.style.setProperty("outline-offset", "0px", "important");
-		_img_element.style.setProperty("box-shadow", "0 0 15px rgba(53, 117, 221, 0.4)", "important");
+
+		const floatRec = _floatFrames.get(_img_element);
+		if (floatRec) {
+			floatRec.panel = true;
+			refreshFloatFrameVisual(_img_element);
+			return;
+		}
+
+		applyFloatOutlineInline(_img_element);
 		return;
 	}
 
-	_img_element.style.setProperty("outline", "none", "important");
-	_img_element.style.setProperty("box-shadow", "none", "important");
+	if (isElementModified(_img_element)) {
+		_img_element.style.setProperty("outline", "none", "important");
+		_img_element.style.setProperty("box-shadow", "none", "important");
+	}
 
 	if (!frame) {
 		frame = document.createElement("div");
 		frame.id = "zd-panel-frame";
 		frame.style.cssText =
 			"pointer-events: none !important; position: fixed !important; z-index: 2147483646 !important; box-sizing: border-box !important; margin: 0 !important; padding: 0 !important; background: transparent !important;";
-		document.body.appendChild(frame);
+		document.body.insertBefore(frame, getExUiAnchor());
 	}
+	raiseAboveHost(frame, _img_element);
 
 	frame.style.setProperty("display", "block", "important");
 
@@ -4618,8 +6578,9 @@ function applyPanelBorder() {
 	const cx = rect.left + rect.width / 2;
 	const cy = rect.top + rect.height / 2;
 
-	const boxW = _img_element.offsetWidth;
-	const boxH = _img_element.offsetHeight;
+	const live = isFloating ? { x: 1, y: 1 } : getLiveScale(_img_element);
+	const boxW = _img_element.offsetWidth * live.x;
+	const boxH = _img_element.offsetHeight * live.y;
 	const boxRatio = boxW > 0 && boxH > 0 ? boxH / boxW : 0;
 	const restRatio = boxRatio > 0 ? boxRatio : size.w > 0 ? size.h / size.w : 0;
 	const rotatedSize = rot % 180 !== 0 && restRatio > 0 ? getUnrotatedSize(rect, rot, restRatio) : null;
@@ -4639,7 +6600,7 @@ function applyPanelBorder() {
 			if (nw > 0 && nh > 0) {
 				const origW = frameW;
 				const origH = frameH;
-				const pxScale = boxW > 0 ? origW / boxW : 1;
+				const pxScale = _img_element.offsetWidth > 0 ? origW / _img_element.offsetWidth : 1;
 
 				if (objFit === "none") {
 					frameW = nw * pxScale;
@@ -4767,25 +6728,37 @@ function applyPanelBorder() {
 		frame.style.removeProperty("border-bottom-left-radius");
 	}
 
-	frame.style.setProperty("border", "3px solid rgba(53, 117, 221, 0.9)", "important");
+	const frameBorder = _zoom_frameOff ? "transparent" : ZDShared.hexToRgba(_zoom_frameColor, 0.9);
+	frame.style.setProperty("border", `3px solid ${frameBorder}`, "important");
 	clearBorderStyles(frame);
-	frame.style.setProperty("box-shadow", "inset 0 0 20px rgba(53, 117, 221, 0.7)", "important");
+	frame.style.setProperty(
+		"box-shadow",
+		_zoom_frameOff ? "none" : `inset 0 0 20px ${ZDShared.hexToRgba(_zoom_frameColor, 0.7)}`,
+		"important"
+	);
 	frame.classList.remove("zdImgCls_animated");
 }
 
 function removePanelBorder() {
+	_previewLeaveTarget = null;
 	const frame = document.getElementById("zd-panel-frame");
 	if (frame) frame.remove();
 
 	if (!_img_element) return;
 
 	const targetEl = _img_element;
+	const src_elem = getElData(targetEl, _srckey);
+	if (!src_elem && !isElementModified(targetEl)) {
+		clearBorderStyles(targetEl);
+		return;
+	}
+
 	const oldTrans = targetEl.style.transition;
+	const oldTransPriority = targetEl.style.getPropertyPriority("transition");
 	targetEl.style.setProperty("transition", "none", "important");
 	clearBorderStyles(targetEl);
 
 	const isSingleImgView = _singleImgPage && targetEl.classList.contains(_imgSrcViewCls);
-	const src_elem = getElData(targetEl, _srckey);
 
 	if (src_elem) {
 		const data = getElData(targetEl, _firstkey);
@@ -4794,37 +6767,40 @@ function removePanelBorder() {
 		const flipX = getElData(targetEl, _flipXkey) || 1;
 		const flipY = getElData(targetEl, _flipYkey) || 1;
 		const isDragged = targetEl.classList.contains(_draggedCls);
-		const hasOpac = Boolean(targetEl.style.opacity && parseFloat(targetEl.style.opacity) !== 1);
-		const hasBright = Boolean(
-			targetEl.style.filter &&
-				!targetEl.style.filter.includes("brightness(100%)") &&
-				!targetEl.style.filter.includes("brightness(1)")
-		);
+		const hasOpac = getOpacityPct(targetEl) !== 100;
+		const hasBright = getBrightnessPct(targetEl) !== 100;
+		const hasEffects = hasEffectMods(targetEl);
 		const isActionActive = Boolean(_rotParam || _zoomParam || _dragParam);
 
 		const isUnmodified =
 			!isActionActive &&
 			!isDragged &&
+			!isPinned(targetEl) &&
 			rot === 0 &&
 			flipX === 1 &&
 			flipY === 1 &&
 			!hasOpac &&
 			!hasBright &&
+			!hasEffects &&
 			data &&
 			size &&
 			Math.abs(size.w - data.sw) < 2 &&
 			Math.abs(size.h - data.sh) < 2;
 
 		if (isUnmodified) {
-			clearImgEx(src_elem);
+			const gRoot = getElData(targetEl, _galleryRootkey) || findGalleryRoot(src_elem);
+			const sourceFullyReset = clearImgEx(src_elem);
 			_modifiedElements.delete(src_elem);
+			if (sourceFullyReset && getPanelHost()) {
+				rebindPanelOrActiveGalleryImg(src_elem, gRoot);
+			}
 		}
 	} else if (!isSingleImgView) {
 		const data = getElData(targetEl, _firstkey);
 		const size = getElData(targetEl, _sizekey);
 		const isZoomed = data && size && (Math.abs(size.w - data.sw) > 2 || Math.abs(size.h - data.sh) > 2);
 
-		if (!isZoomed && data && data.origStyle) {
+		if (!isZoomed && data && data.origStyle && targetEl.style.minWidth) {
 			if (!_singleImgPage) targetEl.style.removeProperty("display");
 			const sizeProps = [
 				"width", "height", "max-width", "max-height", "min-width", "min-height",
@@ -4843,24 +6819,43 @@ function removePanelBorder() {
 			targetEl.style.alignSelf = data.origStyle.alignSelf || "";
 			targetEl.style.objectFit = data.origStyle.objectFit || "";
 		}
-
-		if (!getPanelHost() && !isElementModified(targetEl)) {
-			unlockContainers(targetEl);
-		}
 	}
 
 	void targetEl.offsetHeight;
-	if (oldTrans) targetEl.style.setProperty("transition", oldTrans);
-	else targetEl.style.removeProperty("transition");
+	if (oldTrans) targetEl.style.setProperty("transition", oldTrans, oldTransPriority);
+	else releaseTransitionLock(targetEl);
+}
+
+function ensureFloating() {
+	if (!_img_element || _img_element.tagName.toUpperCase() === "CANVAS") return;
+
+	if (_singleImgPage && _img_element.classList.contains(_imgSrcViewCls)) {
+		applyPanelBorder();
+		return;
+	}
+
+	if (!getElData(_img_element, _srckey)) {
+		syncBaseRect(_img_element);
+		const bData = getElData(_img_element, _firstkey);
+		if (!bData) return;
+
+		if (_img_element.isConnected) {
+			const curRect = _img_element.getBoundingClientRect();
+			if (curRect.width > 0 && curRect.height > 0) {
+				bData.sx = curRect.left + window.scrollX + curRect.width / 2 - bData.sw / 2;
+				bData.sy = curRect.top + window.scrollY + curRect.height / 2 - bData.sh / 2;
+			}
+		}
+
+		const sz = getElData(_img_element, _sizekey) || { w: bData.sw, h: bData.sh };
+		generateImgEx({ w: sz.w, h: sz.h });
+	}
+	applyPanelBorder();
 }
 
 async function ctxZoomCustom() {
 	if (!_current_element) return;
 	setZoom(_current_element);
-
-	if (document.activeElement && document.activeElement !== document.body) {
-		document.activeElement.blur();
-	}
 
 	if (_rclickTimer) {
 		clearTimeout(_rclickTimer);
@@ -4874,69 +6869,18 @@ async function ctxZoomCustom() {
 		return;
 	}
 
-	const ensureFloating = () => {
-		if (!_img_element || _img_element.tagName.toUpperCase() === "CANVAS") return;
-
-		if (_singleImgPage && _img_element.classList.contains(_imgSrcViewCls)) {
-			applyPanelBorder();
-			return;
-		}
-
-		if (!getElData(_img_element, _srckey)) {
-			const bData = getElData(_img_element, _firstkey);
-			if (!bData) return;
-
-			if (
-				((_singleImgPage && !_zoom_ivpDrag) || _img_element.classList.contains("fullscreen")) &&
-				_img_element.tagName === "IMG"
-			) {
-				const winW = window.innerWidth;
-				const winH = window.innerHeight;
-				const fitSize = calcLimit(_img_element.naturalWidth || 100, _img_element.naturalHeight || 100, winW, winH);
-				bData.sw = fitSize.w;
-				bData.sh = fitSize.h;
-				bData.sx = window.scrollX + winW / 2 - fitSize.w / 2;
-				bData.sy = window.scrollY + winH / 2 - fitSize.h / 2;
-				setElData(_img_element, _sizekey, { w: bData.sw, h: bData.sh });
-			} else if (_img_element.isConnected) {
-				const curRect = _img_element.getBoundingClientRect();
-				if (curRect.width > 0 && curRect.height > 0) {
-					bData.sx = curRect.left + window.scrollX + curRect.width / 2 - bData.sw / 2;
-					bData.sy = curRect.top + window.scrollY + curRect.height / 2 - bData.sh / 2;
-				}
-			}
-
-			const sz = getElData(_img_element, _sizekey) || { w: bData.sw, h: bData.sh };
-			generateImgEx({ w: sz.w, h: sz.h });
-		}
-		applyPanelBorder();
-	};
-
 	const existingPanel = getPanelHost();
 	if (existingPanel) {
-		if (existingPanel.matches(":hover") || panelHasFocus()) {
-			ensureFloating();
-			syncPanelValues();
-		} else {
-			syncPanelValues();
-			if (!getElData(_img_element, _srckey)) {
-				if (needsFloatingForNativeZoom(_img_element)) ensureFloating();
-				else applyPanelBorder();
-			}
-		}
+		syncPanelValues();
+		applyPanelBorder();
 		return;
 	}
 
 	const curZoom = initialData.sw ? Math.round((initialSize.w / initialData.sw) * 100) : 100;
 	const curWidth = Math.round(initialSize.w);
 	const curRot = getElData(_img_element, _rotkey) || 0;
-	const curOpac = _img_element.style.opacity ? Math.round(parseFloat(_img_element.style.opacity) * 100) : 100;
-
-	let curBright = 100;
-	if (_img_element.style.filter && _img_element.style.filter.includes("brightness")) {
-		const match = _img_element.style.filter.match(/brightness\((\d+)\%\)/);
-		if (match) curBright = parseInt(match[1], 10);
-	}
+	const curOpac = getOpacityPct(_img_element);
+	const curBright = getBrightnessPct(_img_element);
 
 	const t = (key, fallback) => (browser?.i18n && browser.i18n.getMessage(key)) || fallback;
 
@@ -4944,6 +6888,7 @@ async function ctxZoomCustom() {
 	ctxZoomCustom.isBuilding = true;
 
 	const panel = document.createElement("div");
+	_panelHover = false;
 	panel.id = _zdPanelId;
 	panel.style.cssText = "position: fixed; top: 20px; right: 20px; z-index: 2147483647;";
 
@@ -4991,6 +6936,8 @@ async function ctxZoomCustom() {
 		shadowRoot.querySelector("#zd-num-opac").value = curOpac;
 		shadowRoot.querySelector("#zd-sl-bright").value = curBright;
 		shadowRoot.querySelector("#zd-num-bright").value = curBright;
+		updateEffectButtons(shadowRoot);
+		updatePanelMeta(shadowRoot);
 
 		document.body.appendChild(panel);
 
@@ -5018,19 +6965,22 @@ async function ctxZoomCustom() {
 	});
 
 	panel.addEventListener("mouseleave", () => {
+		_panelHover = false;
 		if (shadowRoot.activeElement) shadowRoot.activeElement.blur();
 		removePanelBorder();
 	});
 
 	panel.addEventListener("mouseenter", () => {
-		if (_img_element && !getElData(_img_element, _srckey) && needsFloatingForNativeZoom(_img_element)) {
-			ensureFloating();
-		} else {
-			applyPanelBorder();
-		}
+		_panelHover = true;
+		applyPanelBorder();
+		triggerFrameTransitionSync(500);
 	});
 
 	shadowRoot.addEventListener("mousedown", (e) => {
+		if (_img_element && !getElData(_img_element, _srckey) && !isElementModified(_img_element)) {
+			syncBaseRect(_img_element);
+			syncPanelValues();
+		}
 		const target = e.target;
 		if (target.tagName.toUpperCase() === "BUTTON" || target.closest("button") || target.id === "zd-btn-x") {
 			e.preventDefault();
@@ -5066,9 +7016,18 @@ async function ctxZoomCustom() {
 		"click", "dblclick", "contextmenu", "keydown", "keyup", "keypress"
 	].forEach((evt) => shadowRoot.addEventListener(evt, stopProp));
 
-	shadowRoot.addEventListener("mouseover", (e) => {
-		if (e.target.tagName === "INPUT") e.target.focus();
-	});
+	const focusEvts = ["focusin", "focusout", "focus", "blur"];
+	const shieldFocus = (e) => {
+		if (!getPanelHost()) {
+			focusEvts.forEach((evt) => window.removeEventListener(evt, shieldFocus, true));
+			return;
+		}
+		if (e.composedPath().includes(panel) || e.relatedTarget === panel) {
+			e.stopImmediatePropagation();
+		}
+	};
+
+	focusEvts.forEach((evt) => window.addEventListener(evt, shieldFocus, true));
 
 	const getInputStep = (id, shift) => {
 		if (!shift) return 1;
@@ -5077,6 +7036,43 @@ async function ctxZoomCustom() {
 		if (id.includes("zoom")) return 10;
 		return 5;
 	};
+
+	let hoverInput = null;
+
+	shadowRoot.addEventListener("mouseover", (e) => {
+		const target = e.target;
+		if (target.tagName === "INPUT" && (target.type === "range" || target.type === "number")) hoverInput = target;
+	});
+
+	shadowRoot.addEventListener("mouseout", (e) => {
+		if (e.target === hoverInput) hoverInput = null;
+	});
+
+	const onHoverKey = (e) => {
+		if (!getPanelHost()) {
+			window.removeEventListener("keydown", onHoverKey, true);
+			return;
+		}
+		const target = hoverInput;
+		if (!target || !panel.matches(":hover") || e.ctrlKey || e.metaKey || e.altKey) return;
+		if (e.key !== "ArrowUp" && e.key !== "ArrowRight" && e.key !== "ArrowDown" && e.key !== "ArrowLeft") return;
+		if (shadowRoot.activeElement === target && target.type === "number") return;
+		if (!e.composedPath().includes(panel) && (isEditableTarget(e.target) || isEditableTarget(document.activeElement))) return;
+
+		e.preventDefault();
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+
+		const dir = e.key === "ArrowUp" || e.key === "ArrowRight" ? 1 : -1;
+		const step = getInputStep(target.id, e.shiftKey);
+		const val = parseFloat(target.value);
+		if (!isNaN(val)) {
+			target.value = val + dir * step;
+			target.dispatchEvent(new Event("input"));
+		}
+	};
+
+	window.addEventListener("keydown", onHoverKey, true);
 
 	shadowRoot.addEventListener(
 		"wheel",
@@ -5095,12 +7091,6 @@ async function ctxZoomCustom() {
 		},
 		{ passive: false }
 	);
-
-	shadowRoot.addEventListener("mouseout", (e) => {
-		if (e.target.tagName === "INPUT" && e.target.type !== "number") {
-			e.target.blur();
-		}
-	});
 
 	shadowRoot.addEventListener("keydown", (e) => {
 		const target = e.target;
@@ -5204,9 +7194,18 @@ async function ctxZoomCustom() {
 			if (isDefault && !getElData(_img_element, _srckey)) {
 				setImageRect(null);
 			} else {
-				const isBg = Boolean(getElData(_img_element, _bgsrckey));
-				const adjusted = adjustSizeToNaturalAspectRatio(_img_element, targetW, (bData.sh / bData.sw) * targetW, isBg);
-				const limSize = clampMaxSide(targetW, adjusted.h);
+				const origElem = getElData(_img_element, _srckey) || _img_element;
+				const isBg = Boolean(getElData(origElem, _bgsrckey));
+				if (isDefault && origElem !== _img_element && !isBg) {
+					const origFit = window.getComputedStyle(origElem).objectFit || "fill";
+					_img_element.style.setProperty(
+						"object-fit",
+						origFit === "scale-down" || origFit === "none" ? "contain" : origFit,
+						"important"
+					);
+				}
+				const targetH = getObjectFitHeight(_img_element, targetW, bData);
+				const limSize = clampMaxSide(targetW, targetH);
 				setImageRect({ w: limSize.w, h: limSize.h });
 			}
 			applyPanelBorder();
@@ -5252,11 +7251,7 @@ async function ctxZoomCustom() {
 
 		ensureElevatedZIndex(_img_element);
 
-		if (opac === 100) _img_element.style.removeProperty("opacity");
-		else _img_element.style.setProperty("opacity", String(opac / 100), "important");
-
-		if (bright === 100) _img_element.style.removeProperty("filter");
-		else _img_element.style.setProperty("filter", `brightness(${bright}%)`, "important");
+		applyFilterAndOpacity(_img_element, opac, bright);
 
 		if (!getElData(_img_element, _srckey)) {
 			if (isElementModified(_img_element)) {
@@ -5278,6 +7273,7 @@ async function ctxZoomCustom() {
 
 	const sync = (sl, num, type, defVal, min, max) => {
 		const getLimit = () => {
+			if (_img_element) syncBaseRect(_img_element);
 			const bData = getElData(_img_element, _firstkey);
 			if (type !== "size" || !bData) return max;
 			const maxW = getMaxWidth(bData);
@@ -5285,6 +7281,7 @@ async function ctxZoomCustom() {
 		};
 
 		const applyValues = (rawVal, forceInputUpdate) => {
+			if (_img_element) syncBaseRect(_img_element);
 			const bData = getElData(_img_element, _firstkey);
 			if (!bData) return;
 
@@ -5412,16 +7409,120 @@ async function ctxZoomCustom() {
 	btnFlipH.addEventListener("click", () => handleFlip(_flipXkey));
 	btnFlipV.addEventListener("click", () => handleFlip(_flipYkey));
 
-	const initialUrl = location.href;
+	const handleEffect = (type) => {
+		if (!_img_element) {
+			const target = getActiveImageTarget(false);
+			if (target) setZoom(target, null, true);
+			else return;
+		}
+		_zdSuppressBadge = true;
+		ensureFloating();
+		disableAnim(_img_element);
+		syncBaseRect(_img_element);
+
+		if (type === "pixel") {
+			setPixelMode(_img_element, !isPixelMode(_img_element));
+		} else {
+			const fx = getFilterEffects(_img_element);
+			fx[type] = !fx[type];
+			applyFilterAndOpacity(_img_element, getOpacityPct(_img_element), getBrightnessPct(_img_element), fx);
+		}
+
+		ensureElevatedZIndex(_img_element);
+		updateEffectButtons(shadowRoot);
+		applyPanelBorder();
+		hideBadgeImmediate();
+		_zdSuppressBadge = false;
+	};
+
+	shadowRoot.getElementById("zd-btn-invert").addEventListener("click", () => handleEffect("invert"));
+	shadowRoot.getElementById("zd-btn-gray").addEventListener("click", () => handleEffect("gray"));
+	shadowRoot.getElementById("zd-btn-pixel").addEventListener("click", () => handleEffect("pixel"));
+
+	const handlePin = () => {
+		if (!_img_element) {
+			const target = getActiveImageTarget(false);
+			if (target) setZoom(target, null, true);
+			else return;
+		}
+		togglePinned(_img_element);
+	};
+
+	shadowRoot.getElementById("zd-btn-pin").addEventListener("click", handlePin);
+
+	const getStableImgId = (imgEl) => {
+		if (!imgEl) return null;
+		return imgEl.getAttribute("src") || imgEl.getAttribute("srcset") || imgEl.currentSrc || imgEl.src || null;
+	};
+
+	let initialUrl = location.href;
 	const initialOrigImg = _img_element ? getElData(_img_element, _srckey) || _img_element : null;
-	let initialSrc = initialOrigImg ? initialOrigImg.currentSrc || initialOrigImg.src : null;
+	let currentGalleryRoot = findGalleryRoot(initialOrigImg);
+	let initialSrc = getStableImgId(initialOrigImg);
+	let initialOrigRect = getDocRect(initialOrigImg);
 	let currentlyObservedImg = _img_element;
 
 	let _frameBurstRafId = 0;
+	let _frameApplyRafId = 0;
 	let _frameBurstEndTime = 0;
 	let _lastSyncedRectStr = "";
+	let _lastOffsetW = _img_element ? _img_element.offsetWidth : 0;
+	let _lastOffsetH = _img_element ? _img_element.offsetHeight : 0;
+	let _lastRectW = _img_element ? Math.round(_img_element.getBoundingClientRect().width) : 0;
+	let _lastRectH = _img_element ? Math.round(_img_element.getBoundingClientRect().height) : 0;
+
+	const syncUnmodifiedBaseSize = (preserveTransition = false) => {
+		if (!_img_element || !_img_element.isConnected || getElData(_img_element, _srckey)) return;
+		if (_img_element.hasAttribute("data-zd-float-hidden")) return;
+		if (!isElementModified(_img_element)) {
+			const curOffsetW = _img_element.offsetWidth;
+			const curOffsetH = _img_element.offsetHeight;
+			const curRect = _img_element.getBoundingClientRect();
+			const curRectW = Math.round(curRect.width);
+			const curRectH = Math.round(curRect.height);
+			const layoutChanged =
+				curOffsetW !== _lastOffsetW ||
+				curOffsetH !== _lastOffsetH ||
+				curRectW !== _lastRectW ||
+				curRectH !== _lastRectH;
+			_lastOffsetW = curOffsetW;
+			_lastOffsetH = curOffsetH;
+			_lastRectW = curRectW;
+			_lastRectH = curRectH;
+
+			syncBaseRect(_img_element, preserveTransition && !layoutChanged);
+			if (layoutChanged || !preserveTransition) {
+				syncPanelValues();
+			}
+		}
+	};
+
+	const syncPageScale = () => {
+		const el = _img_element;
+		if (!el || !el.isConnected || getElData(el, _srckey) || _dragParam || _rotParam || _zoomParam) return;
+		if (_singleImgPage && el.classList.contains(_imgSrcViewCls)) return;
+
+		const data = getElData(el, _firstkey);
+		const size = getElData(el, _sizekey);
+		if (!data || !size || data.scaleX === undefined || !isElementModified(el)) return;
+
+		const live = getLiveScale(el);
+		if (Math.abs(live.x - data.scaleX) < 0.001 && Math.abs(live.y - data.scaleY) < 0.001) return;
+
+		_ignoringSelfMutations = true;
+		try {
+			setCssBoxSize(el, size.w / live.x, size.h / live.y);
+			data.scaleX = live.x;
+			data.scaleY = live.y;
+		} finally {
+			frameSyncObserver.takeRecords();
+			_ignoringSelfMutations = false;
+		}
+	};
 
 	const syncFrameIfActive = () => {
+		syncUnmodifiedBaseSize(true);
+		syncPageScale();
 		const activeFrame = document.getElementById("zd-panel-frame");
 		if (activeFrame && activeFrame.style.display !== "none" && _img_element && _img_element.isConnected) {
 			const r = _img_element.getBoundingClientRect();
@@ -5452,17 +7553,24 @@ async function ctxZoomCustom() {
 
 	const onTransitionOrHoverChange = (e) => {
 		if (!_img_element || !_img_element.isConnected) return;
-		const t = e.target;
-		if (t && t.nodeType === 1 && (t === _img_element || t.contains(_img_element) || _img_element.contains(t))) {
+		const path = e.composedPath ? e.composedPath() : [e.target];
+		const isRelated = path.some(
+			(n) => n && n.nodeType === 1 && (n === _img_element || n.contains?.(_img_element) || _img_element.contains?.(n))
+		);
+		if (isRelated) {
 			if (e.type === "transitionend") {
+				syncUnmodifiedBaseSize(false);
 				_lastSyncedRectStr = "";
 				syncFrameIfActive();
+			} else {
+				syncUnmodifiedBaseSize(true);
 			}
 			triggerFrameTransitionSync(500);
 		}
 	};
 
 	const frameResizeObserver = new ResizeObserver(() => {
+		syncUnmodifiedBaseSize();
 		_lastSyncedRectStr = "";
 		syncFrameIfActive();
 	});
@@ -5477,59 +7585,109 @@ async function ctxZoomCustom() {
 
 	const observeImgAndAncestors = (imgEl) => {
 		if (!imgEl) return;
-		frameSyncObserver.observe(imgEl, { attributes: true, attributeFilter: ["style", "class"] });
+		frameSyncObserver.observe(imgEl, { attributes: true, attributeOldValue: true, attributeFilter: ["style", "class"] });
 		frameResizeObserver.observe(imgEl);
-		let p = imgEl.parentElement;
-		for (let i = 0; i < 4 && p && p !== document.body; i++, p = p.parentElement) {
-			frameSyncObserver.observe(p, { attributes: true, attributeFilter: ["style", "class"] });
+		let p = composedParent(imgEl);
+		for (let i = 0; i < 6 && p && p !== document.body && p !== document.documentElement; i++, p = composedParent(p)) {
+			if (p.nodeType === 1) {
+				frameSyncObserver.observe(p, { attributes: true, attributeOldValue: true, attributeFilter: ["style", "class"] });
+				frameResizeObserver.observe(p);
+			}
 		}
 	};
 
-	const frameSyncObserver = new MutationObserver((mutations) => {
+	const isPanelFrameVisible = () => {
 		const activeFrame = document.getElementById("zd-panel-frame");
-		if (activeFrame && (activeFrame.style.display !== "none" || panel.matches(":hover") || panelHasFocus())) {
-			const classChanged = mutations.some((m) => m.attributeName === "class");
+		return Boolean(activeFrame && (activeFrame.style.display !== "none" || panel.matches(":hover") || panelHasFocus()));
+	};
 
-			if (classChanged && _img_element && !getElData(_img_element, _srckey)) {
-				const inlineTransform = _img_element.style.getPropertyValue("transform");
-				const inlinePriority = _img_element.style.getPropertyPriority("transform");
-
-				_img_element.style.removeProperty("transform");
-
-				const { txPct, tyPct, origMatrix } = extractTransformMatrixData(_img_element);
-				const data = getElData(_img_element, _firstkey);
-				const size = getElData(_img_element, _sizekey);
-
-				if (data) {
-					data.origMatrix = origMatrix;
-					data.txPct = txPct;
-					data.tyPct = tyPct;
-
-					if (size && Math.abs(size.w - data.sw) <= 2 && Math.abs(size.h - data.sh) <= 2) {
-						const curRect = getRestRect(_img_element);
-						const rawSw = curRect.width || _img_element.offsetWidth;
-						const rawSh = curRect.height || _img_element.offsetHeight;
-						if (rawSw > 0 && rawSh > 0) {
-							const isBg = Boolean(getElData(_img_element, _bgsrckey));
-							const adjusted = adjustSizeToNaturalAspectRatio(_img_element, rawSw, rawSh, isBg);
-							data.sw = size.w = adjusted.w;
-							data.sh = size.h = adjusted.h;
-						}
-					}
-				}
-
-				if (inlineTransform) {
-					_img_element.style.setProperty("transform", inlineTransform, inlinePriority);
-				}
-
-				imgRotate(getElData(_img_element, _rotkey) || 0, _img_element);
-				syncPanelValues();
-			}
-
+	const scheduleFrameApply = () => {
+		if (_frameApplyRafId) return;
+		_frameApplyRafId = requestAnimationFrame(() => {
+			_frameApplyRafId = 0;
+			if (!getPanelHost() || !isPanelFrameVisible()) return;
 			_lastSyncedRectStr = "";
 			applyPanelBorder();
-			triggerFrameTransitionSync(500);
+		});
+	};
+
+	let _ignoringSelfMutations = false;
+
+	const hasNetAttrChange = (mutations, attr) => {
+		const firstOld = new Map();
+		for (const m of mutations) {
+			if (m.attributeName === attr && !firstOld.has(m.target)) {
+				firstOld.set(m.target, m.oldValue ?? "");
+			}
 		}
+		for (const [target, oldVal] of firstOld) {
+			if ((target.getAttribute(attr) ?? "") !== oldVal) return true;
+		}
+		return false;
+	};
+
+	const frameSyncObserver = new MutationObserver((mutations) => {
+		if (_ignoringSelfMutations) return;
+
+		const classChanged = hasNetAttrChange(mutations, "class");
+		const styleChanged = hasNetAttrChange(mutations, "style");
+		if (!classChanged && !styleChanged) return;
+
+		_ignoringSelfMutations = true;
+		try {
+			if (_img_element && !getElData(_img_element, _srckey)) {
+				if (!isElementModified(_img_element)) {
+					const data = getElData(_img_element, _firstkey);
+					if (data?.origStyle && !isZdTransitionLock(_img_element)) {
+						data.origStyle.transform = _img_element.style.transform;
+						data.origStyle.transformOrigin = _img_element.style.transformOrigin;
+					}
+					syncUnmodifiedBaseSize();
+					triggerFrameTransitionSync(350);
+				} else if (classChanged) {
+					const inlineTransform = _img_element.style.getPropertyValue("transform");
+					const inlinePriority = _img_element.style.getPropertyPriority("transform");
+
+					_img_element.style.removeProperty("transform");
+
+					const { txPct, tyPct, origMatrix } = extractTransformMatrixData(_img_element);
+					const data = getElData(_img_element, _firstkey);
+					const size = getElData(_img_element, _sizekey);
+
+					if (data) {
+						data.origMatrix = origMatrix;
+						data.txPct = txPct;
+						data.tyPct = tyPct;
+
+						if (size && Math.abs(size.w - data.sw) <= 2 && Math.abs(size.h - data.sh) <= 2) {
+							const curRect = getRestRect(_img_element);
+							const rawSw = curRect.width || _img_element.offsetWidth;
+							const rawSh = curRect.height || _img_element.offsetHeight;
+							if (rawSw > 0 && rawSh > 0) {
+								const isBg = Boolean(getElData(_img_element, _bgsrckey));
+								const adjusted = adjustSizeToNaturalAspectRatio(_img_element, rawSw, rawSh, isBg);
+								data.sw = size.w = adjusted.w;
+								data.sh = size.h = adjusted.h;
+							}
+						}
+					}
+
+					if (inlineTransform) {
+						_img_element.style.setProperty("transform", inlineTransform, inlinePriority);
+					}
+
+					imgRotate(getElData(_img_element, _rotkey) || 0, _img_element);
+					syncPanelValues();
+				}
+			}
+		} finally {
+			frameSyncObserver.takeRecords();
+			_ignoringSelfMutations = false;
+		}
+
+		if (!isPanelFrameVisible()) return;
+		triggerFrameTransitionSync(500);
+		scheduleFrameApply();
 	});
 
 	if (currentlyObservedImg) {
@@ -5542,6 +7700,10 @@ async function ctxZoomCustom() {
 		if (_frameBurstRafId) {
 			cancelAnimationFrame(_frameBurstRafId);
 			_frameBurstRafId = 0;
+		}
+		if (_frameApplyRafId) {
+			cancelAnimationFrame(_frameApplyRafId);
+			_frameApplyRafId = 0;
 		}
 		frameSyncObserver.disconnect();
 		frameResizeObserver.disconnect();
@@ -5557,6 +7719,9 @@ async function ctxZoomCustom() {
 		window.removeEventListener("mousedown", onOutsideAction, true);
 		window.removeEventListener("wheel", onOutsideAction, true);
 		window.removeEventListener("keydown", onOutsideAction, true);
+		window.removeEventListener("mousedown", onMenuOutsideClick, true);
+		focusEvts.forEach((evt) => window.removeEventListener(evt, shieldFocus, true));
+		window.removeEventListener("keydown", onHoverKey, true);
 	};
 
 	const closePanel = () => {
@@ -5579,9 +7744,9 @@ async function ctxZoomCustom() {
 				els.oSl.value = els.oNum.value = 100;
 				els.bSl.value = els.bNum.value = 100;
 
+				unpinImage(nimg);
 				nimg.classList.remove(_draggedCls);
-				nimg.style.removeProperty("opacity");
-				nimg.style.removeProperty("filter");
+				restoreFilterAndOpacity(nimg);
 				setElData(nimg, _flipXkey, 1);
 				setElData(nimg, _flipYkey, 1);
 				imgRotate(0, nimg);
@@ -5608,27 +7773,30 @@ async function ctxZoomCustom() {
 
 		const currentImg = _img_element;
 		const finalImg = getElData(currentImg, _srckey) || currentImg;
+		const floatGalleryRoot = getElData(currentImg, _galleryRootkey) || findGalleryRoot(finalImg) || currentGalleryRoot;
 
 		enableAnim(currentImg);
 		currentImg.classList.remove(_draggedCls);
 		restoreElementZIndex(currentImg);
-		currentImg.style.removeProperty("opacity");
-		currentImg.style.removeProperty("filter");
+		restoreFilterAndOpacity(currentImg);
 
 		setElData(currentImg, _flipXkey, 1);
 		setElData(currentImg, _flipYkey, 1);
 
 		const src_elem = getElData(currentImg, _srckey);
+		let sourceFullyReset = false;
 		if (src_elem) {
 			imgRotate(0, currentImg);
 			_zdSuppressBadge = true;
-			clearImgEx(src_elem);
+			sourceFullyReset = clearImgEx(src_elem);
 			_zdSuppressBadge = false;
 			_modifiedElements.delete(src_elem);
 		}
 
-		setImageRect(null, finalImg);
-		imgRotate(0, finalImg);
+		if (!sourceFullyReset) {
+			setImageRect(null, finalImg);
+			imgRotate(0, finalImg);
+		}
 
 		_img_element = finalImg;
 		_current_element = finalImg;
@@ -5640,30 +7808,32 @@ async function ctxZoomCustom() {
 		elementDataMap.delete(finalImg);
 		finalImg.classList.remove(_draggedCls);
 
-		unlockContainers(finalImg);
-
 		const onTransitionEnd = (e) => {
 			e.target.removeEventListener("transitionend", onTransitionEnd);
 			disableAnim(e.target);
 		};
 		finalImg.addEventListener("transitionend", onTransitionEnd);
 
-		_lastResetElement = finalImg;
+		const isFinalVisible = !sourceFullyReset && isImageShownInViewport(finalImg, true);
+		_lastResetElement = isFinalVisible ? finalImg : null;
 		const nextTarget = findNextModifiedImage(finalImg);
 
 		if (nextTarget) {
+			unlockContainers(finalImg);
 			attachEvent(nextTarget);
 			setZoom(nextTarget, null, true);
 			syncPanelValues();
 			applyPanelBorder();
-		} else {
+		} else if (isFinalVisible) {
+			unlockContainers(finalImg);
 			attachEvent(finalImg);
 			setZoom(finalImg, null, true);
 			_modifiedElements.delete(finalImg);
+			const freshData = getElData(finalImg, _firstkey) || bData;
 			syncPanelValues();
 
 			els.zSl.value = els.zNum.value = 100;
-			els.wSl.value = els.wNum.value = Math.round(bData.sw);
+			els.wSl.value = els.wNum.value = Math.round(freshData.sw);
 			els.rSl.value = els.rNum.value = 0;
 			els.oSl.value = els.oNum.value = 100;
 			els.bSl.value = els.bNum.value = 100;
@@ -5678,12 +7848,19 @@ async function ctxZoomCustom() {
 				btnFlipV.style.background = "var(--bg-btn-neutral)";
 				btnFlipV.style.color = "var(--text-btn-neutral)";
 			}
+			updateEffectButtons(shadowRoot);
 
 			applyPanelBorder();
+		} else if (rebindPanelOrActiveGalleryImg(finalImg, floatGalleryRoot)) {
+			unlockContainers(finalImg);
+			_lastResetElement = _img_element;
+			applyPanelBorder();
+		} else {
+			closePanel();
 		}
 	});
 
-	const showPanelToast = (message, isNotice = false) => {
+	const showPanelToast = (message, isNotice = false, isSuccess = false) => {
 		const oldToast = shadowRoot.getElementById("zd-toast");
 		if (oldToast) oldToast.remove();
 
@@ -5691,148 +7868,356 @@ async function ctxZoomCustom() {
 		toast.id = "zd-toast";
 		toast.setAttribute("role", "status");
 		toast.textContent = message;
-		const toastColors = isNotice ? "background: #f5a623; color: #1a1a1a;" : "background: #e63946; color: #fff;";
+		const toastColors = isSuccess
+			? "background: #6ea885; color: #fff;"
+			: isNotice
+				? "background: #f5a623; color: #1a1a1a;"
+				: "background: #e63946; color: #fff;";
 		toast.style.cssText = `margin: 0 20px 16px 20px; padding: 10px 12px; border-radius: 6px; font-size: 12px; line-height: 1.4; ${toastColors} white-space: pre-line; word-break: break-word; width: 0; min-width: calc(100% - 40px); box-sizing: border-box;`;
 		shadowRoot.appendChild(toast);
-		setTimeout(() => toast.remove(), 6000);
+		setTimeout(() => toast.remove(), isSuccess ? _toastSuccessDurationMs : _toastDurationMs);
 	};
 
-	shadowRoot.getElementById("zd-btn-save").addEventListener("click", () => {
-		if (!_img_element) {
-			const target = getActiveImageTarget(false);
-			if (target) setZoom(target, null, true);
-		}
-		if (!_img_element) return;
-
-		const bData = getElData(_img_element, _firstkey);
-		if (!bData) return;
-
-		const targetW = Math.max(20, parseFloat(els.wNum.value));
-		const isBg = Boolean(getElData(_img_element, _bgsrckey));
-		const adjusted = adjustSizeToNaturalAspectRatio(_img_element, targetW, (bData.sh / bData.sw) * targetW, isBg);
-		const targetH = adjusted.h;
-
-		const rot = parseInt(els.rNum.value, 10) || 0;
-		const opac = parseInt(els.oNum.value, 10) || 100;
-		const bright = parseInt(els.bNum.value, 10) || 100;
-		const flipX = getElData(_img_element, _flipXkey) || 1;
-		const flipY = getElData(_img_element, _flipYkey) || 1;
-
-		const rad = (rot * Math.PI) / 180;
-		const cosA = Math.abs(Math.cos(rad));
-		const sinA = Math.abs(Math.sin(rad));
-		const canvasW = targetW * cosA + targetH * sinA;
-		const canvasH = targetW * sinA + targetH * cosA;
-
-		const exportScale = Math.min(
-			1,
-			_maxExportSide / Math.max(canvasW, canvasH),
-			Math.sqrt(_maxExportPixels / (canvasW * canvasH))
+	const exportErrorMsg = () =>
+		t(
+			"panel_cors_error",
+			"Could not save image.\n\nReason: The source server blocks exporting due to security policies (CORS)."
 		);
 
-		const canvas = document.createElement("canvas");
-		canvas.width = Math.max(1, canvasW * exportScale);
-		canvas.height = Math.max(1, canvasH * exportScale);
-		const ctx = canvas.getContext("2d");
+	const exportTooLargeMsg = () =>
+		t(
+			"panel_export_source_too_large",
+			"Could not save image.\n\nReason: The source server blocks exporting (CORS) and the image file is too large for the fallback download."
+		);
 
-		const srcImg = getElData(_img_element, _srckey) || _img_element;
-		const bgUrl = getElData(_img_element, _bgsrckey);
+	const loadImage = (url, useCors) =>
+		new Promise((resolve, reject) => {
+			const img = new Image();
+			if (useCors) img.crossOrigin = "anonymous";
+			img.onload = () => resolve(img);
+			img.onerror = reject;
+			img.src = url;
+		});
 
-		const exportErrorMsg = () =>
-			t(
-				"panel_cors_error",
-				"Could not save image.\n\nReason: The source server blocks exporting due to security policies (CORS)."
-			);
-
-		const exportTooLargeMsg = () =>
-			t(
-				"panel_export_source_too_large",
-				"Could not save image.\n\nReason: The source server blocks exporting (CORS) and the image file is too large for the fallback download."
-			);
-
-		const exportCanvas = (source) => {
-			try {
-				ctx.setTransform(1, 0, 0, 1, 0, 0);
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.filter = `brightness(${bright}%)`;
-				ctx.globalAlpha = opac / 100;
-
-				ctx.translate((canvasW * exportScale) / 2, (canvasH * exportScale) / 2);
-				ctx.scale(exportScale, exportScale);
-				ctx.rotate(rad);
-				ctx.scale(flipX, flipY);
-				ctx.drawImage(source, -targetW / 2, -targetH / 2, targetW, targetH);
-
-				canvas.toBlob((blob) => {
-					if (!blob) {
-						showPanelToast(exportErrorMsg());
-						return;
-					}
-
-					const now = new Date();
-					const pad = (n) => String(n).padStart(2, "0");
-					const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-					const blobUrl = URL.createObjectURL(blob);
-					const link = document.createElement("a");
-					link.dataset.zdIgnoreClick = "true";
-					link.download = `zoom_drag_export_${timestamp}.png`;
-					link.href = blobUrl;
-					document.body.appendChild(link);
-					link.click();
-					document.body.removeChild(link);
-					setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
-
-					if (exportScale < 1) {
-						showPanelToast(
-							t(
-								"panel_export_downscaled",
-								"Image was saved at a reduced size.\n\nReason: The requested size exceeds the maximum export limit."
-							),
-							true
-						);
-					}
-				}, "image/png");
-			} catch (err) {
-				console.error("Canvas Export Error (CORS/DataURL):", err);
-				showPanelToast(exportErrorMsg());
-			}
-		};
-
-		const loadImage = (url, useCors) =>
-			new Promise((resolve, reject) => {
-				const img = new Image();
-				if (useCors) img.crossOrigin = "anonymous";
-				img.onload = () => resolve(img);
-				img.onerror = reject;
-				img.src = url;
+	const loadExportSource = (url, isDerived = false) =>
+		loadImage(url, true).catch((err) => {
+			d("Image Load CORS fallback", err, "warn");
+			return browser.runtime.sendMessage({ id: "fetch-image", url, derived: isDerived }).then((res) => {
+				if (!res || !res.ok) {
+					const fetchErr = new Error(res?.error || "fetch-image failed");
+					fetchErr.code = res?.code;
+					throw fetchErr;
+				}
+				return loadImage(res.dataUrl, false);
 			});
+		});
 
-		if (!bgUrl && srcImg.tagName?.toUpperCase() === "CANVAS") {
-			exportCanvas(srcImg);
-			return;
+	const renderExportBlob = (format) =>
+		new Promise((resolve, reject) => {
+			if (!_img_element) {
+				const target = getActiveImageTarget(false);
+				if (target) setZoom(target, null, true);
+			}
+
+			const bData = _img_element ? getElData(_img_element, _firstkey) : null;
+			if (!bData) {
+				reject(Object.assign(new Error("No image selected"), { code: "no-target" }));
+				return;
+			}
+
+			const fmt = _exportFormats[format] || _exportFormats.png;
+			const targetW = Math.max(20, parseFloat(els.wNum.value));
+			const targetH = getObjectFitHeight(_img_element, targetW, bData);
+
+			const rot = parseInt(els.rNum.value, 10) || 0;
+			const opac = parseInt(els.oNum.value, 10) || 100;
+			const bright = parseInt(els.bNum.value, 10) || 100;
+			const flipX = getElData(_img_element, _flipXkey) || 1;
+			const flipY = getElData(_img_element, _flipYkey) || 1;
+			const baseFilter = getBaseFilter(_img_element);
+			const baseOpacity = getBaseOpacity(_img_element);
+			const effectsFilter = getExportEffectsFilter(_img_element);
+			const smoothing = !isPixelMode(_img_element);
+			const fitStyle = window.getComputedStyle(_img_element);
+			const fitMode = fitStyle.objectFit || "fill";
+			const fitPos = fitStyle.objectPosition || "50% 50%";
+
+			const rad = (rot * Math.PI) / 180;
+			const cosA = Math.abs(Math.cos(rad));
+			const sinA = Math.abs(Math.sin(rad));
+			const canvasW = targetW * cosA + targetH * sinA;
+			const canvasH = targetW * sinA + targetH * cosA;
+
+			const exportScale = Math.min(
+				1,
+				_maxExportSide / Math.max(canvasW, canvasH),
+				Math.sqrt(_maxExportPixels / (canvasW * canvasH))
+			);
+
+			const canvas = document.createElement("canvas");
+			canvas.width = Math.max(1, canvasW * exportScale);
+			canvas.height = Math.max(1, canvasH * exportScale);
+			const ctx = canvas.getContext("2d");
+
+			const srcImg = getElData(_img_element, _srckey) || _img_element;
+			const bgUrl = getElData(srcImg, _bgsrckey);
+			const originalUrl = bgUrl || srcImg.currentSrc || srcImg.src;
+			const hiResUrl = bgUrl ? "" : _img_element.getAttribute(_hiResAttr) || "";
+			let hiResFailed = false;
+
+			const drawToBlob = (source) =>
+				new Promise((done, fail) => {
+					try {
+						ctx.setTransform(1, 0, 0, 1, 0, 0);
+						ctx.clearRect(0, 0, canvas.width, canvas.height);
+						if (fmt.mime === "image/jpeg") {
+							ctx.fillStyle = "#ffffff";
+							ctx.fillRect(0, 0, canvas.width, canvas.height);
+						}
+						ctx.imageSmoothingEnabled = smoothing;
+						ctx.filter = `${getExportFilter(baseFilter, exportScale)} brightness(${bright}%) ${effectsFilter}`.trim();
+						ctx.globalAlpha = (baseOpacity * opac) / 100;
+
+						ctx.translate((canvasW * exportScale) / 2, (canvasH * exportScale) / 2);
+						ctx.scale(exportScale, exportScale);
+						ctx.rotate(rad);
+						ctx.scale(flipX, flipY);
+						const natW = source.naturalWidth || source.width;
+						const natH = source.naturalHeight || source.height;
+						const crop = getCoverCropRect(fitMode, fitPos, natW, natH, targetW, targetH);
+						if (crop) {
+							const { sx, sy, sw, sh } = crop;
+							ctx.drawImage(source, sx, sy, sw, sh, -targetW / 2, -targetH / 2, targetW, targetH);
+						} else {
+							ctx.drawImage(source, -targetW / 2, -targetH / 2, targetW, targetH);
+						}
+
+						canvas.toBlob(
+							(blob) => (blob ? done(blob) : fail(new Error("Canvas export returned no data"))),
+							fmt.mime,
+							fmt.mime === "image/png" ? undefined : 0.92
+						);
+					} catch (err) {
+						console.error("Canvas Export Error (CORS/DataURL):", err);
+						fail(err);
+					}
+				});
+
+			const finish = (blob) => resolve({ blob, scale: exportScale, hiResFailed });
+
+			if (!bgUrl && srcImg.tagName?.toUpperCase() === "CANVAS") {
+				drawToBlob(srcImg).then(finish).catch(reject);
+				return;
+			}
+
+			const loadSource = hiResUrl
+				? loadExportSource(hiResUrl, true).catch(() => {
+						hiResFailed = true;
+						return loadExportSource(originalUrl);
+					})
+				: loadExportSource(originalUrl);
+
+			loadSource.then(drawToBlob).then(finish).catch(reject);
+		});
+
+	const reportExportError = (err) => {
+		if (err?.code === "no-target") return;
+		console.error("Image Fallback Error:", err);
+		showPanelToast(err?.code === _fetchErrTooLarge ? exportTooLargeMsg() : exportErrorMsg());
+	};
+
+	const getExportNotices = (scale, hiResFailed) => {
+		const notices = [];
+		if (scale < 1) {
+			notices.push(
+				t(
+					"panel_export_downscaled",
+					"Image was saved at a reduced size.\n\nReason: The requested size exceeds the maximum export limit."
+				)
+			);
+		}
+		if (hiResFailed) {
+			notices.push(
+				t(
+					"panel_export_hires_fallback",
+					"The larger image file could not be exported (server restrictions). The displayed original was used instead."
+				)
+			);
+		}
+		return notices;
+	};
+
+	const saveBlob = (blob, scale, hiResFailed) => {
+		const ext = Object.values(_exportFormats).find((f) => f.mime === blob.type)?.ext || "png";
+		const now = new Date();
+		const pad = (n) => String(n).padStart(2, "0");
+		const timestamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+		const blobUrl = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.dataset.zdIgnoreClick = "true";
+		link.download = `zoom_drag_export_${timestamp}.${ext}`;
+		link.href = blobUrl;
+		link.rel = "noopener";
+		link.style.display = "none";
+
+		link.addEventListener(
+			"click",
+			(evt) => {
+				evt.stopPropagation();
+				evt.stopImmediatePropagation();
+			},
+			true
+		);
+
+		shadowRoot.appendChild(link);
+		link.click();
+		link.remove();
+		setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
+
+		const notices = getExportNotices(scale, hiResFailed);
+		if (notices.length) showPanelToast(notices.join("\n\n"), true);
+	};
+
+	const canCopyImage = typeof ClipboardItem !== "undefined" && Boolean(navigator.clipboard?.write);
+
+	const copyImage = () => {
+		const rendered = renderExportBlob("png");
+		let renderError = null;
+		rendered.catch((err) => {
+			renderError = err;
+		});
+
+		const blobPromise = rendered.then(({ blob }) => blob);
+		blobPromise.catch(() => {});
+
+		let writePromise;
+		try {
+			writePromise = navigator.clipboard.write([new ClipboardItem({ "image/png": blobPromise })]);
+		} catch (err) {
+			writePromise = blobPromise.then((blob) => navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]));
 		}
 
-		const imageUrl = bgUrl || srcImg.currentSrc || srcImg.src;
-		loadImage(imageUrl, true)
-			.then(exportCanvas)
-			.catch((err) => {
-				console.error("Image Load Error:", err);
-				return browser.runtime
-					.sendMessage({ id: "fetch-image", url: imageUrl })
-					.then((res) => {
-						if (!res || !res.ok) {
-							const fetchErr = new Error(res?.error || "fetch-image failed");
-							fetchErr.code = res?.code;
-							throw fetchErr;
-						}
-						return loadImage(res.dataUrl, false);
-					})
-					.then(exportCanvas);
+		writePromise
+			.then(() => rendered)
+			.then(({ scale, hiResFailed }) => {
+				const notices = getExportNotices(scale, hiResFailed);
+				if (notices.length) showPanelToast(notices.join("\n\n"), true);
+				else showPanelToast(t("panel_copy_ok", "Image copied to clipboard."), false, true);
 			})
 			.catch((err) => {
-				console.error("Image Fallback Error:", err);
-				showPanelToast(err?.code === _fetchErrTooLarge ? exportTooLargeMsg() : exportErrorMsg());
+				if (renderError) {
+					reportExportError(renderError);
+					return;
+				}
+				console.error("Clipboard Error:", err);
+				showPanelToast(
+					t(
+						"panel_copy_failed",
+						"Could not copy the image.\n\nReason: The browser blocked clipboard access here. Try saving the image instead."
+					)
+				);
 			});
+	};
+
+	const splitEl = shadowRoot.getElementById("zd-split-save");
+	const menuEl = shadowRoot.getElementById("zd-save-menu");
+	const menuBtn = shadowRoot.getElementById("zd-btn-save-menu");
+	const fmtLabel = shadowRoot.getElementById("zd-fmt-label");
+	const copyItem = shadowRoot.getElementById("zd-btn-copy");
+	const fmtItems = [...menuEl.querySelectorAll("[data-format]")];
+	let exportFormat = "png";
+
+	const refreshFormatUi = () => {
+		const active = fmtItems.find((item) => item.dataset.format === exportFormat) || fmtItems[0];
+		fmtLabel.textContent = active.textContent;
+		fmtItems.forEach((item) => item.setAttribute("aria-checked", String(item === active)));
+	};
+
+	const closeMenu = (refocus = false) => {
+		if (menuEl.hidden) return;
+		menuEl.hidden = true;
+		menuBtn.setAttribute("aria-expanded", "false");
+		if (refocus) menuBtn.focus();
+	};
+
+	const openMenu = (viaKeyboard) => {
+		menuEl.hidden = false;
+		menuBtn.setAttribute("aria-expanded", "true");
+		if (!viaKeyboard) {
+			menuEl.focus({ preventScroll: true });
+			return;
+		}
+		const active = fmtItems.find((item) => item.dataset.format === exportFormat) || fmtItems[0];
+		active.focus();
+	};
+
+	const onMenuOutsideClick = (e) => {
+		if (!e.composedPath().includes(panel)) closeMenu();
+	};
+	window.addEventListener("mousedown", onMenuOutsideClick, true);
+	shadowRoot.addEventListener(
+		"mousedown",
+		(e) => {
+			if (!e.composedPath().includes(splitEl)) closeMenu();
+		},
+		true
+	);
+
+	menuBtn.addEventListener("click", (e) => (menuEl.hidden ? openMenu(e.detail === 0) : closeMenu(e.detail === 0)));
+
+	menuBtn.addEventListener("keydown", (e) => {
+		if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+		e.preventDefault();
+		openMenu(true);
+	});
+
+	menuEl.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			e.preventDefault();
+			closeMenu(true);
+		} else if (e.key === "Tab") {
+			closeMenu(false);
+		} else if (["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) {
+			e.preventDefault();
+			const items = [...menuEl.querySelectorAll(".zd-menu-item:not([disabled])")];
+			const next = getMenuFocusIndex(e.key, items.length, items.indexOf(shadowRoot.activeElement));
+			if (next >= 0) items[next].focus();
+		}
+	});
+
+	fmtItems.forEach((item) => {
+		item.addEventListener("click", (e) => {
+			exportFormat = item.dataset.format;
+			refreshFormatUi();
+			closeMenu(e.detail === 0);
+			browser.storage.local.set({ panelPrefs: { exportFormat } }).catch(() => {});
+		});
+	});
+
+	if (canCopyImage) {
+		copyItem.addEventListener("click", (e) => {
+			closeMenu(e.detail === 0);
+			copyImage();
+		});
+	} else {
+		copyItem.disabled = true;
+	}
+
+	browser.storage.local
+		.get("panelPrefs")
+		.then((data) => {
+			const saved = data?.panelPrefs?.exportFormat;
+			if (_exportFormats[saved]) {
+				exportFormat = saved;
+				refreshFormatUi();
+			}
+		})
+		.catch(() => {});
+
+	shadowRoot.getElementById("zd-btn-save").addEventListener("click", () => {
+		renderExportBlob(exportFormat)
+			.then(({ blob, scale, hiResFailed }) => saveBlob(blob, scale, hiResFailed))
+			.catch(reportExportError);
 	});
 
 	[els.zSl, els.wSl, els.rSl, els.oSl, els.bSl].forEach((slider) => {
@@ -5840,9 +8225,42 @@ async function ctxZoomCustom() {
 	});
 
 	if (!getElData(_img_element, _srckey)) {
-		if (needsFloatingForNativeZoom(_img_element)) ensureFloating();
-		else applyPanelBorder();
+		applyPanelBorder();
 	}
+
+	let gallerySwitchWaitSince = 0;
+
+	const hasReplacementImg = () => {
+		if (!initialSrc || !initialOrigRect) return false;
+		const ref = docRectToViewportRect(initialOrigRect);
+		return Array.from(document.getElementsByTagName("img")).some(
+			(img) =>
+				img !== _img_element &&
+				!getElData(img, _srckey) &&
+				getStableImgId(img) === initialSrc &&
+				rectsOverlap(img.getBoundingClientRect(), ref)
+		);
+	};
+
+	const findReplacementGalleryRoot = () => {
+		if (!initialSrc || !initialOrigRect) return null;
+		const ref = docRectToViewportRect(initialOrigRect);
+		const cx = ref.left + ref.width / 2;
+		const cy = ref.top + ref.height / 2;
+		let best = null;
+		let bestArea = Infinity;
+		for (const root of document.querySelectorAll(_galleryRootSel)) {
+			if (!isGalleryRootShown(root)) continue;
+			const r = root.getBoundingClientRect();
+			if (cx < r.left || cx > r.right || cy < r.top || cy > r.bottom || r.width * r.height >= bestArea) continue;
+			if (!Array.from(root.getElementsByTagName("img")).some((img) => !getElData(img, _srckey) && getStableImgId(img) === initialSrc)) {
+				continue;
+			}
+			best = root;
+			bestArea = r.width * r.height;
+		}
+		return best;
+	};
 
 	const panelCheckInterval = setInterval(() => {
 		if (!getPanelHost()) {
@@ -5851,17 +8269,73 @@ async function ctxZoomCustom() {
 			return;
 		}
 
-		let triggerReset = location.href !== initialUrl;
+		const originalImg = _img_element ? getElData(_img_element, _srckey) || _img_element : null;
+		const isFloating = Boolean(_img_element && getElData(_img_element, _srckey));
+		let gRoot = isFloating
+			? getElData(_img_element, _galleryRootkey)
+			: (originalImg && findGalleryRoot(originalImg)) || currentGalleryRoot;
+		if (originalImg && !isFloating && !originalImg.isConnected && !(gRoot && gRoot.isConnected)) gRoot = findReplacementGalleryRoot() || gRoot;
+		if (gRoot && gRoot.isConnected) currentGalleryRoot = gRoot;
+		const isInlineInGallery = Boolean(_img_element && !isFloating && gRoot && gRoot.isConnected);
+		const activeGRoot = gRoot || currentGalleryRoot;
+		const isPlayerTakeover = () => !hasReplacementImg() && hasPlayerOverDocRect(initialOrigRect, activeGRoot);
+		let triggerReset =
+			!_img_element ||
+			(location.href !== initialUrl && !((isFloating || isInlineInGallery) && gRoot && gRoot.isConnected)) ||
+			hasRecentPlayerStart(activeGRoot, initialOrigRect);
+		let switchAttempted = false;
+
+		const trySwitchToNextGalleryImg = () => {
+			if (!isInlineInGallery) return false;
+			if (originalImg) {
+				if (isElementModified(originalImg) || originalImg.hasAttribute("data-zd-pe-img")) {
+					resetInlineElement(originalImg);
+				} else {
+					unlockContainers(originalImg);
+					_modifiedElements.delete(originalImg);
+					elementDataMap.delete(originalImg);
+				}
+			}
+			const nextImg = findActiveGalleryImage(gRoot, originalImg);
+			if (!nextImg) return false;
+			attachEvent(nextImg);
+			if (!rebindPanelImage(nextImg)) return false;
+			currentlyObservedImg = nextImg;
+			frameSyncObserver.disconnect();
+			frameResizeObserver.disconnect();
+			observeImgAndAncestors(currentlyObservedImg);
+			initialUrl = location.href;
+			initialSrc = getStableImgId(nextImg);
+			initialOrigRect = getDocRect(nextImg);
+			_lastSyncedRectStr = "";
+			applyPanelBorder();
+			triggerFrameTransitionSync(500);
+			return true;
+		};
+
+		const trySwitchOrWait = () => {
+			if (isPlayerTakeover()) return false;
+			switchAttempted = true;
+			if (trySwitchToNextGalleryImg()) {
+				gallerySwitchWaitSince = 0;
+				return true;
+			}
+			if (!isInlineInGallery || !isGalleryRootShown(gRoot)) return false;
+
+			const now = performance.now();
+			if (!gallerySwitchWaitSince) gallerySwitchWaitSince = now;
+			return now - gallerySwitchWaitSince < _gallerySwitchGraceMs;
+		};
 
 		if (_img_element && !triggerReset) {
-			const originalImg = getElData(_img_element, _srckey) || _img_element;
-			const isFloating = Boolean(getElData(_img_element, _srckey));
-
 			if (_img_element !== currentlyObservedImg) {
 				frameSyncObserver.disconnect();
 				frameResizeObserver.disconnect();
 				currentlyObservedImg = _img_element;
-				initialSrc = originalImg.currentSrc || originalImg.src;
+				currentGalleryRoot = findGalleryRoot(originalImg) || currentGalleryRoot;
+				initialUrl = location.href;
+				initialSrc = getStableImgId(originalImg);
+				initialOrigRect = getDocRect(originalImg);
 
 				observeImgAndAncestors(currentlyObservedImg);
 
@@ -5875,8 +8349,24 @@ async function ctxZoomCustom() {
 				}
 			}
 
-			if (!originalImg.isConnected) {
-				triggerReset = true;
+			if (isFloating) {
+				const currentGRoot = getElData(_img_element, _galleryRootkey);
+				if (
+					!_img_element.isConnected ||
+					(!originalImg.isConnected && isPlayerTakeover()) ||
+					isCoveredByStartedPlayer(originalImg) ||
+					(currentGRoot && !isGalleryRootShown(currentGRoot)) ||
+					(!currentGRoot &&
+						isSameDocRect(initialOrigRect, getDocRect(originalImg)) &&
+						isImageShownInViewport(originalImg) &&
+						isBlockedBySiteOverlay(originalImg))
+				) {
+					triggerReset = true;
+				}
+			} else if (!originalImg.isConnected) {
+				if (!trySwitchOrWait()) {
+					triggerReset = true;
+				}
 			} else {
 				const rect = originalImg.getBoundingClientRect();
 				let isHiddenBySlider = false;
@@ -5884,15 +8374,13 @@ async function ctxZoomCustom() {
 				const winW = window.innerWidth || document.documentElement.clientWidth;
 				const winH = window.innerHeight || document.documentElement.clientHeight;
 
-				if (!isFloating) {
-					const minVisiblePx = 20;
-					const overlapsViewport =
-						rect.right > minVisiblePx &&
-						rect.left < winW - minVisiblePx &&
-						rect.bottom > minVisiblePx &&
-						rect.top < winH - minVisiblePx;
-					if (!overlapsViewport) isHiddenBySlider = true;
-				}
+				const minVisiblePx = 20;
+				const overlapsViewport =
+					rect.right > minVisiblePx &&
+					rect.left < winW - minVisiblePx &&
+					rect.bottom > minVisiblePx &&
+					rect.top < winH - minVisiblePx;
+				if (!overlapsViewport) isHiddenBySlider = true;
 
 				const origStyle = window.getComputedStyle(originalImg);
 				if (origStyle.display === "none" || rect.width === 0 || rect.height === 0) {
@@ -5900,54 +8388,80 @@ async function ctxZoomCustom() {
 				}
 
 				const inLockedCard = Boolean(originalImg.closest("[data-zd-card-lock]"));
-				if (!isFloating && !inLockedCard && origStyle.visibility === "hidden") {
+				const hasActivePreview =
+					!inLockedCard &&
+					Boolean(
+						originalImg.closest("ytd-thumbnail, yt-thumbnail-view-model") ||
+							findPreviewVideos(rect.left + rect.width / 2, rect.top + rect.height / 2).length > 0
+					);
+				if (!inLockedCard && !hasActivePreview && origStyle.visibility === "hidden") {
 					isHiddenBySlider = true;
 				}
 				if (!isHiddenBySlider && isBlockedBySiteOverlay(originalImg)) {
 					isHiddenBySlider = true;
 				}
 
-				let pNode = originalImg.parentElement;
+				let pNode = composedParent(originalImg);
 				while (pNode && pNode !== document.body && pNode !== document.documentElement && !isHiddenBySlider) {
+					if (pNode.nodeType !== 1) {
+						pNode = composedParent(pNode);
+						continue;
+					}
 					const pStyle = window.getComputedStyle(pNode);
-					if (pStyle.display === "none") {
+					if (
+						pStyle.display === "none" ||
+						(pNode.getAttribute("aria-hidden") === "true" && !pNode.matches(_clickHostSel))
+					) {
 						isHiddenBySlider = true;
 						break;
 					}
-					if (!inLockedCard && (pStyle.visibility === "hidden" || parseFloat(pStyle.opacity) < 0.01)) {
+					if (!inLockedCard && !hasActivePreview && (pStyle.visibility === "hidden" || parseFloat(pStyle.opacity) < 0.01)) {
 						isHiddenBySlider = true;
 						break;
 					}
 					if (
-						!isFloating &&
-						(pStyle.overflow === "hidden" ||
-							pStyle.overflow === "scroll" ||
-							pStyle.overflow === "auto" ||
-							pStyle.overflow === "clip")
+						pStyle.overflow === "hidden" ||
+						pStyle.overflow === "scroll" ||
+						pStyle.overflow === "auto" ||
+						pStyle.overflow === "clip" ||
+						pStyle.overflowX === "hidden" ||
+						pStyle.overflowX === "clip"
 					) {
 						const pRect = pNode.getBoundingClientRect();
-						const overlapsParent =
-							rect.right > pRect.left &&
-							rect.left < pRect.right &&
-							rect.bottom > pRect.top &&
-							rect.top < pRect.bottom;
-						if (!overlapsParent) {
-							isHiddenBySlider = true;
-							break;
+						if (pRect.width > 0 && pRect.height > 0) {
+							const overlapsParent =
+								rect.right > pRect.left + 4 &&
+								rect.left < pRect.right - 4 &&
+								rect.bottom > pRect.top + 4 &&
+								rect.top < pRect.bottom - 4;
+							if (!overlapsParent) {
+								isHiddenBySlider = true;
+								break;
+							}
 						}
 					}
-					pNode = pNode.parentElement;
+					pNode = composedParent(pNode);
 				}
 
 				if (isHiddenBySlider) {
-					triggerReset = true;
-				} else if (initialSrc && (originalImg.currentSrc || originalImg.src) !== initialSrc) {
-					triggerReset = true;
+					if (!trySwitchOrWait()) {
+						triggerReset = true;
+					}
+				} else if (initialSrc && getStableImgId(originalImg) !== initialSrc) {
+					const switchedSrc = getStableImgId(originalImg);
+					if (isOwnSrcSwitch(originalImg, initialSrc, switchedSrc)) {
+						initialSrc = switchedSrc;
+					} else if (!trySwitchOrWait()) {
+						triggerReset = true;
+					}
 				}
 			}
 		}
 
+		if (!switchAttempted) gallerySwitchWaitSince = 0;
+
 		if (triggerReset) {
+			d("Panel auto-close", `img=${Boolean(_img_element)} floating=${isFloating} inGallery=${isInlineInGallery}`, "warn");
 			clearInterval(panelCheckInterval);
 			restoreOriginalDOM(false);
 			closePanel();
@@ -5977,8 +8491,6 @@ function ctxFit() {
 	}
 }
 
-const _attachedElements = new WeakSet();
-
 function attachEvent(elem, imgObj) {
 	if (_isExcludedHost || !elem || _attachedElements.has(elem)) return;
 	_attachedElements.add(elem);
@@ -5987,7 +8499,7 @@ function attachEvent(elem, imgObj) {
 	const targetToCheck = imgObj || elem;
 
 	elem.addEventListener("click", (e) => {
-		if (_isExcludedHost || elem.dataset?.zdIgnoreClick === "true" || isLockedOriginal(targetToCheck)) return;
+		if (_isExcludedHost || elem.dataset?.zdIgnoreClick === "true" || isLockedOriginal(targetToCheck) || isBgTargetBlocked(targetToCheck)) return;
 
 		if (_cancelNextClick) {
 			_cancelNextClick = false;
@@ -6025,14 +8537,14 @@ function attachEvent(elem, imgObj) {
 	});
 
 	elem.addEventListener("auxclick", (e) => {
-		if (_isExcludedHost || isLockedOriginal(targetToCheck)) return;
+		if (_isExcludedHost || isLockedOriginal(targetToCheck) || isBgTargetBlocked(targetToCheck)) return;
 
 		if (!_rightBtnDown && _draggingCnt < 8 && forwardPassThroughClick(e, elem)) {
 			_draggingCnt = 0;
 			return;
 		}
 
-		if (e.button === 1 && (_rightBtnDown || _img_element)) {
+		if (e.button === 1 && (_rightBtnDown || elem.classList.contains(_imgSrcViewCls))) {
 			e.preventDefault();
 			e.stopPropagation();
 			e.stopImmediatePropagation();
@@ -6040,7 +8552,7 @@ function attachEvent(elem, imgObj) {
 	});
 
 	elem.addEventListener("mousedown", function (e) {
-		if (_isExcludedHost || isLockedOriginal(targetToCheck)) return;
+		if (_isExcludedHost || isLockedOriginal(targetToCheck) || isBgTargetBlocked(targetToCheck)) return;
 
 		const isAlt = e.altKey || _accKeyState.alt;
 		const isCtrl = e.ctrlKey || _accKeyState.ctrl;
@@ -6090,7 +8602,8 @@ function attachEvent(elem, imgObj) {
 
 				disableAnim(this);
 				lockContainers(getElData(this, _srckey) || this);
-				_dragParam = { obj: this, x: e.pageX - ofs.left, y: e.pageY - ofs.top };
+				const pointer = isPinned(this) ? { x: e.clientX, y: e.clientY } : { x: e.pageX, y: e.pageY };
+				_dragParam = { obj: this, x: pointer.x - ofs.left, y: pointer.y - ofs.top };
 				this.classList.add("zdImgCls_draggingCur");
 
 				window.addEventListener("pointermove", onGlobalMouseMove, true);
@@ -6101,17 +8614,17 @@ function attachEvent(elem, imgObj) {
 				e.preventDefault();
 				e.stopPropagation();
 			}
-		} else if (e.button === 1 && (_rightBtnDown || _img_element)) {
+		} else if (e.button === 1 && (_rightBtnDown || this.classList.contains(_imgSrcViewCls))) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
 	});
 
 	elem.addEventListener("mouseup", function (e) {
-		if (_isExcludedHost || isLockedOriginal(targetToCheck)) return;
+		if (_isExcludedHost || isLockedOriginal(targetToCheck) || isBgTargetBlocked(targetToCheck)) return;
 
 		this.classList.remove("zdImgCls_draggingCur");
-		if (e.button === 1) {
+		if (e.button === 1 && (_rightBtnDown || this.classList.contains(_imgSrcViewCls))) {
 			_mdownFunc();
 			e.preventDefault();
 			e.stopPropagation();
@@ -6119,7 +8632,7 @@ function attachEvent(elem, imgObj) {
 	});
 
 	const resetCtx = () => {
-		if (!_img_element) _ctx_show = true;
+		if (!_img_element && !_rightBtnDown) _ctx_show = true;
 	};
 
 	elem.addEventListener("mouseenter", resetCtx);
@@ -6127,46 +8640,70 @@ function attachEvent(elem, imgObj) {
 	elem.addEventListener("blur", resetCtx);
 }
 
-let _floatingMutationObserver = null;
+function checkExImgWrapper() {
+	_exImgCheckRafId = 0;
+	const exImgWrapper = document.getElementById(_zdExImgId);
+	if (!exImgWrapper) {
+		stopExImgObserver();
+		return;
+	}
+
+	const imgs = exImgWrapper.getElementsByTagName("img");
+	if (imgs.length !== 0) {
+		for (let i = imgs.length - 1; i >= 0; i--) {
+			const img = imgs[i];
+			const se = getElData(img, _srckey);
+			if (!se) continue;
+
+			const isPanelTarget = img === _img_element && Boolean(getPanelHost());
+			const gRoot = getElData(img, _galleryRootkey);
+			const origRect = getElData(img, _origRectkey);
+			const playerTakeover = !isPanelTarget && (!se.isConnected || gRoot) && hasPlayerOverDocRect(origRect, gRoot);
+
+			if (!se.isConnected || playerTakeover) {
+				if (elementDataMap.has(se)) {
+					const seData = getElData(se, _firstkey);
+					resetInlineStyles(se, seData ? seData.origStyle : null, true);
+					restoreFilterAndOpacity(se);
+					restoreSelfVisibility(se);
+					unlockContainers(se);
+					_modifiedElements.delete(se);
+					elementDataMap.delete(se);
+				}
+
+				if (isPanelTarget) continue;
+				if (isGalleryRootShown(gRoot) && !playerTakeover) continue;
+
+				const pnt = img.closest("a");
+				if (pnt && pnt.parentNode === exImgWrapper) pnt.remove();
+				else img.remove();
+
+				_modifiedElements.delete(img);
+				elementDataMap.delete(img);
+				if (_img_element === img) setZoom();
+			}
+		}
+	} else {
+		exImgWrapper.remove();
+		stopExImgObserver();
+	}
+}
 
 function startExImgObserver() {
 	if (_floatingMutationObserver || !document.body) return;
 
 	_floatingMutationObserver = new MutationObserver(() => {
-		const exImgWrapper = document.getElementById(_zdExImgId);
-		if (!exImgWrapper) {
-			stopExImgObserver();
-			return;
-		}
-
-		const imgs = exImgWrapper.getElementsByTagName("img");
-		if (imgs.length !== 0) {
-			for (let i = imgs.length - 1; i >= 0; i--) {
-				const img = imgs[i];
-				const se = getElData(img, _srckey);
-
-				if (se && !se.isConnected) {
-					const pnt = img.closest("a");
-					if (pnt && pnt.parentNode === exImgWrapper) pnt.remove();
-					else img.remove();
-
-					restoreSelfVisibility(se);
-					_modifiedElements.delete(img);
-					_modifiedElements.delete(se);
-					elementDataMap.delete(img);
-					elementDataMap.delete(se);
-				}
-			}
-		} else {
-			exImgWrapper.remove();
-			stopExImgObserver();
-		}
+		if (!_exImgCheckRafId) _exImgCheckRafId = requestAnimationFrame(checkExImgWrapper);
 	});
 
 	_floatingMutationObserver.observe(document.body, { childList: true, subtree: true });
 }
 
 function stopExImgObserver() {
+	if (_exImgCheckRafId) {
+		cancelAnimationFrame(_exImgCheckRafId);
+		_exImgCheckRafId = 0;
+	}
 	if (_floatingMutationObserver) {
 		_floatingMutationObserver.disconnect();
 		_floatingMutationObserver = null;
@@ -6182,8 +8719,10 @@ function imgDrag(x, y) {
 	}
 
 	const obj = _dragParam.obj;
-	obj.style.left = `${window.scrollX + (x - _dragParam.x)}px`;
-	obj.style.top = `${window.scrollY + (y - _dragParam.y)}px`;
+	const scrollOfs = getScrollOffset(obj);
+	obj.style.setProperty("left", `${scrollOfs.x + (x - _dragParam.x)}px`, "important");
+	obj.style.setProperty("top", `${scrollOfs.y + (y - _dragParam.y)}px`, "important");
+	if (isPinned(obj)) keepPinnedVisible(obj);
 
 	if (!obj.classList.contains(_draggedCls) && _draggingCnt > 8) {
 		obj.classList.add(_draggedCls);
@@ -6214,7 +8753,7 @@ browser.storage.onChanged.addListener((changes, area) => {
 });
 
 browser.runtime.onMessage.addListener((msg) => {
-	if (_isExcludedHost) return;
+	if (!msg || _isExcludedHost) return;
 
 	_rightBtnDown = false;
 	if (_img_element) setZoom();

@@ -76,7 +76,7 @@
 		"description": "Option label for rotation function."
 	},
 	"lblAltRightWheel": {
-		"message": "Tasto Alt + Clic destro + Rotellina del mouse",
+		"message": "Alt + Clic destro + Rotellina del mouse",
 		"description": "Shortcut label for Alt + Right click + Mouse wheel."
 	},
 	"optOriginalSize": {
@@ -92,7 +92,7 @@
 		"description": "Shortcut label for Right click + Mouse wheel."
 	},
 	"lblCtrlRightWheel": {
-		"message": "Tasto Ctrl + Clic destro + Rotellina del mouse",
+		"message": "Ctrl + Clic destro + Rotellina del mouse",
 		"description": "Shortcut label for Ctrl + Right click + Mouse wheel."
 	},
 	"optZoomStep": {
@@ -140,7 +140,7 @@
 		"description": "Option label for quick mouse-guided rotation."
 	},
 	"lblAltRightLeftClick": {
-		"message": "Tasto Alt + Clic destro + Clic sinistro",
+		"message": "Alt + Clic destro + Clic sinistro",
 		"description": "Shortcut label for Alt + Right click + Left click."
 	},
 	"optCtrlAltQuickZoom": {
@@ -148,7 +148,7 @@
 		"description": "Option label for quick drag-based zoom."
 	},
 	"lblCtrlAltRightLeftClick": {
-		"message": "Tasto Ctrl + Tasto Alt + Clic destro + Clic sinistro",
+		"message": "Ctrl + Alt + Clic destro + Clic sinistro",
 		"description": "Shortcut label for Ctrl + Alt + Right click + Left click."
 	},
 	"btnResetSettings": {
@@ -167,6 +167,10 @@
 		"message": "Dopo il clic destro, se trascorre questo tempo senza ruotare la rotellina, il clic viene rilasciato. (1000ms\u00A0=\u00A01\u00A0secondo)",
 		"description": "Help tooltip for right-click timeout setting."
 	},
+	"hlpEnableKeyShortcuts": {
+		"message": "Agisce sull'immagine sotto il puntatore o sull'immagine attiva:\n+ / −  Zoom (Shift: passo doppio)\nFrecce  Sposta un'immagine fluttuante (Shift: passi più grandi)\n0  Adatta alla finestra\nR / L  Ruota di 90° a destra / sinistra (Shift: 45°)\nP  Apri o chiudi il pannello\nF  Fissa o sblocca l'immagine sullo schermo (Shift+F: sblocca tutte le immagini)\nEsc  Ripristina (Shift+Esc: tutte le immagini)",
+		"description": "Help text for the keyboard shortcuts option on the options page. Lines are separated by line breaks; the key names (R, L, P, F, Esc, Shift) stay as they appear on the keyboard."
+	},
 	"optShowZoomBadge": {
 		"message": "Mostra percentuale di zoom e angolo di rotazione sull'immagine",
 		"description": "Option label to show the zoom percentage and rotation angle on the badge overlay."
@@ -176,12 +180,40 @@
 		"description": "Label for excluded domains configuration."
 	},
 	"hlpExcludedDomains": {
-		"message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)",
+		"message": "es. maps.google.com o figma.com (i sottodomini sono inclusi automaticamente)\nCarattere jolly * supportato, es. google.*",
 		"description": "Placeholder and hint text for domain exclusions."
 	},
 	"optEnableKeyShortcuts": {
-		"message": "Abilita scorciatoie da tastiera [(Shift+), +/−, frecce, Esc, 0, R/L, P]",
+		"message": "Abilita scorciatoie da tastiera",
 		"description": "Option label to toggle keyboard shortcut support."
+	},
+	"optFrameColor": {
+		"message": "Colore del bordo",
+		"description": "Label on the options page for the color of the frames around zoomed images (hover and panel states)."
+	},
+	"optPinColor": {
+		"message": "Colore del bordo delle immagini fissate",
+		"description": "Label on the options page for the color of the frame around pinned images and of the pin button when active."
+	},
+	"btnResetColor": {
+		"message": "Ripristina i valori predefiniti",
+		"description": "Tooltip for the small button that resets a frame color and its on/off state to the defaults."
+	},
+	"optFrameOff": {
+		"message": "Disattivato",
+		"description": "Checkbox next to a frame color on the options page; turns that frame off completely."
+	},
+	"optFrameIdle": {
+		"message": "A riposo",
+		"description": "Tooltip on the first frame preview tile: the image is neither hovered nor has its panel open."
+	},
+	"optFrameHover": {
+		"message": "Passaggio del mouse",
+		"description": "Tooltip on the second frame preview tile: the mouse pointer is over the image."
+	},
+	"optFramePanel": {
+		"message": "Pannello aperto",
+		"description": "Tooltip on the third frame preview tile: the panel is open for the image."
 	},
 	"btnSupport": {
 		"message": "Supporta il progetto",
@@ -290,5 +322,97 @@
 	"btnDismissNotice": {
 		"message": "Chiudi avviso",
 		"description": "Tooltip for the button that dismisses the update notice."
+	},
+	"panel_tooltip_invert": {
+		"message": "Inverti colori",
+		"description": "Tooltip for the invert-colors button in the panel."
+	},
+	"panel_tooltip_gray": {
+		"message": "Scala di grigi",
+		"description": "Tooltip for the grayscale button in the panel."
+	},
+	"panel_tooltip_pixel": {
+		"message": "Modalità pixel (ingrandimento nitido, senza smussatura)",
+		"description": "Tooltip for the pixel-mode button (disables image smoothing when enlarging)."
+	},
+	"panel_tooltip_pin": {
+		"message": "Fissa o sblocca l'immagine sullo schermo (F)",
+		"description": "Tooltip for the pin button in the panel (Also toggled with the F key)."
+	},
+	"panel_tooltip_meta": {
+		"message": "Risoluzione originale e dimensione attuale rispetto ad essa",
+		"description": "Tooltip for the panel header line showing original resolution and current size relative to it."
+	},
+	"panel_tooltip_format": {
+		"message": "Scegli il formato di esportazione",
+		"description": "Tooltip for the arrow part of the save split button (opens the export format menu)."
+	},
+	"panel_menu_copy": {
+		"message": "Copia negli appunti",
+		"description": "Menu item that copies the edited image to the clipboard."
+	},
+	"panel_copy_ok": {
+		"message": "Immagine copiata negli appunti.",
+		"description": "Confirmation shown after the image was copied to the clipboard."
+	},
+	"panel_copy_failed": {
+		"message": "Impossibile copiare l’immagine.\n\nMotivo: il browser blocca qui l’accesso agli appunti. Prova invece a salvare l’immagine.",
+		"description": "Alert when copying the image to the clipboard fails."
+	},
+	"panel_export_hires_fallback": {
+		"message": "Impossibile esportare il file immagine più grande (restrizioni del server). È stato usato l’originale visualizzato.",
+		"description": "Notice shown when the larger image file could not be exported and the displayed original was used."
+	},
+	"popup_disable": {
+		"message": "Disattiva su questo sito web",
+		"description": "Toolbar popup button that disables the add-on on the current website."
+	},
+	"popup_enable": {
+		"message": "Attiva su questo sito web",
+		"description": "Toolbar popup button that enables the add-on on the current website."
+	},
+	"popup_status_active": {
+		"message": "Attivo su questo sito web",
+		"description": "Toolbar popup status line: the add-on is active on this website."
+	},
+	"popup_status_disabled": {
+		"message": "Disattivato su questo sito web",
+		"description": "Toolbar popup status line: the add-on is disabled on this website."
+	},
+	"popup_unsupported": {
+		"message": "Non disponibile in questa pagina.",
+		"description": "Toolbar popup status line for pages where the add-on cannot run (e.g. browser pages)."
+	},
+	"popup_rule_label": {
+		"message": "Regola:",
+		"description": "Toolbar popup label in front of the exclusion rule that disables the current website."
+	},
+	"popup_rule_hint": {
+		"message": "Attivando si rimuove questa regola, che riguarda tutti i siti da essa coperti.",
+		"description": "Toolbar popup hint shown when the matching exclusion rule also covers other websites."
+	},
+	"actionTitleDisabled": {
+		"message": "Zoom & Drag – disattivato su questo sito web",
+		"description": "Toolbar icon tooltip on websites where the add-on is disabled."
+	},
+	"optHiResUpgrade": {
+		"message": "Carica una versione più grande dell’immagine durante lo zoom fluttuante (download aggiuntivo)",
+		"description": "Settings checkbox: load a larger image file linked by the page while in floating mode (opt-in)."
+	},
+	"popup_scope_title": {
+		"message": "Dove disattivarlo?",
+		"description": "Toolbar popup heading above the choice of how widely to disable the add-on."
+	},
+	"popup_scope_host": {
+		"message": "Solo questo sottodominio",
+		"description": "Toolbar popup choice: disable only for the current subdomain (the rule itself is shown below)."
+	},
+	"popup_scope_domain": {
+		"message": "Intero dominio",
+		"description": "Toolbar popup choice: disable for the whole domain including all subdomains (the rule itself is shown below)."
+	},
+	"popup_scope_cancel": {
+		"message": "Annulla",
+		"description": "Toolbar popup link that cancels the scope choice."
 	}
 }

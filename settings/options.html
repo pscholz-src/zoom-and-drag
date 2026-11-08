@@ -115,7 +115,7 @@
 				<tr>
 					<td>
 						<span data-i18n="optRightClickTimeout"></span>
-						<svg class="qt_img" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+						<svg class="qt_img" tabindex="0" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
 							stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
 							<circle cx="12" cy="12" r="10"></circle>
 							<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -146,6 +146,12 @@
 					<td colspan="2">
 						<input type="checkbox" id="trackCursor">
 						<label for="trackCursor"><span data-i18n="optZoomToCursor"></span></label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<input type="checkbox" id="hiResUpgrade">
+						<label for="hiResUpgrade"><span data-i18n="optHiResUpgrade"></span></label>
 					</td>
 				</tr>
 				<tr>
@@ -182,6 +188,33 @@
 					<td colspan="2">
 						<input type="checkbox" id="enableKeyShortcuts">
 						<label for="enableKeyShortcuts"><span data-i18n="optEnableKeyShortcuts"></span></label>
+						<svg class="qt_img" tabindex="0" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"
+							stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+							<circle cx="12" cy="12" r="10"></circle>
+							<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+							<line x1="12" y1="17" x2="12.01" y2="17"></line>
+						</svg>
+						<div class="help_nt help_list" data-i18n="hlpEnableKeyShortcuts"></div>
+					</td>
+				</tr>
+				<tr>
+					<td><span data-i18n="optFrameColor"></span></td>
+					<td>
+						<input type="color" id="frameColor" value="#3575dd">
+						<button type="button" class="color_reset" data-reset="frameColor" data-i18n-title="btnResetColor">&#8634;</button>
+						<input type="checkbox" id="frameOff" class="color_off">
+						<label for="frameOff"><span data-i18n="optFrameOff"></span></label>
+						<span class="frame_prev" aria-hidden="true"><i data-i18n-title="optFrameIdle"></i><i data-i18n-title="optFrameHover"></i><i data-i18n-title="optFramePanel"></i></span>
+					</td>
+				</tr>
+				<tr>
+					<td><span data-i18n="optPinColor"></span></td>
+					<td>
+						<input type="color" id="pinColor" value="#d93025">
+						<button type="button" class="color_reset" data-reset="pinColor" data-i18n-title="btnResetColor">&#8634;</button>
+						<input type="checkbox" id="pinFrameOff" class="color_off">
+						<label for="pinFrameOff"><span data-i18n="optFrameOff"></span></label>
+						<span class="frame_prev" aria-hidden="true"><i data-i18n-title="optFrameIdle"></i><i data-i18n-title="optFrameHover"></i><i data-i18n-title="optFramePanel"></i></span>
 					</td>
 				</tr>
 			</table>
@@ -198,6 +231,7 @@
 			</a>
 		</div>
 	</article>
+	<script src="../shared-utils.js"></script>
 	<script type="module" src="script.js"></script>
 </body>
 </html>

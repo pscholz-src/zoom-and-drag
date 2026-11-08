@@ -1,0 +1,246 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * Original work Copyright (c) Amu (http://crossblade.her.jp/)
+ * Modified work Copyright (c) 2026 pscholz
+ *
+ * Project:    Zoom & Drag
+ * Repository: https://github.com/pscholz-src/zoom-and-drag
+ */
+
+:root {
+	--bg: #ffffff;
+	--text: #333333;
+	--text-muted: #666666;
+	--border: #e1e1e6;
+	--bg-soft: #f4f6fa;
+	--btn-disable: #d46a6a;
+	--btn-enable: #6ea885;
+	--dot-on: #3f9d5f;
+	--dot-off: #d32f2f;
+	--dot-idle: #9a9aa2;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #1e1e20;
+		--text: #e8e8e8;
+		--text-muted: #a8a8b0;
+		--border: #444444;
+		--bg-soft: #2a2a2c;
+		--btn-disable: #b05c5c;
+		--btn-enable: #528265;
+		--dot-on: #5fbf80;
+		--dot-off: #e57373;
+		--dot-idle: #777780;
+	}
+}
+
+body {
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	background-color: var(--bg);
+	color: var(--text);
+	margin: 0;
+	padding: 14px;
+	width: 280px;
+	box-sizing: border-box;
+	user-select: none;
+}
+
+.host_row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.dot {
+	flex: 0 0 auto;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--dot-idle);
+}
+
+.dot.on {
+	background: var(--dot-on);
+}
+
+.dot.off {
+	background: var(--dot-off);
+}
+
+.host {
+	font-size: 15px;
+	font-weight: 600;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.status {
+	margin: 6px 0 12px 18px;
+	color: var(--text-muted);
+}
+
+.rule_box {
+	margin: -4px 0 12px 0;
+	padding: 8px 10px;
+	background: var(--bg-soft);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	font-size: 12px;
+	line-height: 1.4;
+}
+
+.rule_box code {
+	font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+	word-break: break-all;
+}
+
+.rule_box .hint {
+	margin-top: 4px;
+	color: var(--text-muted);
+}
+
+.rule_box[hidden],
+.hint[hidden] {
+	display: none;
+}
+
+button {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	font: inherit;
+	cursor: pointer;
+}
+
+.toggle_btn {
+	padding: 8px 10px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	border-radius: 6px;
+	color: #ffffff;
+	font-weight: 500;
+	background: var(--btn-disable);
+	transition: filter 0.15s ease;
+}
+
+.toggle_btn.enable {
+	background: var(--btn-enable);
+}
+
+.toggle_btn[hidden] {
+	display: none;
+}
+
+.toggle_btn:hover:not(:disabled) {
+	filter: brightness(0.92);
+}
+
+.toggle_btn:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+
+.scope_box {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.scope_box[hidden] {
+	display: none;
+}
+
+.scope_title {
+	margin-bottom: 2px;
+	font-weight: 600;
+}
+
+.scope_btn {
+	padding: 7px 10px;
+	text-align: left;
+	background: var(--bg-soft);
+	color: var(--text);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+}
+
+.scope_btn:hover {
+	border-color: var(--btn-disable);
+}
+
+.scope_label {
+	display: block;
+	font-weight: 500;
+}
+
+.scope_btn code {
+	display: block;
+	margin-top: 2px;
+	font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+	font-size: 12px;
+	color: var(--text-muted);
+	word-break: break-all;
+}
+
+.scope_cancel {
+	padding: 4px 0;
+	border: none;
+	background: transparent;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+.scope_cancel:hover {
+	text-decoration: underline;
+}
+
+.update_badge {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 6px;
+	border-radius: 50%;
+	background: #ffc107;
+	color: #1a1a1a;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 16px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.update_badge[hidden] {
+	display: none;
+}
+
+.settings_btn {
+	margin-top: 10px;
+	padding: 4px 0;
+	border: none;
+	background: transparent;
+	color: #3575dd;
+	text-align: center;
+}
+
+.settings_btn:hover {
+	text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+	.settings_btn {
+		color: #7ea8f0;
+	}
+}
+
+.toggle_btn:focus-visible,
+.scope_btn:focus-visible,
+.scope_cancel:focus-visible,
+.settings_btn:focus-visible {
+	outline: 2px solid #3575dd;
+	outline-offset: 2px;
+}
