@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.1] - 2026-11-22
+### Improved
+- **Inline zoom on background images:** CSS background images can now be zoomed inline just like regular images, scaling from their center without tiling, and restoring all styling on reset.
+- **Images in SVG graphics:** Images embedded in SVG graphics can now be zoomed, rotated, moved and edited in the panel. They are always edited as a floating image.
+- **Dark mode & private window toolbar icon:** The toolbar icon now switches to a lighter blue on dark browser themes and in private/incognito windows for better contrast.
+- **Privacy (no web-accessible resources):** The panel template is now loaded internally instead of being exposed as a web-accessible resource, so websites can no longer probe for the extension via `panel.html`.
+- **Sharper responsive images in floating zoom:** Images that offer multiple resolutions now load sharper versions as you zoom in, and saving or copying uses the higher-resolution version too.
+- **Better slider support:** More kinds of image sliders, including embedded ones, now work with the panel. It stays on the visible slide when you move between slides, including while a slide is still sliding into place.
+- **Slider navigation on edited slides:** Next/previous arrows and pagination controls inside carousels remain clickable while a slide image is zoomed or rotated.
+- **Leaving a gallery or enlarged view:** The panel now moves to the image shown in the view you return to instead of closing, and a floating image from the previous view is reset. If no image shows up within a short moment, the panel still closes.
+- **Panel prefers edited images:** When the panel has to move on, e.g. after closing an enlarged view, it now goes to a visible edited image (floating or inline) before falling back to the largest image on the page. The image keeps its edits.
+- **Video grids and thumbnail overlays:** Thumbnails shown as background images beneath a transparent layer (title, play button), e.g. on the end screen of an embedded video player, are now recognized for hover, shortcuts, context menu and panel. A finished or hidden video no longer blocks that area; a visible playing or paused player still does.
+- **Hover effects on edited images:** A page's own hover animation, such as a slight scale-up, keeps working while an image, thumbnail or background image is zoomed or rotated inline. Rotation and mirroring no longer override the page's own transform.
+- **Zoom and rotation without page animations:** CSS transitions defined by a page are paused while you zoom, rotate or reset an image inline, so it follows the mouse wheel and resets immediately instead of lagging behind, and resume right afterwards so hover effects keep working. Rotating past ±180° no longer swings back the long way around, including with the `R`/`L` shortcuts and the context menu.
+- **Slides with playing videos:** The panel stays open when switching slides and closes only if no image is found.
+- **Scrolling and page performance:** Scrolling is no longer intercepted unless an image is actively targeted, hovering over image-heavy pages uses less CPU, and hidden 0×0/1×1 iframes (such as trackers) stay dormant unless they become visible.
+- **Panel close button accessibility:** The `×` button in the panel header is now a real button and can be reached and activated with the keyboard.
+- **Performance and cleanup:** Moving the pointer over active video players and keeping edited images open uses less CPU, and temporary frames and internal state are cleaned up immediately as soon as an image is reset or a gesture ends.
+
+### Changed
+- **Page change detection:** A change of the URL hash (`#section`) no longer counts as a page change. Anchor links and scroll-spy updates no longer close an open panel and reset all images; only a different site, path or query does.
+- **Toolbar icon:** Slightly refined the icon geometry and rounded the handle end.
+- **Panel title and context menu wording:** The panel header now shows a short title (e.g. "Image settings") instead of the action phrase "Adjust image values...", in all languages. The context menu entry "Adjust / save…" now uses the proper ellipsis character.
+- **Minimum zoom value:** The zoom value in the panel and the zoom badge never fall below 1 % and always show the same number. Before, a very large image at its minimum width (20 px) could show 0 % in one place and 1 % in another. The zoom slider now also reaches down to 1 % instead of 5 %.
+- **Zoom badge in the panel:** Changing only opacity or brightness no longer shows the zoom badge, matching flip and effect toggles. Leaving the panel after resetting an image back to its defaults no longer flashes a 100 % badge either.
+
+### Fixed
+- **Gallery view transitions:** Resolved an issue where closing a modal gallery back to the page view or switching carousel tabs (e.g. on real estate portals) closed the panel due to slider re-initialization and image URL variations.
+- **Carousel target persistence:** Navigating backwards or forwards in image sliders now reliably transfers the panel border to the new slide instead of clinging to the displaced previous image, also when that image was zoomed or edited.
+- **Edits after navigating in the same tab:** Zoomed, floating and pinned images and the open panel are now reset when a page is left. Previously they were still there after returning with the browser's back button.
+- **Opening a gallery with edited images:** When a gallery, lightbox or enlarged view opens over the page, or the page URL changes, edited and floating images of the underlying view are reset automatically, with or without an open panel. With the panel open, it moves on to the visible image of the new view instead of closing.
+- **Buttons around edited images:** Nearby buttons, such as a close button, no longer stop working while an image is edited.
+- **Background image frame alignment and duplicates:** Fixed frame, outline and floating-image misalignment on background images that have empty borders, are positioned with offsets or edge alignment, or are shown at a fixed size. Also ensured stacked duplicate background layers and previously rotated inline containers are hidden when switching to floating mode.
+- **Panel closing on floating images:** The panel no longer closes after the first zoom step of a floating image next to a finished or hidden video.
+- **Hover previews after the panel:** Preview videos on hover (e.g. on Steam) work again after the pointer leaves the panel on an unmodified image or background image; they previously stayed hidden until an image was edited and reset.
+- **Hover filters and opacity on unmodified images:** A page's own inline hover filter or opacity effect (such as a slight darkening on gallery slides) is no longer mistaken for an edit by the extension. The panel keeps showing 100 % and clicking the image (e.g. to open an enlarged view) is no longer blocked.
+- **Panel in page dark modes:** The number fields' spin buttons no longer turn dark inside the panel on sites with their own dark mode while the browser theme is light. The panel now always follows the browser theme.
+- **Embedded frames on disabled sites:** Frames from other domains embedded in a disabled page, such as embedded players, widgets or galleries, are now disabled too. Previously they stayed active even though the popup showed the site as disabled. A frame is also disabled if its own domain is on the exclusion list, as before.
+- **Panel number fields while typing:** Typing a value below the minimum into a panel number field, e.g. "5" on the way to "50", no longer applies that value for a moment (which could make the image almost invisible or black). The value is now applied once it is valid, and still adjusted to the allowed range when you leave the field. Spin buttons, arrow keys and the mouse wheel also stop at each field's limits (including the image's minimum zoom).
+- **Closed Shadow DOM in Chrome and Edge:** Images and galleries inside closed Shadow DOMs are now detected in Chromium-based browsers as well, matching Firefox.
+- **Saving excluded domains in settings:** Changes typed or pasted into the excluded domains list are now saved automatically after a short pause and when switching away from or closing the settings tab, instead of being lost if you did not click outside the field first.
+- **Typing in panel fields on sites with global shortcuts:** Entering values into the panel's number fields no longer lets page scripts steal focus while typing.
+- **Visibility in strict lightboxes (e.g. Wikipedia):** Floating images, the panel and the zoom badge now stay visible in lightboxes that hide the rest of the page while open.
+- **Stale context menu entries:** The context menu is now hidden reliably when right-clicking outside an image, and disappears immediately across all tabs (including browser pages) when disabled in the settings.
+- **Quick zoom cancellation:** Releasing `Alt` now reliably ends an active quick zoom.
+- **First panel open timing issue:** Opening the panel for the first time no longer applies stale values or appears if the target or site state changed while the panel template was loading.
+- **Restoring inline page styles:** Partial inline styles are now preserved when resetting an image or leaving the panel instead of being cleared.
+
 ## [2.2.0] - 2026-11-08
 ### Added
 - **Invert, grayscale and pixel mode:** Three new toggle buttons in the panel. Invert and grayscale help with dark film scenes, document scans, diagrams or X-ray images. Pixel mode enlarges pixel art, icons, QR codes and text screenshots with sharp, unsmoothed pixels. All three are included in the exported image and are restored by every reset.

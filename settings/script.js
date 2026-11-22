@@ -34,6 +34,19 @@ const CHECKBOX_IDS = [
 ];
 
 const SELECT_UNITS = { dim: "%", rotd: "°", rcCancel: "" };
+const EXCLUDED_SAVE_DELAY = 500;
+
+let excludedSaveTimer = null;
+
+function clearExcludedSaveTimer() {
+	if (!excludedSaveTimer) return;
+	clearTimeout(excludedSaveTimer);
+	excludedSaveTimer = null;
+}
+
+function flushExcludedSave() {
+	if (excludedSaveTimer) save();
+}
 
 function setSelectValue(select, stored, fallback) {
 	select.querySelectorAll("option[data-zd-extra]").forEach((option) => option.remove());
@@ -76,6 +89,8 @@ async function restore() {
 }
 
 async function save() {
+	clearExcludedSaveTimer();
+
 	const setting = {
 		dim: Number(document.getElementById("dim").value),
 		rotd: Number(document.getElementById("rotd").value),
@@ -119,6 +134,7 @@ function rvs_click() {
 }
 
 async function reset() {
+	clearExcludedSaveTimer();
 	await browser.storage.local.set({ setting: DEFAULT_SETTING });
 	await restore();
 }
@@ -132,6 +148,7 @@ async function showUpdateNotice() {
 	await browser.storage.local.remove("updateBadge");
 }
 
+document.documentElement.lang = browser.i18n.getUILanguage().replace(/_/g, "-");
 document.title = `${gm("extensionName")} - ${gm("h2Setting")}`;
 
 document.querySelectorAll("[data-i18n]").forEach((el) => {
@@ -168,6 +185,17 @@ document.querySelectorAll('select, input[type="checkbox"], input[type="color"], 
 	el.addEventListener("change", save);
 });
 
+document.getElementById("excludedDomains").addEventListener("input", () => {
+	clearExcludedSaveTimer();
+	excludedSaveTimer = setTimeout(save, EXCLUDED_SAVE_DELAY);
+});
+
+document.addEventListener("visibilitychange", () => {
+	if (document.visibilityState === "hidden") flushExcludedSave();
+});
+
+window.addEventListener("pagehide", flushExcludedSave);
+
 COLOR_IDS.forEach((id) => {
 	document.getElementById(id).addEventListener("input", () => updateFramePreview(id));
 	document.getElementById(COLOR_OFF_IDS[id]).addEventListener("change", () => updateFramePreview(id));
@@ -196,3 +224,4 @@ browser.storage.onChanged.addListener((changes, area) => {
 
 restore();
 showUpdateNotice();
+ZDShared.watchTheme();

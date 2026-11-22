@@ -12,7 +12,7 @@
 		"description": "Title of the top-level context menu entry."
 	},
 	"cmZoomCustom": {
-		"message": "調整 / 保存...",
+		"message": "調整 / 保存…",
 		"description": "Context menu item to open the adjustment and export panel."
 	},
 	"cmZoomIn": {
@@ -224,7 +224,7 @@
 		"description": "Option label to zoom centered towards cursor position."
 	},
 	"panel_title": {
-		"message": "画像の設定を変更...",
+		"message": "画像設定",
 		"description": "Header title of the adjustment panel."
 	},
 	"panel_tooltip_close": {

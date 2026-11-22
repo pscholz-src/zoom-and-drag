@@ -69,10 +69,13 @@ img.zdImgCls_draggingCur {
 		max-height 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
 		left 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
 		top 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
-		transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+		transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+		rotate 180ms cubic-bezier(0.2, 0.8, 0.2, 1) !important;
 }
 
 .zdImg_zoomBadge {
+	display: block !important;
+	visibility: visible !important;
 	position: fixed !important;
 	z-index: 2147483647 !important;
 	background: rgba(0, 0, 0, 0.15) !important;

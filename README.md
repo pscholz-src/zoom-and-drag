@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="icons/icon.svg" width="96" height="96" alt="Zoom &amp; Drag Logo">
+  <img src="icons/icon-dark.svg" width="96" height="96" alt="Zoom &amp; Drag Logo">
   <h1>Zoom &amp; Drag</h1>
   
   <a href="https://chromewebstore.google.com/detail/zoom-drag/nhkdmakncmidecakecdgccejngjmbcak">
@@ -16,12 +16,12 @@
 Zoom & Drag enables you to seamlessly zoom, rotate, freely move, pin, adjust filters, and save or copy images, video thumbnails, and CSS background graphics directly on any webpage. Control everything effortlessly via intuitive mouse gestures, keyboard shortcuts, or the built-in context menu—all without breaking the page layout.
 
 ## ✨ Key Features
-- **Universal Media Support:** Works smoothly on standard images, video thumbnails, web galleries, and CSS background graphics.
+- **Universal Media Support:** Works smoothly on standard images, video thumbnails, web galleries and sliders, images in SVG graphics, and CSS background graphics.
 - **Context Menu:** Access quick actions such as zoom, rotation, fit to window, and actual size directly from the right-click context menu.
 - **Adjustment Panel:** Launch the sleek, draggable custom panel (via the `P` shortcut on images or the context menu)—complete with live resolution info—to precisely tweak zoom, dimensions, rotation, opacity, and brightness, flip the image, or toggle invert colors, grayscale, and sharp pixel mode.
 - **Pin Images to Screen:** Pin floating images (via the `F` key or the panel button) so they stay fixed in your viewport while scrolling the page—ideal for comparing details or keeping reference graphics in view.
 - **Image Export & Clipboard Copy:** Save your customized images (including all applied filters, effects, flips, and rotations) as PNG, JPEG, or WebP files via the panel’s Save button, or copy them directly to your clipboard.
-- **High-Resolution Upgrade (Opt-in):** Optionally load a larger image version provided by the webpage when zooming beyond the image's own resolution in floating zoom.
+- **High-Resolution Upgrade (Opt-in):** Optionally load a larger image version provided by the webpage when zooming beyond the image's own resolution in floating zoom. Images that offer multiple resolutions automatically load sharper versions as you zoom in.
 - **Zoom to Cursor:** Optionally zoom precisely towards your mouse pointer instead of the image center (Floating mode).
 - **Single Image View:** Automatically optimizes single image pages for direct mouse wheel zooming without requiring a right-click, becoming freely movable after enlarging.
 - **Smart UI & Custom Frames:** A floating HUD badge displays the current zoom ratio and rotation angle while interacting, and highlight frame colors for zoomed and pinned images can be freely customized or disabled in the settings.
@@ -44,7 +44,7 @@ Zoom & Drag enables you to seamlessly zoom, rotate, freely move, pin, adjust fil
 ## ⌨️ Keyboard Shortcuts
 
 **Image Controls (hover or active image):**
-- **Zoom:** `+` / `-`
+- **Zoom:** `+` / `-` (or `Numpad +` / `Numpad -`)
 - **Move:** `Arrow Keys`
 - **Rotate 90°:** `R` (Right) / `L` (Left)
 - **Fit to Window:** `0`

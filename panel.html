@@ -30,6 +30,8 @@
 		max-width: none !important;
 		margin: 0 !important;
 
+		color-scheme: light dark !important;
+
 		--bg-panel: rgba(255, 255, 255, 0.95);
 		--text-main: #333;
 		--border-panel: #ccc;
@@ -396,6 +398,8 @@
 	}
 
 	#zd-btn-x {
+		background: transparent !important;
+		border: none !important;
 		transition: color 0.2s ease, transform 0.2s ease !important;
 		color: #888 !important;
 		cursor: pointer !important;
@@ -454,38 +458,38 @@
 		<h3 data-i18n="panel_title"></h3>
 		<div id="zd-panel-meta" data-i18n-title="panel_tooltip_meta"></div>
 	</div>
-	<div id="zd-btn-x" data-i18n-title="panel_tooltip_close">&times;</div>
+	<button type="button" id="zd-btn-x" data-i18n-title="panel_tooltip_close">&times;</button>
 </div>
 
 <div class="zd-panel-body">
 	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_zoom"></span>
-		<input type="range" id="zd-sl-zoom" class="zd-slider" min="5" max="500">
-		<input type="number" id="zd-num-zoom" class="zd-input-num">
+		<input type="range" id="zd-sl-zoom" class="zd-slider" min="1" max="500">
+		<input type="number" id="zd-num-zoom" class="zd-input-num" min="1">
 		<button type="button" id="zd-btn-reset-zoom" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_zoom">&#x21BA;</button>
 	</div>
 	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_width"></span>
 		<input type="range" id="zd-sl-width" class="zd-slider" min="20" max="5000">
-		<input type="number" id="zd-num-width" class="zd-input-num">
+		<input type="number" id="zd-num-width" class="zd-input-num" min="20">
 		<button type="button" id="zd-btn-reset-width" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_width">&#x21BA;</button>
 	</div>
 	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_rot"></span>
 		<input type="range" id="zd-sl-rot" class="zd-slider" min="-180" max="180">
-		<input type="number" id="zd-num-rot" class="zd-input-num">
+		<input type="number" id="zd-num-rot" class="zd-input-num" min="-180" max="180">
 		<button type="button" id="zd-btn-reset-rot" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_rot">&#x21BA;</button>
 	</div>
 	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_opacity"></span>
 		<input type="range" id="zd-sl-opac" class="zd-slider" min="10" max="100">
-		<input type="number" id="zd-num-opac" class="zd-input-num">
+		<input type="number" id="zd-num-opac" class="zd-input-num" min="10" max="100">
 		<button type="button" id="zd-btn-reset-opac" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_opac">&#x21BA;</button>
 	</div>
 	<div class="zd-panel-row">
 		<span class="zd-panel-label" data-i18n="panel_label_brightness"></span>
 		<input type="range" id="zd-sl-bright" class="zd-slider" min="10" max="200">
-		<input type="number" id="zd-num-bright" class="zd-input-num">
+		<input type="number" id="zd-num-bright" class="zd-input-num" min="10" max="200">
 		<button type="button" id="zd-btn-reset-bright" class="zd-mini-reset" data-i18n-title="panel_tooltip_reset_bright">&#x21BA;</button>
 	</div>
 	<div class="zd-panel-row zd-panel-row-flip">

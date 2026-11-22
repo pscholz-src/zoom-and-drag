@@ -20,9 +20,32 @@ const MAX_FETCH_IMAGE_BYTES = (HAS_FILE_READER ? 100 : 40) * 1024 * 1024;
 const FETCH_ERR_TOO_LARGE = "image-too-large";
 const BADGE_UPDATE = { text: "!", color: "#FFC107" };
 const BADGE_DISABLED = { text: "X", color: "#D32F2F" };
+const IS_GECKO = typeof browser.runtime.getBrowserInfo === "function";
+const ICONS_DARK = {
+	16: "icons/icon-dark-16.png",
+	32: "icons/icon-dark-32.png",
+	48: "icons/icon-dark-48.png",
+	128: "icons/icon-dark-128.png"
+};
+const ICONS_LIGHT = {
+	16: "icons/icon-light-16.png",
+	32: "icons/icon-light-32.png",
+	48: "icons/icon-light-48.png",
+	128: "icons/icon-light-128.png"
+};
 
 let currentContextMenuState = null;
 let contextMenuQueue = Promise.resolve();
+let panelTemplate = null;
+
+async function getPanelTemplate() {
+	if (!panelTemplate) {
+		const response = await fetch(browser.runtime.getURL("panel.html"));
+		if (!response.ok) throw new Error(`HTTP ${response.status}`);
+		panelTemplate = await response.text();
+	}
+	return panelTemplate;
+}
 
 const MENU_ITEMS = [
 	{ id: "zoom-custom", titleKey: "cmZoomCustom" },
@@ -154,10 +177,11 @@ async function fetchImageAsDataUrl(url, senderUrl, isDerived) {
 }
 
 async function getBadgeState() {
-	const data = await browser.storage.local.get(["setting", "updateBadge"]);
+	const data = await browser.storage.local.get(["setting", "updateBadge", "darkTheme"]);
 	return {
 		excludedDomains: data.setting?.excludedDomains ?? DEFAULT_SETTING.excludedDomains,
-		updateBadge: Boolean(data.updateBadge)
+		updateBadge: Boolean(data.updateBadge),
+		darkTheme: Boolean(data.darkTheme)
 	};
 }
 
@@ -169,6 +193,13 @@ async function updateBadgeForTab(tab, state) {
 	const badge = state.updateBadge ? BADGE_UPDATE : isDisabled ? BADGE_DISABLED : null;
 	const title = browser.i18n.getMessage(isDisabled ? "actionTitleDisabled" : "extensionName");
 
+	if (!IS_GECKO && tab.incognito) {
+		try {
+			await browser.action.setIcon({ tabId: tab.id, path: ICONS_LIGHT });
+		} catch {
+		}
+	}
+
 	try {
 		await browser.action.setBadgeText({ tabId: tab.id, text: badge ? badge.text : "" });
 		if (badge) await browser.action.setBadgeBackgroundColor({ tabId: tab.id, color: badge.color });
@@ -179,8 +210,18 @@ async function updateBadgeForTab(tab, state) {
 
 async function refreshAllBadges() {
 	const state = await getBadgeState();
-	await browser.action.setBadgeText({ text: state.updateBadge ? BADGE_UPDATE.text : "" });
-	await browser.action.setBadgeBackgroundColor({ color: BADGE_UPDATE.color });
+	if (!IS_GECKO) {
+		try {
+			await browser.action.setIcon({ path: state.darkTheme ? ICONS_LIGHT : ICONS_DARK });
+		} catch {
+		}
+	}
+
+	try {
+		await browser.action.setBadgeText({ text: state.updateBadge ? BADGE_UPDATE.text : "" });
+		await browser.action.setBadgeBackgroundColor({ color: BADGE_UPDATE.color });
+	} catch {
+	}
 
 	const tabs = await browser.tabs.query({});
 	await Promise.all(tabs.map((tab) => updateBadgeForTab(tab, state)));
@@ -225,8 +266,15 @@ browser.tabs.onActivated.addListener(({ tabId }) => {
 browser.storage.onChanged.addListener((changes, area) => {
 	if (area !== "local") return;
 
+	const cxtDisabled =
+		changes.setting &&
+		(changes.setting.oldValue?.enableCxt ?? true) &&
+		changes.setting.newValue?.enableCxt === false;
+	if (cxtDisabled) setContextMenuVisible(false);
+
 	const excludedChanged = changes.setting && changes.setting.oldValue?.excludedDomains !== changes.setting.newValue?.excludedDomains;
-	if (excludedChanged || changes.updateBadge) refreshAllBadges();
+	const darkThemeChanged = !IS_GECKO && changes.darkTheme && Boolean(changes.darkTheme.oldValue) !== Boolean(changes.darkTheme.newValue);
+	if (excludedChanged || changes.updateBadge || darkThemeChanged) refreshAllBadges();
 });
 
 browser.runtime.onInstalled.addListener((details) => {
@@ -258,6 +306,15 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 		case "set-context":
 			setContextMenuVisible(msg.data);
 			break;
+		case "get-top-host":
+			sendResponse({ host: ZDShared.hostFromUrl(sender.tab?.url) });
+			break;
+		case "get-panel-template":
+			getPanelTemplate().then(
+				(html) => sendResponse({ ok: true, html }),
+				(error) => sendResponse({ ok: false, error: String(error?.message || error) })
+			);
+			return true;
 		case "fetch-image":
 			if (!sender.tab || typeof msg.url !== "string") {
 				sendResponse({ ok: false, error: "Invalid request" });

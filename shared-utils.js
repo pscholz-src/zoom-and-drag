@@ -238,6 +238,37 @@
 		return 1.05 / (lum + 0.05) >= (lum + 0.05) / 0.05 ? "#ffffff" : "#000000";
 	}
 
+	let themeWatcherStarted = false;
+
+	function watchTheme() {
+		if (themeWatcherStarted || typeof window === "undefined" || !window.matchMedia) return;
+
+		const ext = root.browser || root.chrome;
+		if (
+			!ext?.storage?.local ||
+			ext.extension?.inIncognitoContext ||
+			ext.runtime?.getURL?.("").startsWith("moz-extension:")
+		) {
+			return;
+		}
+
+		themeWatcherStarted = true;
+		const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
+		const syncTheme = () => {
+			ext.storage.local
+				.get("darkTheme")
+				.then(({ darkTheme }) => {
+					if (Boolean(darkTheme) !== darkMq.matches) {
+						return ext.storage.local.set({ darkTheme: darkMq.matches });
+					}
+				})
+				.catch(() => {});
+		};
+
+		syncTheme();
+		darkMq.addEventListener("change", syncTheme);
+	}
+
 	root.ZDShared = Object.freeze({
 		hostFromUrl,
 		normalizeRule,
@@ -252,6 +283,7 @@
 		hasImageExtension,
 		isHexColor,
 		hexToRgba,
-		readableTextColor
+		readableTextColor,
+		watchTheme
 	});
 })(globalThis);

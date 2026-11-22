@@ -1,21 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="8 8 84 84" width="100" height="100">
-    <line x1="61.8" y1="61.8" x2="88.5" y2="88.5" stroke="#1E40AF" stroke-width="12" stroke-linecap="butt" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="11.5 11.5 81 81" width="128" height="128">
+	<style>
+		.icon-stroke {
+			stroke: #1E40AF;
+		}
+		@media (prefers-color-scheme: dark) {
+			.icon-stroke {
+				stroke: #7EA8F0;
+			}
+		}
+	</style>
 
-  <g stroke="#1E40AF" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="42" cy="42" r="28" stroke-width="8" />
+	<g class="icon-stroke" fill="none" stroke-linecap="round" stroke-linejoin="round">
+		<line x1="66" y1="66" x2="86.5" y2="86.5" stroke-width="10.5" />
+		<circle cx="44" cy="44" r="28" stroke-width="7.5" />
 
-    <!-- Horizontale Achse -->
-    <line x1="24" y1="42" x2="60" y2="42" stroke-width="4" />
-    <!-- Pfeilspitze links -->
-    <path d="M 29 37 L 24 42 L 29 47" stroke-width="4" />
-    <!-- Pfeilspitze rechts -->
-    <path d="M 55 37 L 60 42 L 55 47" stroke-width="4" />
+		<!-- Horizontale Achse -->
+		<line x1="26" y1="44" x2="62" y2="44" stroke-width="4.5" />
+		<!-- Pfeilspitze links -->
+		<path d="M 31 39 L 26 44 L 31 49" stroke-width="4.5" />
+		<!-- Pfeilspitze rechts -->
+		<path d="M 57 39 L 62 44 L 57 49" stroke-width="4.5" />
 
-    <!-- Vertikale Achse -->
-    <line x1="42" y1="24" x2="42" y2="60" stroke-width="4" />
-    <!-- Pfeilspitze oben -->
-    <path d="M 37 29 L 42 24 L 47 29" stroke-width="4" />
-    <!-- Pfeilspitze unten -->
-    <path d="M 37 55 L 42 60 L 47 55" stroke-width="4" />
-  </g>
+		<!-- Vertikale Achse -->
+		<line x1="44" y1="26" x2="44" y2="62" stroke-width="4.5" />
+		<!-- Pfeilspitze oben -->
+		<path d="M 39 31 L 44 26 L 49 31" stroke-width="4.5" />
+		<!-- Pfeilspitze unten -->
+		<path d="M 39 57 L 44 62 L 49 57" stroke-width="4.5" />
+	</g>
 </svg>

@@ -135,22 +135,21 @@ async function toggleCurrentHost() {
 	await updateExcludedDomains((str) => ZDShared.addRule(str, currentHost));
 }
 
+document.documentElement.lang = browser.i18n.getUILanguage().replace(/_/g, "-");
+
 document.querySelectorAll("[data-i18n]").forEach((el) => {
 	const translation = gm(el.getAttribute("data-i18n"));
 	if (translation) el.textContent = translation;
-});
-
-els.toggle.addEventListener("click", () => {
-	toggleCurrentHost().catch((error) => {
-		console.error("[Zoom & Drag] Could not update the excluded domains:", error);
-		render();
-	});
 });
 
 const reportError = (error) => {
 	console.error("[Zoom & Drag] Could not update the excluded domains:", error);
 	render();
 };
+
+els.toggle.addEventListener("click", () => {
+	toggleCurrentHost().catch(reportError);
+});
 
 els.scopeHostBtn.addEventListener("click", () => {
 	updateExcludedDomains((str) => ZDShared.addRule(str, currentHost)).catch(reportError);
@@ -178,3 +177,4 @@ browser.storage.onChanged.addListener((changes, area) => {
 });
 
 render();
+ZDShared.watchTheme();
