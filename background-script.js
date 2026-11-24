@@ -320,7 +320,8 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 				sendResponse({ ok: false, error: "Invalid request" });
 				break;
 			}
-			fetchImageAsDataUrl(msg.url, sender.url || sender.tab.url, msg.derived === true).then(
+			const pageUrl = /^https?:/i.test(sender.url || "") ? sender.url : sender.tab.url;
+			fetchImageAsDataUrl(msg.url, pageUrl, msg.derived === true).then(
 				(dataUrl) => sendResponse({ ok: true, dataUrl }),
 				(error) => sendResponse({ ok: false, error: String(error?.message || error), code: error?.code })
 			);

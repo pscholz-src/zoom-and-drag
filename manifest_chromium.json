@@ -5,7 +5,7 @@
 		"email": "pscholz.src@gmail.com"
 	},
 	"description": "__MSG_extensionDescription__",
-	"version": "2.2.1",
+	"version": "2.2.2",
 	"minimum_chrome_version": "123",
 	"homepage_url": "https://github.com/pscholz-src/zoom-and-drag",
 	"icons": {

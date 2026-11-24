@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.2] - 2026-11-25
+### Improved
+- **X.com support:** Photos and profile pictures on X.com can now be zoomed, rotated, moved and edited even with "Target background images" disabled. Opening or closing the full-size photo view keeps the panel open and automatically follows the main visible image.
+- **Higher-resolution images on X.com:** With "Load larger image version in floating zoom" enabled, floating zoom loads X.com photos in their original resolution and profile pictures and banners in higher resolution, and uses those versions when saving or copying.
+- **Auto-rotating image tiles:** When a tile swaps its image (e.g. crossfading grids like on x.ai), the panel now follows the newly visible image instead of closing, and floating images stay open and focused until reset.
+- **Overlays and dialogs:** When a lightbox, dialog or full-page overlay opens over the image the panel is on, the panel moves to the image shown in it. If the overlay shows no image (e.g. a cookie dialog), the panel closes after a brief delay. When the overlay is closed again, the panel returns to the visible image or closes. Native dialogs are recognized as well.
+
+### Fixed
+- **Resolution handling on multi-resolution images:** Floating zoom no longer shows ever-increasing pixel dimensions in the panel for images that offer several resolutions. The panel and "Default / Actual size" now use the real resolution of the loaded image, and floating zoom switches to the next larger version provided by the page once you zoom beyond 100%.
+- **Safer image export in embedded content:** The background download used when saving or copying an image now applies the same local network and HTTPS checks to embedded content as to regular pages.
+- **Fullscreen:** The panel now closes when a page element other than a video goes fullscreen, instead of staying open behind it.
+- **Embedded video players (Shadow DOM):** Video posters behind play-button overlays inside Shadow DOM players (e.g. on MSN) can now be zoomed and edited. Starting playback closes the panel and resets the poster.
+
 ## [2.2.1] - 2026-11-22
 ### Improved
 - **Inline zoom on background images:** CSS background images can now be zoomed inline just like regular images, scaling from their center without tiling, and restoring all styling on reset.
